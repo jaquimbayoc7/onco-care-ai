@@ -20,6 +20,10 @@ import {
   Filter
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import AIRecommendationsModal from "@/components/modals/AIRecommendationsModal";
+import NewPatientForm from "@/components/forms/NewPatientForm";
+import MedicalHistoryView from "@/components/medical/MedicalHistoryView";
+import PharmacotherapyView from "@/components/medical/PharmacotherapyView";
 
 // Mock data for patients
 const mockPatients = [
@@ -76,6 +80,10 @@ const mockPatients = [
 const Dashboard = () => {
   const [selectedPatient, setSelectedPatient] = useState(mockPatients[0]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAIRecommendations, setShowAIRecommendations] = useState(false);
+  const [showNewPatientForm, setShowNewPatientForm] = useState(false);
+  const [showMedicalHistory, setShowMedicalHistory] = useState(false);
+  const [showPharmacotherapy, setShowPharmacotherapy] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -101,6 +109,11 @@ const Dashboard = () => {
     patient.diagnosis.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleNewPatient = (data: any) => {
+    console.log("Nuevo paciente creado:", data);
+    // Aquí iría la lógica para guardar el paciente en la base de datos
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -116,7 +129,11 @@ const Dashboard = () => {
                 <Brain className="w-4 h-4" />
                 Análisis IA
               </ClinicalButton>
-              <ClinicalButton variant="outline" size="sm">
+              <ClinicalButton 
+                variant="outline" 
+                size="sm"
+                onClick={() => setShowNewPatientForm(true)}
+              >
                 <Plus className="w-4 h-4" />
                 Nuevo Paciente
               </ClinicalButton>
@@ -276,15 +293,27 @@ const Dashboard = () => {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <ClinicalButton variant="ai" size="lg">
+                <ClinicalButton 
+                  variant="ai" 
+                  size="lg"
+                  onClick={() => setShowAIRecommendations(true)}
+                >
                   <Brain className="w-4 h-4" />
                   Ver Recomendaciones IA
                 </ClinicalButton>
-                <ClinicalButton variant="clinical" size="lg">
+                <ClinicalButton 
+                  variant="clinical" 
+                  size="lg"
+                  onClick={() => setShowMedicalHistory(true)}
+                >
                   <FileText className="w-4 h-4" />
                   Historial Médico
                 </ClinicalButton>
-                <ClinicalButton variant="outline" size="lg">
+                <ClinicalButton 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => setShowPharmacotherapy(true)}
+                >
                   <Activity className="w-4 h-4" />
                   Farmacoterapia
                 </ClinicalButton>
@@ -293,6 +322,31 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <AIRecommendationsModal
+        isOpen={showAIRecommendations}
+        onClose={() => setShowAIRecommendations(false)}
+        patient={selectedPatient}
+      />
+
+      <NewPatientForm
+        isOpen={showNewPatientForm}
+        onClose={() => setShowNewPatientForm(false)}
+        onSubmit={handleNewPatient}
+      />
+
+      <MedicalHistoryView
+        isOpen={showMedicalHistory}
+        onClose={() => setShowMedicalHistory(false)}
+        patient={selectedPatient}
+      />
+
+      <PharmacotherapyView
+        isOpen={showPharmacotherapy}
+        onClose={() => setShowPharmacotherapy(false)}
+        patient={selectedPatient}
+      />
     </div>
   );
 };
