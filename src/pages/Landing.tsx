@@ -18,11 +18,13 @@ import heroBackground from "@/assets/hero-background.jpg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import ForgotPasswordForm from "@/components/forms/ForgotPasswordForm";
 
 const Landing = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
   const { toast } = useToast();
@@ -81,16 +83,6 @@ const Landing = () => {
                 OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
                 y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <ClinicalButton variant="ai" size="xl">
-                  Comenzar Análisis
-                  <Brain className="w-5 h-5" />
-                </ClinicalButton>
-                <ClinicalButton variant="outline" size="xl" className="text-white border-white/30 hover:bg-white/10">
-                  Ver Demo
-                  <Eye className="w-5 h-5" />
-                </ClinicalButton>
-              </div>
             </div>
 
             {/* Login Form */}
@@ -152,9 +144,13 @@ const Landing = () => {
                   </form>
                   
                   <div className="text-center mt-4">
-                    <a href="#" className="text-sm text-accent hover:underline">
+                    <button 
+                      type="button"
+                      onClick={() => setShowForgotPassword(true)}
+                      className="text-sm text-accent hover:underline"
+                    >
                       ¿Olvidó su contraseña?
-                    </a>
+                    </button>
                   </div>
                 </CardContent>
               </Card>
@@ -230,6 +226,11 @@ const Landing = () => {
           </p>
         </div>
       </footer>
+      
+      <ForgotPasswordForm
+        isOpen={showForgotPassword}
+        onClose={() => setShowForgotPassword(false)}
+      />
     </div>
   );
 };
