@@ -24,6 +24,7 @@ import AIRecommendationsModal from "@/components/modals/AIRecommendationsModal";
 import NewPatientForm from "@/components/forms/NewPatientForm";
 import MedicalHistoryView from "@/components/medical/MedicalHistoryView";
 import PharmacotherapyView from "@/components/medical/PharmacotherapyView";
+import NavHeader from "@/components/layout/NavHeader";
 
 // Mock data for patients
 const mockPatients = [
@@ -116,31 +117,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="border-b bg-card">
-        <div className="container max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-primary">OncoSimil AI</h1>
-              <p className="text-muted-foreground">Sistema de Gestión Oncológica</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <ClinicalButton variant="ai" size="sm">
-                <Brain className="w-4 h-4" />
-                Análisis IA
-              </ClinicalButton>
-              <ClinicalButton 
-                variant="outline" 
-                size="sm"
-                onClick={() => setShowNewPatientForm(true)}
-              >
-                <Plus className="w-4 h-4" />
-                Nuevo Paciente
-              </ClinicalButton>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavHeader />
 
       <div className="container max-w-7xl mx-auto px-6 py-6">
         <div className="grid lg:grid-cols-12 gap-6">
@@ -150,7 +127,14 @@ const Dashboard = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg">Lista de Pacientes</CardTitle>
-                  <Filter className="w-4 h-4 text-muted-foreground" />
+                  <ClinicalButton 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => setShowNewPatientForm(true)}
+                  >
+                    <Plus className="w-4 h-4" />
+                    Nuevo Paciente
+                  </ClinicalButton>
                 </div>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
