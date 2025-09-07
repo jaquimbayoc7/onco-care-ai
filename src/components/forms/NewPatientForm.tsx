@@ -281,10 +281,12 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Público">Público</SelectItem>
-                              <SelectItem value="Privado">Privado</SelectItem>
-                              <SelectItem value="Mixto">Mixto</SelectItem>
-                              <SelectItem value="Sin Cobertura">Sin Cobertura</SelectItem>
+                              <SelectItem value="EPS Contributivo">EPS Contributivo</SelectItem>
+                              <SelectItem value="EPS Subsidiado">EPS Subsidiado</SelectItem>
+                              <SelectItem value="Medicina Prepagada">Medicina Prepagada</SelectItem>
+                              <SelectItem value="Particular">Particular</SelectItem>
+                              <SelectItem value="Régimen Especial">Régimen Especial</SelectItem>
+                              <SelectItem value="Sin Afiliación">Sin Afiliación</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
