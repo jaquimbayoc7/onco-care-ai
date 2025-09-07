@@ -69,28 +69,28 @@ const Landing = () => {
         />
         <div className="absolute inset-0 gradient-hero opacity-90" />
         
-        <div className="relative z-10 container max-w-7xl mx-auto px-6 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Hero Content */}
-            <div className="text-center lg:text-left">
-              <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+            <div className="text-center lg:text-left order-2 lg:order-1">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                 Inteligencia Artificial al Servicio de la{" "}
                 <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
                   Oncología
                 </span>
               </h1>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
                 OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
                 y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
               </p>
             </div>
 
             {/* Login Form */}
-            <div className="flex justify-center lg:justify-end">
-              <Card className="w-full max-w-md card-elevated">
-                <CardContent className="p-8">
-                  <div className="text-center mb-6">
-                    <h2 className="text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
+            <div className="flex justify-center lg:justify-end order-1 lg:order-2">
+              <Card className="w-full max-w-sm sm:max-w-md card-elevated">
+                <CardContent className="p-4 sm:p-6 md:p-8">
+                  <div className="text-center mb-4 sm:mb-6">
+                    <h2 className="text-xl sm:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
                     <p className="text-muted-foreground">Ingrese sus credenciales profesionales</p>
                   </div>
                   
@@ -160,21 +160,21 @@ const Landing = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-background">
-        <div className="container max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-primary mb-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-background">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-4 sm:mb-6">
               Características Clave del Sistema
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
               Herramientas avanzadas diseñadas para optimizar el cuidado oncológico 
               y mejorar los resultados clínicos.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Feature 1 */}
-            <Card className="card-clinical text-center p-8 ai-enhanced">
+            <Card className="card-clinical text-center p-4 sm:p-6 md:p-8 ai-enhanced">
               <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6">
                 <Activity className="w-8 h-8 text-white" />
               </div>
@@ -188,9 +188,9 @@ const Landing = () => {
             </Card>
 
             {/* Feature 2 */}
-            <Card className="card-clinical text-center p-8 ai-enhanced">
-              <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                <Brain className="w-8 h-8 text-white" />
+            <Card className="card-clinical text-center p-4 sm:p-6 md:p-8 ai-enhanced">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-primary mb-4">
                 Motor de Recomendación IA
@@ -202,9 +202,9 @@ const Landing = () => {
             </Card>
 
             {/* Feature 3 */}
-            <Card className="card-clinical text-center p-8 ai-enhanced">
-              <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                <TrendingUp className="w-8 h-8 text-white" />
+            <Card className="card-clinical text-center p-4 sm:p-6 md:p-8 ai-enhanced">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-primary mb-4">
                 Monitoreo Proactivo
@@ -219,8 +219,8 @@ const Landing = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-primary py-8">
-        <div className="container max-w-6xl mx-auto px-6 text-center">
+      <footer className="bg-primary py-6 sm:py-8">
+        <div className="container max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-primary-foreground/80">
             © 2024 OncoSimil AI. Desarrollado para mejorar el cuidado oncológico.
           </p>

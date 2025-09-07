@@ -141,10 +141,10 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <NavHeader />
 
-      <div className="container max-w-7xl mx-auto px-6 py-6">
-        <div className="grid lg:grid-cols-12 gap-6">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+        <div className="grid lg:grid-cols-12 gap-4 sm:gap-6">
           {/* Patient List - Left Column */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-4 order-2 lg:order-1">
             <Card className="card-clinical">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -201,8 +201,8 @@ const Dashboard = () => {
           </div>
 
           {/* Patient Details - Right Column */}
-          <div className="lg:col-span-8">
-            <div className="space-y-6">
+          <div className="lg:col-span-8 order-1 lg:order-2">
+            <div className="space-y-4 sm:space-y-6">
               {/* Patient Header Card */}
               <Card className="card-clinical">
                 <CardHeader>
@@ -233,7 +233,7 @@ const Dashboard = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-3 gap-6">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Calendar className="w-4 h-4 text-muted-foreground" />
@@ -271,8 +271,8 @@ const Dashboard = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-4 gap-6">
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+                    <div className="text-center p-2 sm:p-3 md:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Heart className="w-5 h-5 text-danger" />
                         {getTrendIcon(selectedPatient.vitals.heartRate, 70)}
@@ -280,7 +280,7 @@ const Dashboard = () => {
                       <div className="vital-display text-primary">{selectedPatient.vitals.heartRate}</div>
                       <div className="metric-label">BPM</div>
                     </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                    <div className="text-center p-2 sm:p-3 md:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Activity className="w-5 h-5 text-accent" />
                         <Activity className="w-4 h-4 text-success" />
@@ -288,7 +288,7 @@ const Dashboard = () => {
                       <div className="vital-display text-primary">{selectedPatient.vitals.bloodPressure}</div>
                       <div className="metric-label">mmHg</div>
                     </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                    <div className="text-center p-2 sm:p-3 md:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Thermometer className="w-5 h-5 text-warning" />
                         {getTrendIcon(selectedPatient.vitals.temperature, 36.5)}
@@ -296,7 +296,7 @@ const Dashboard = () => {
                       <div className="vital-display text-primary">{selectedPatient.vitals.temperature}°</div>
                       <div className="metric-label">Celsius</div>
                     </div>
-                    <div className="text-center p-4 bg-muted/30 rounded-lg">
+                    <div className="text-center p-2 sm:p-3 md:p-4 bg-muted/30 rounded-lg">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Activity className="w-5 h-5 text-success" />
                         {getTrendIcon(selectedPatient.vitals.oxygenSat, 98)}
@@ -309,33 +309,33 @@ const Dashboard = () => {
               </Card>
 
               {/* Action Buttons */}
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 <ClinicalButton 
                   variant="ai" 
                   size="lg"
                   onClick={() => setShowAIRecommendations(true)}
-                  className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                  className="h-12 sm:h-14 md:h-16 flex-col gap-1 sm:gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 sm:col-span-2 lg:col-span-1"
                 >
-                  <Brain className="w-6 h-6" />
-                  <span className="font-semibold">Recomendaciones IA</span>
+                  <Brain className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  <span className="font-semibold text-xs sm:text-sm md:text-base">Recomendaciones IA</span>
                 </ClinicalButton>
                 <ClinicalButton 
                   variant="clinical" 
                   size="lg"
                   onClick={() => setShowMedicalHistory(true)}
-                  className="h-16 flex-col gap-2"
+                  className="h-12 sm:h-14 md:h-16 flex-col gap-1 sm:gap-2"
                 >
-                  <FileText className="w-6 h-6" />
-                  <span>Historial Médico</span>
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  <span className="text-xs sm:text-sm md:text-base">Historial Médico</span>
                 </ClinicalButton>
                 <ClinicalButton 
                   variant="outline" 
                   size="lg"
                   onClick={() => setShowPharmacotherapy(true)}
-                  className="h-16 flex-col gap-2"
+                  className="h-12 sm:h-14 md:h-16 flex-col gap-1 sm:gap-2"
                 >
-                  <Activity className="w-6 h-6" />
-                  <span>Farmacoterapia</span>
+                  <Activity className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
+                  <span className="text-xs sm:text-sm md:text-base">Farmacoterapia</span>
                 </ClinicalButton>
               </div>
             </div>
