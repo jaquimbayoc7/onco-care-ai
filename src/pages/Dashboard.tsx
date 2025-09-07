@@ -216,9 +216,20 @@ const Dashboard = () => {
                         <p className="text-muted-foreground">Paciente ID: {selectedPatient.id}</p>
                       </div>
                     </div>
-                    <Badge className={`${getStatusColor(selectedPatient.status)}`}>
-                      {selectedPatient.status}
-                    </Badge>
+                    <div className="flex items-center gap-3">
+                      <ClinicalButton 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleEditPatient(selectedPatient)}
+                        className="border-primary/20 hover:border-primary/40"
+                      >
+                        <Edit className="w-4 h-4" />
+                        Editar
+                      </ClinicalButton>
+                      <Badge className={`${getStatusColor(selectedPatient.status)}`}>
+                        {selectedPatient.status}
+                      </Badge>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -298,38 +309,33 @@ const Dashboard = () => {
               </Card>
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
+              <div className="grid md:grid-cols-3 gap-4">
                 <ClinicalButton 
                   variant="ai" 
                   size="lg"
                   onClick={() => setShowAIRecommendations(true)}
+                  className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  <Brain className="w-4 h-4" />
-                  Ver Recomendaciones IA
-                </ClinicalButton>
-                <ClinicalButton 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => handleEditPatient(selectedPatient)}
-                >
-                  <Edit className="w-4 h-4" />
-                  Editar Paciente
+                  <Brain className="w-6 h-6" />
+                  <span className="font-semibold">Recomendaciones IA</span>
                 </ClinicalButton>
                 <ClinicalButton 
                   variant="clinical" 
                   size="lg"
                   onClick={() => setShowMedicalHistory(true)}
+                  className="h-16 flex-col gap-2"
                 >
-                  <FileText className="w-4 h-4" />
-                  Historial Médico
+                  <FileText className="w-6 h-6" />
+                  <span>Historial Médico</span>
                 </ClinicalButton>
                 <ClinicalButton 
                   variant="outline" 
                   size="lg"
                   onClick={() => setShowPharmacotherapy(true)}
+                  className="h-16 flex-col gap-2"
                 >
-                  <Activity className="w-4 h-4" />
-                  Farmacoterapia
+                  <Activity className="w-6 h-6" />
+                  <span>Farmacoterapia</span>
                 </ClinicalButton>
               </div>
             </div>
