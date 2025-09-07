@@ -608,8 +608,8 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
                 Cancelar
               </ClinicalButton>
               <ClinicalButton type="submit" variant="default">
-                <UserPlus className="w-4 h-4" />
-                Crear Paciente
+                {isEditMode ? <User className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
+                {isEditMode ? 'Editar Paciente' : 'Crear Paciente'}
               </ClinicalButton>
             </div>
           </form>
