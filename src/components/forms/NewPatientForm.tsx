@@ -255,11 +255,12 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="Bajo">Bajo</SelectItem>
-                              <SelectItem value="Medio-Bajo">Medio-Bajo</SelectItem>
-                              <SelectItem value="Medio">Medio</SelectItem>
-                              <SelectItem value="Medio-Alto">Medio-Alto</SelectItem>
-                              <SelectItem value="Alto">Alto</SelectItem>
+                              <SelectItem value="Estrato 1">Estrato 1 (Bajo-bajo)</SelectItem>
+                              <SelectItem value="Estrato 2">Estrato 2 (Bajo)</SelectItem>
+                              <SelectItem value="Estrato 3">Estrato 3 (Medio-bajo)</SelectItem>
+                              <SelectItem value="Estrato 4">Estrato 4 (Medio)</SelectItem>
+                              <SelectItem value="Estrato 5">Estrato 5 (Medio-alto)</SelectItem>
+                              <SelectItem value="Estrato 6">Estrato 6 (Alto)</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
