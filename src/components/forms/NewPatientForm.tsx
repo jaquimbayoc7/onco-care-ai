@@ -31,6 +31,8 @@ interface NewPatientFormProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
+  editPatient?: any; // Patient data for editing mode
+  mode?: 'create' | 'edit'; // Form mode
 }
 
 interface PatientFormData {
@@ -65,10 +67,41 @@ interface PatientFormData {
 const NewPatientForm: React.FC<NewPatientFormProps> = ({
   isOpen,
   onClose,
-  onSubmit
+  onSubmit,
+  editPatient,
+  mode = 'create'
 }) => {
-  const form = useForm<PatientFormData>({
-    defaultValues: {
+  const isEditMode = mode === 'edit';
+  
+  const getDefaultValues = () => {
+    if (isEditMode && editPatient) {
+      return {
+        age: editPatient.age || 0,
+        gender: editPatient.gender || "",
+        race: editPatient.race || "",
+        region: editPatient.region || "",
+        urban_or_rural: editPatient.urban_or_rural || "",
+        socio_economic_status: editPatient.socio_economic_status || "",
+        insurance_coverage: editPatient.insurance_coverage || "",
+        has_family_history: editPatient.has_family_history || false,
+        has_previous_cancer: editPatient.has_previous_cancer || false,
+        diagnosis_stage: editPatient.stage || "",
+        tumor_aggressiveness: editPatient.tumor_aggressiveness || "",
+        has_colonoscopy_access: editPatient.has_colonoscopy_access || false,
+        screening_regularity: editPatient.screening_regularity || "",
+        diet_type: editPatient.diet_type || "",
+        bmi_value: editPatient.bmi_value || 0,
+        physical_activity_level: editPatient.physical_activity_level || "",
+        is_smoker: editPatient.is_smoker || false,
+        alcohol_consumption: editPatient.alcohol_consumption || "",
+        red_meat_consumption: editPatient.red_meat_consumption || "",
+        fiber_consumption: editPatient.fiber_consumption || "",
+        has_treatment_access: editPatient.has_treatment_access || false,
+        follow_up_adherence: editPatient.follow_up_adherence || "",
+        survival_status: editPatient.status || "Active"
+      };
+    }
+    return {
       age: 0,
       gender: "",
       race: "",
@@ -92,11 +125,24 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
       has_treatment_access: false,
       follow_up_adherence: "",
       survival_status: "Active"
-    }
+    };
+  };
+
+  const form = useForm<PatientFormData>({
+    defaultValues: getDefaultValues()
   });
 
+  // Reset form when opening/closing or changing patient
+  React.useEffect(() => {
+    if (isOpen) {
+      const defaultValues = getDefaultValues();
+      form.reset(defaultValues);
+    }
+  }, [isOpen, editPatient, mode]);
+
   const handleSubmit = (data: PatientFormData) => {
-    onSubmit(data);
+    const submitData = isEditMode ? { ...data, id: editPatient?.id } : data;
+    onSubmit(submitData);
     form.reset();
     onClose();
   };
@@ -105,12 +151,12 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-3 text-xl">
-            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-              <UserPlus className="w-5 h-5 text-primary" />
-            </div>
-            Nuevo Paciente
-          </DialogTitle>
+            <DialogTitle className="flex items-center gap-3 text-xl">
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <UserPlus className="w-5 h-5 text-primary" />
+              </div>
+              {isEditMode ? 'Editar Paciente' : 'Nuevo Paciente'}
+            </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>

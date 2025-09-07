@@ -17,7 +17,8 @@ import {
   FileText,
   Plus,
   Search,
-  Filter
+  Filter,
+  Edit
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import AIRecommendationsModal from "@/components/modals/AIRecommendationsModal";
@@ -85,6 +86,8 @@ const Dashboard = () => {
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
   const [showPharmacotherapy, setShowPharmacotherapy] = useState(false);
+  const [editMode, setEditMode] = useState<'create' | 'edit'>('create');
+  const [editingPatient, setEditingPatient] = useState<any>(null);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -111,8 +114,27 @@ const Dashboard = () => {
   );
 
   const handleNewPatient = (data: any) => {
-    console.log("Nuevo paciente creado:", data);
-    // Aquí iría la lógica para guardar el paciente en la base de datos
+    if (editMode === 'edit') {
+      console.log("Paciente editado:", data);
+      // Aquí iría la lógica para actualizar el paciente en la base de datos
+    } else {
+      console.log("Nuevo paciente creado:", data);
+      // Aquí iría la lógica para guardar el paciente en la base de datos
+    }
+    setEditMode('create');
+    setEditingPatient(null);
+  };
+
+  const handleEditPatient = (patient: any) => {
+    setEditingPatient(patient);
+    setEditMode('edit');
+    setShowNewPatientForm(true);
+  };
+
+  const handleNewPatientClick = () => {
+    setEditMode('create');
+    setEditingPatient(null);
+    setShowNewPatientForm(true);
   };
 
   return (
@@ -130,7 +152,7 @@ const Dashboard = () => {
                   <ClinicalButton 
                     variant="outline" 
                     size="sm"
-                    onClick={() => setShowNewPatientForm(true)}
+                    onClick={handleNewPatientClick}
                   >
                     <Plus className="w-4 h-4" />
                     Nuevo Paciente
@@ -286,6 +308,14 @@ const Dashboard = () => {
                   Ver Recomendaciones IA
                 </ClinicalButton>
                 <ClinicalButton 
+                  variant="outline" 
+                  size="lg"
+                  onClick={() => handleEditPatient(selectedPatient)}
+                >
+                  <Edit className="w-4 h-4" />
+                  Editar Paciente
+                </ClinicalButton>
+                <ClinicalButton 
                   variant="clinical" 
                   size="lg"
                   onClick={() => setShowMedicalHistory(true)}
@@ -316,8 +346,14 @@ const Dashboard = () => {
 
       <NewPatientForm
         isOpen={showNewPatientForm}
-        onClose={() => setShowNewPatientForm(false)}
+        onClose={() => {
+          setShowNewPatientForm(false);
+          setEditMode('create');
+          setEditingPatient(null);
+        }}
         onSubmit={handleNewPatient}
+        editPatient={editingPatient}
+        mode={editMode}
       />
 
       <MedicalHistoryView
