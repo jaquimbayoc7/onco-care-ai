@@ -106,9 +106,9 @@ const Landing = () => {
             </div>
 
             {/* Right Column - Content and Form */}
-            <div className="order-2 lg:order-2">
-              {/* Hero Content - Above the form */}
-              <div className="text-center lg:text-left space-y-4 mb-6">
+            <div className="order-2 lg:order-2 h-[400px] sm:h-[500px] lg:h-[600px] flex flex-col">
+              {/* Hero Content - Top Section */}
+              <div className="text-center lg:text-left space-y-3 mb-4">
                 <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
                   <Shield className="w-4 h-4" />
                   Certificado para uso clínico
@@ -125,8 +125,8 @@ const Landing = () => {
                 </p>
               </div>
 
-              {/* Stats - Above the form */}
-              <div className="hidden sm:grid grid-cols-3 gap-4 mb-6">
+              {/* Stats - Compact */}
+              <div className="hidden sm:grid grid-cols-3 gap-4 mb-4">
                 <div className="text-center lg:text-left">
                   <div className="text-lg lg:text-xl font-bold text-accent">95%</div>
                   <div className="text-xs text-white/70">Precisión diagnóstica</div>
@@ -141,95 +141,94 @@ const Landing = () => {
                 </div>
               </div>
 
-              {/* Login Form Container - Same height as doctor image */}
-              <Card className="w-full h-[400px] sm:h-[500px] lg:h-[600px] card-elevated backdrop-blur-sm bg-background/95 flex flex-col">
-                <CardContent className="p-8 sm:p-10 lg:p-12 flex flex-col justify-center flex-1">
-                  {/* Form Header with increased top margin */}
-                  <div className="text-center mb-8 lg:mb-10">
-                    <h2 className="text-xl lg:text-2xl font-bold text-primary mb-3">Acceso Clínico</h2>
-                    <p className="text-sm text-muted-foreground">Ingrese sus credenciales profesionales</p>
-                  </div>
-                  
-                  {/* Form with increased spacing */}
-                  <form onSubmit={handleLogin} className="space-y-6 lg:space-y-8">
-                    <div className="space-y-3">
-                      <Label htmlFor="email" className="text-sm font-medium">
-                        Email Institucional
-                      </Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="doctor@hospital.com"
-                          className="pl-10 h-12 lg:h-14"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
-                      </div>
+              {/* Login Form Container - Perfectly aligned with image */}
+              <div className="flex-1 flex items-end">
+                <Card className="w-full card-elevated backdrop-blur-sm bg-background/95 rounded-2xl">
+                  <CardContent className="p-6 lg:p-8">
+                    <div className="text-center mb-6">
+                      <h2 className="text-xl lg:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
+                      <p className="text-sm text-muted-foreground">Ingrese sus credenciales profesionales</p>
                     </div>
                     
-                    <div className="space-y-3">
-                      <Label htmlFor="password" className="text-sm font-medium">
-                        Contraseña
-                      </Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                        <Input
-                          id="password"
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10 h-12 lg:h-14"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
+                    <form onSubmit={handleLogin} className="space-y-5">
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email Institucional
+                        </Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="doctor@hospital.com"
+                            className="pl-10 h-12 lg:h-14 rounded-xl"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                          />
+                        </div>
                       </div>
-                    </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium">
+                          Contraseña
+                        </Label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                          <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            className="pl-10 h-12 lg:h-14 rounded-xl"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <ClinicalButton 
+                        type="submit" 
+                        variant="hero" 
+                        size="lg" 
+                        className="w-full h-12 lg:h-14 rounded-xl"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Iniciando..." : "Iniciar Sesión"}
+                        <ArrowRight className="w-4 h-4" />
+                      </ClinicalButton>
+                    </form>
                     
-                    <ClinicalButton 
-                      type="submit" 
-                      variant="hero" 
-                      size="lg" 
-                      className="w-full h-12 lg:h-14"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Iniciando..." : "Iniciar Sesión"}
-                      <ArrowRight className="w-4 h-4" />
-                    </ClinicalButton>
-                  </form>
-                  
-                  {/* Form Footer with increased bottom margin */}
-                  <div className="text-center mt-8 lg:mt-10">
-                    <button 
-                      type="button"
-                      onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-accent hover:underline transition-colors"
-                    >
-                      ¿Olvidó su contraseña?
-                    </button>
-                  </div>
+                    <div className="text-center mt-5">
+                      <button 
+                        type="button"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-accent hover:underline transition-colors"
+                      >
+                        ¿Olvidó su contraseña?
+                      </button>
+                    </div>
 
-                  {/* Stats for mobile */}
-                  <div className="sm:hidden mt-8 pt-6 border-t border-border/20">
-                    <div className="grid grid-cols-3 gap-3 text-center">
-                      <div>
-                        <div className="text-lg font-bold text-accent">95%</div>
-                        <div className="text-xs text-muted-foreground">Precisión</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-accent">10k+</div>
-                        <div className="text-xs text-muted-foreground">Casos</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-accent">24/7</div>
-                        <div className="text-xs text-muted-foreground">Activo</div>
+                    {/* Stats for mobile */}
+                    <div className="sm:hidden mt-6 pt-4 border-t border-border/20">
+                      <div className="grid grid-cols-3 gap-3 text-center">
+                        <div>
+                          <div className="text-lg font-bold text-accent">95%</div>
+                          <div className="text-xs text-muted-foreground">Precisión</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold text-accent">10k+</div>
+                          <div className="text-xs text-muted-foreground">Casos</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold text-accent">24/7</div>
+                          <div className="text-xs text-muted-foreground">Activo</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
