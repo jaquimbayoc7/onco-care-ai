@@ -106,128 +106,131 @@ const Landing = () => {
             </div>
 
             {/* Content and Form - Right Side */}
-            <div className="lg:col-span-7 order-2 lg:order-2 flex flex-col justify-between min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] xl:min-h-[700px]">
-              {/* Hero Content - Top Section */}
-              <div className="text-center lg:text-left space-y-6">
-                <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
-                  <Shield className="w-4 h-4" />
-                  Certificado para uso clínico
-                </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white leading-tight">
-                  Inteligencia Artificial al Servicio de la{" "}
-                  <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
-                    Oncología
-                  </span>
-                </h1>
-                <p className="text-base sm:text-lg text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
-                  y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
-                </p>
-                
-                {/* Stats - Only visible on larger screens to save space */}
-                <div className="hidden sm:grid grid-cols-3 gap-4 lg:gap-6">
-                  <div className="text-center lg:text-left">
-                    <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-accent">95%</div>
-                    <div className="text-xs lg:text-sm text-white/70">Precisión diagnóstica</div>
+            <div className="lg:col-span-7 order-2 lg:order-2">
+              {/* Content and Login Form Container - Same height as image */}
+              <div className="h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] flex flex-col justify-between">
+                {/* Hero Content - Top Section */}
+                <div className="text-center lg:text-left space-y-4 lg:space-y-6">
+                  <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
+                    <Shield className="w-4 h-4" />
+                    Certificado para uso clínico
                   </div>
-                  <div className="text-center lg:text-left">
-                    <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-accent">10k+</div>
-                    <div className="text-xs lg:text-sm text-white/70">Casos analizados</div>
-                  </div>
-                  <div className="text-center lg:text-left">
-                    <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-accent">24/7</div>
-                    <div className="text-xs lg:text-sm text-white/70">Monitoreo continuo</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Login Form - Bottom Section (aligned with bottom of doctor image) */}
-              <div className="flex justify-center lg:justify-start mt-8 lg:mt-0">
-                <Card className="w-full max-w-sm sm:max-w-md lg:max-w-lg card-elevated backdrop-blur-sm bg-background/95">
-                  <CardContent className="p-4 sm:p-6 lg:p-8">
-                    <div className="text-center mb-4 sm:mb-6">
-                      <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
-                      <p className="text-sm sm:text-base text-muted-foreground">Ingrese sus credenciales profesionales</p>
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold text-white leading-tight">
+                    Inteligencia Artificial al Servicio de la{" "}
+                    <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
+                      Oncología
+                    </span>
+                  </h1>
+                  <p className="text-base sm:text-lg text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                    OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
+                    y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
+                  </p>
+                  
+                  {/* Stats - Only visible on larger screens */}
+                  <div className="hidden sm:grid grid-cols-3 gap-4 lg:gap-6">
+                    <div className="text-center lg:text-left">
+                      <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-accent">95%</div>
+                      <div className="text-xs lg:text-sm text-white/70">Precisión diagnóstica</div>
                     </div>
-                    
-                    <form onSubmit={handleLogin} className="space-y-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium">
-                          Email Institucional
-                        </Label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="doctor@hospital.com"
-                            className="pl-10 h-11 sm:h-12"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                          />
-                        </div>
+                    <div className="text-center lg:text-left">
+                      <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-accent">10k+</div>
+                      <div className="text-xs lg:text-sm text-white/70">Casos analizados</div>
+                    </div>
+                    <div className="text-center lg:text-left">
+                      <div className="text-xl lg:text-2xl xl:text-3xl font-bold text-accent">24/7</div>
+                      <div className="text-xs lg:text-sm text-white/70">Monitoreo continuo</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Login Form - Bottom Section (same height as doctor image) */}
+                <div className="flex justify-center lg:justify-start mt-6 lg:mt-0">
+                  <Card className="w-full max-w-sm sm:max-w-md lg:max-w-lg card-elevated backdrop-blur-sm bg-background/95">
+                    <CardContent className="p-6 sm:p-8 lg:p-10">
+                      <div className="text-center mb-6 lg:mb-8">
+                        <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary mb-3">Acceso Clínico</h2>
+                        <p className="text-sm sm:text-base lg:text-lg text-muted-foreground">Ingrese sus credenciales profesionales</p>
                       </div>
                       
-                      <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium">
-                          Contraseña
-                        </Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                          <Input
-                            id="password"
-                            type="password"
-                            placeholder="••••••••"
-                            className="pl-10 h-11 sm:h-12"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                          />
+                      <form onSubmit={handleLogin} className="space-y-6">
+                        <div className="space-y-3">
+                          <Label htmlFor="email" className="text-sm lg:text-base font-medium">
+                            Email Institucional
+                          </Label>
+                          <div className="relative">
+                            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                            <Input
+                              id="email"
+                              type="email"
+                              placeholder="doctor@hospital.com"
+                              className="pl-12 h-12 sm:h-14 lg:h-16 text-base lg:text-lg"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
+                              required
+                            />
+                          </div>
                         </div>
-                      </div>
+                        
+                        <div className="space-y-3">
+                          <Label htmlFor="password" className="text-sm lg:text-base font-medium">
+                            Contraseña
+                          </Label>
+                          <div className="relative">
+                            <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
+                            <Input
+                              id="password"
+                              type="password"
+                              placeholder="••••••••"
+                              className="pl-12 h-12 sm:h-14 lg:h-16 text-base lg:text-lg"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+                        
+                        <ClinicalButton 
+                          type="submit" 
+                          variant="hero" 
+                          size="lg" 
+                          className="w-full h-14 sm:h-16 lg:h-18 text-base lg:text-lg font-semibold"
+                          disabled={isLoading}
+                        >
+                          {isLoading ? "Iniciando..." : "Iniciar Sesión"}
+                          <ArrowRight className="w-5 h-5" />
+                        </ClinicalButton>
+                      </form>
                       
-                      <ClinicalButton 
-                        type="submit" 
-                        variant="hero" 
-                        size="lg" 
-                        className="w-full h-12 sm:h-14"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "Iniciando..." : "Iniciar Sesión"}
-                        <ArrowRight className="w-4 h-4" />
-                      </ClinicalButton>
-                    </form>
-                    
-                    <div className="text-center mt-4">
-                      <button 
-                        type="button"
-                        onClick={() => setShowForgotPassword(true)}
-                        className="text-sm text-accent hover:underline transition-colors"
-                      >
-                        ¿Olvidó su contraseña?
-                      </button>
-                    </div>
+                      <div className="text-center mt-6">
+                        <button 
+                          type="button"
+                          onClick={() => setShowForgotPassword(true)}
+                          className="text-sm lg:text-base text-accent hover:underline transition-colors"
+                        >
+                          ¿Olvidó su contraseña?
+                        </button>
+                      </div>
 
-                    {/* Stats for mobile - Only visible on small screens */}
-                    <div className="sm:hidden mt-6 pt-6 border-t border-border/20">
-                      <div className="grid grid-cols-3 gap-3 text-center">
-                        <div>
-                          <div className="text-lg font-bold text-accent">95%</div>
-                          <div className="text-xs text-muted-foreground">Precisión</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-accent">10k+</div>
-                          <div className="text-xs text-muted-foreground">Casos</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-accent">24/7</div>
-                          <div className="text-xs text-muted-foreground">Activo</div>
+                      {/* Stats for mobile - Only visible on small screens */}
+                      <div className="sm:hidden mt-8 pt-6 border-t border-border/20">
+                        <div className="grid grid-cols-3 gap-3 text-center">
+                          <div>
+                            <div className="text-lg font-bold text-accent">95%</div>
+                            <div className="text-xs text-muted-foreground">Precisión</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-bold text-accent">10k+</div>
+                            <div className="text-xs text-muted-foreground">Casos</div>
+                          </div>
+                          <div>
+                            <div className="text-lg font-bold text-accent">24/7</div>
+                            <div className="text-xs text-muted-foreground">Activo</div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </div>
           </div>
