@@ -84,62 +84,68 @@ const Landing = () => {
         <div className="absolute top-1/3 left-8 w-8 h-8 bg-accent/30 rounded-full blur-lg animate-pulse hidden md:block" />
         
         <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Hero Content */}
-            <div className="text-center lg:text-left order-2 lg:order-1">
-              <div className="mb-6 lg:mb-8">
-                <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium mb-4">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[80vh]">
+            {/* Doctor Image - Left Side */}
+            <div className="lg:col-span-5 relative order-1 lg:order-1">
+              <div className="relative">
+                <img 
+                  src={doctorHero} 
+                  alt="Profesional médico especialista en oncología"
+                  className="w-full max-w-md mx-auto lg:max-w-none lg:w-full h-[400px] lg:h-[500px] object-cover rounded-2xl shadow-2xl"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-accent/20 rounded-2xl" />
+                
+                {/* Floating Badge */}
+                <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-3 shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-800">Sistema activo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Content and Form - Right Side */}
+            <div className="lg:col-span-7 order-2 lg:order-2 space-y-8">
+              {/* Hero Content */}
+              <div className="text-center lg:text-left">
+                <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium mb-6">
                   <Shield className="w-4 h-4" />
                   Certificado para uso clínico
                 </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 leading-tight">
                   Inteligencia Artificial al Servicio de la{" "}
                   <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
                     Oncología
                   </span>
                 </h1>
-                <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                <p className="text-base sm:text-lg text-white/90 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                   OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
                   y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
                 </p>
+                
+                {/* Stats */}
+                <div className="grid grid-cols-3 gap-6 mb-8">
+                  <div className="text-center lg:text-left">
+                    <div className="text-2xl md:text-3xl font-bold text-accent">95%</div>
+                    <div className="text-sm text-white/70">Precisión diagnóstica</div>
+                  </div>
+                  <div className="text-center lg:text-left">
+                    <div className="text-2xl md:text-3xl font-bold text-accent">10k+</div>
+                    <div className="text-sm text-white/70">Casos analizados</div>
+                  </div>
+                  <div className="text-center lg:text-left">
+                    <div className="text-2xl md:text-3xl font-bold text-accent">24/7</div>
+                    <div className="text-sm text-white/70">Monitoreo continuo</div>
+                  </div>
+                </div>
               </div>
-              
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 lg:mb-0">
-                <div className="text-center lg:text-left">
-                  <div className="text-2xl md:text-3xl font-bold text-accent">95%</div>
-                  <div className="text-sm text-white/70">Precisión diagnóstica</div>
-                </div>
-                <div className="text-center lg:text-left">
-                  <div className="text-2xl md:text-3xl font-bold text-accent">10k+</div>
-                  <div className="text-sm text-white/70">Casos analizados</div>
-                </div>
-                <div className="text-center lg:text-left col-span-2 md:col-span-1">
-                  <div className="text-2xl md:text-3xl font-bold text-accent">24/7</div>
-                  <div className="text-sm text-white/70">Monitoreo continuo</div>
-                </div>
-              </div>
-            </div>
 
-            {/* Right Side - Doctor Image + Login Form */}
-            <div className="relative order-1 lg:order-2">
-              {/* Doctor Image - Hidden on mobile, visible on larger screens */}
-              <div className="hidden lg:block absolute -top-20 -right-10 z-0">
-                <div className="relative">
-                  <img 
-                    src={doctorHero} 
-                    alt="Profesional médico"
-                    className="w-80 h-96 object-cover rounded-2xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl" />
-                </div>
-              </div>
-              
               {/* Login Form */}
-              <div className="relative z-10 flex justify-center lg:justify-start">
-                <Card className="w-full max-w-sm sm:max-w-md card-elevated backdrop-blur-sm bg-background/95">
-                  <CardContent className="p-4 sm:p-6 md:p-8">
-                    <div className="text-center mb-4 sm:mb-6">
+              <div className="flex justify-center lg:justify-start">
+                <Card className="w-full max-w-md card-elevated backdrop-blur-sm bg-background/95">
+                  <CardContent className="p-6 md:p-8">
+                    <div className="text-center mb-6">
                       <h2 className="text-xl sm:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
                       <p className="text-muted-foreground">Ingrese sus credenciales profesionales</p>
                     </div>
