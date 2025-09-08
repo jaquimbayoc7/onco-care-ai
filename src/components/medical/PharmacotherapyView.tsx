@@ -189,18 +189,21 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
         </DialogHeader>
 
         <Tabs defaultValue="current" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="current" className="flex items-center gap-2">
-              <Activity className="w-4 h-4" />
-              Medicamentos Actuales
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto p-1">
+            <TabsTrigger value="current" className="flex items-center gap-2 p-3 text-sm">
+              <Activity className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">Medicamentos Actuales</span>
+              <span className="sm:hidden">Actuales</span>
             </TabsTrigger>
-            <TabsTrigger value="adherence" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Adherencia
+            <TabsTrigger value="adherence" className="flex items-center gap-2 p-3 text-sm">
+              <BarChart3 className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">Adherencia</span>
+              <span className="sm:hidden">Adherencia</span>
             </TabsTrigger>
-            <TabsTrigger value="history" className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Historial
+            <TabsTrigger value="history" className="flex items-center gap-2 p-3 text-sm">
+              <Calendar className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">Historial</span>
+              <span className="sm:hidden">Historial</span>
             </TabsTrigger>
           </TabsList>
 
@@ -208,71 +211,107 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
             <div className="grid gap-6">
               <Card className="card-clinical">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Pill className="w-5 h-5 text-primary" />
-                    Régimen Actual de Medicamentos
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <Pill className="w-5 h-5 text-primary shrink-0" />
+                    <span>Régimen Actual de Medicamentos</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Medicamento</TableHead>
-                        <TableHead>Dosis</TableHead>
-                        <TableHead>Frecuencia</TableHead>
-                        <TableHead>Vía</TableHead>
-                        <TableHead>Estado</TableHead>
-                        <TableHead>Indicación</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {activeMedications.map((medication) => (
-                        <TableRow key={medication.id} className="hover:bg-muted/50">
-                          <TableCell className="font-medium">
-                            {medication.name}
-                          </TableCell>
-                          <TableCell>{medication.dosage}</TableCell>
-                          <TableCell>{medication.frequency}</TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{medication.route}</Badge>
-                          </TableCell>
-                          <TableCell>
-                            {getStatusBadge(medication.status)}
-                          </TableCell>
-                          <TableCell className="text-sm text-muted-foreground max-w-xs">
-                            {medication.indication}
-                          </TableCell>
+                  {/* Mobile View */}
+                  <div className="block lg:hidden space-y-4">
+                    {activeMedications.map((medication) => (
+                      <div key={medication.id} className="p-4 bg-muted/30 rounded-lg space-y-3">
+                        <div className="flex items-start justify-between">
+                          <h3 className="font-medium text-primary text-sm">{medication.name}</h3>
+                          {getStatusBadge(medication.status)}
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-3 text-sm">
+                          <div>
+                            <span className="text-muted-foreground">Dosis:</span>
+                            <p className="font-medium">{medication.dosage}</p>
+                          </div>
+                          <div>
+                            <span className="text-muted-foreground">Vía:</span>
+                            <Badge variant="outline" className="text-xs">{medication.route}</Badge>
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <span className="text-muted-foreground text-sm">Frecuencia:</span>
+                          <p className="font-medium text-sm">{medication.frequency}</p>
+                        </div>
+                        
+                        <div>
+                          <span className="text-muted-foreground text-sm">Indicación:</span>
+                          <p className="text-sm text-muted-foreground">{medication.indication}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Desktop View */}
+                  <div className="hidden lg:block">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Medicamento</TableHead>
+                          <TableHead>Dosis</TableHead>
+                          <TableHead>Frecuencia</TableHead>
+                          <TableHead>Vía</TableHead>
+                          <TableHead>Estado</TableHead>
+                          <TableHead>Indicación</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                      </TableHeader>
+                      <TableBody>
+                        {activeMedications.map((medication) => (
+                          <TableRow key={medication.id} className="hover:bg-muted/50">
+                            <TableCell className="font-medium">
+                              {medication.name}
+                            </TableCell>
+                            <TableCell>{medication.dosage}</TableCell>
+                            <TableCell>{medication.frequency}</TableCell>
+                            <TableCell>
+                              <Badge variant="outline">{medication.route}</Badge>
+                            </TableCell>
+                            <TableCell>
+                              {getStatusBadge(medication.status)}
+                            </TableCell>
+                            <TableCell className="text-sm text-muted-foreground max-w-xs">
+                              {medication.indication}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardContent>
               </Card>
 
               <Card className="card-clinical">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <AlertCircle className="w-5 h-5 text-warning" />
-                    Efectos Secundarios y Contraindicaciones
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <AlertCircle className="w-5 h-5 text-warning shrink-0" />
+                    <span>Efectos Secundarios y Contraindicaciones</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid gap-6 lg:grid-cols-2">
                     {activeMedications.slice(0, 2).map((medication) => (
                       <div key={medication.id} className="space-y-3">
-                        <h4 className="font-medium text-primary">{medication.name}</h4>
+                        <h4 className="font-medium text-primary text-sm lg:text-base">{medication.name}</h4>
                         
                         {medication.contraindications && (
                           <div>
                             <h5 className="text-sm font-medium text-danger mb-2 flex items-center gap-1">
-                              <XCircle className="w-3 h-3" />
+                              <XCircle className="w-3 h-3 shrink-0" />
                               Contraindicaciones:
                             </h5>
                             <ul className="text-sm space-y-1">
                               {medication.contraindications.map((contra, idx) => (
                                 <li key={idx} className="text-muted-foreground flex items-start gap-2">
-                                  <span className="w-1 h-1 bg-danger rounded-full mt-2 flex-shrink-0"></span>
-                                  {contra}
+                                  <span className="w-1 h-1 bg-danger rounded-full mt-2 shrink-0"></span>
+                                  <span className="break-words">{contra}</span>
                                 </li>
                               ))}
                             </ul>
@@ -282,14 +321,14 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
                         {medication.sideEffects && (
                           <div>
                             <h5 className="text-sm font-medium text-warning mb-2 flex items-center gap-1">
-                              <AlertCircle className="w-3 h-3" />
+                              <AlertCircle className="w-3 h-3 shrink-0" />
                               Efectos Secundarios:
                             </h5>
                             <ul className="text-sm space-y-1">
                               {medication.sideEffects.map((effect, idx) => (
                                 <li key={idx} className="text-muted-foreground flex items-start gap-2">
-                                  <span className="w-1 h-1 bg-warning rounded-full mt-2 flex-shrink-0"></span>
-                                  {effect}
+                                  <span className="w-1 h-1 bg-warning rounded-full mt-2 shrink-0"></span>
+                                  <span className="break-words">{effect}</span>
                                 </li>
                               ))}
                             </ul>
@@ -304,12 +343,12 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
           </TabsContent>
 
           <TabsContent value="adherence" className="space-y-6">
-            <div className="grid md:grid-cols-3 gap-6">
-              <Card className="card-clinical md:col-span-1">
+            <div className="grid gap-6 lg:grid-cols-3">
+              <Card className="card-clinical lg:col-span-1">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Target className="w-5 h-5 text-accent" />
-                    Adherencia General
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <Target className="w-5 h-5 text-accent shrink-0" />
+                    <span>Adherencia General</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
@@ -370,22 +409,22 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
                 </CardContent>
               </Card>
 
-              <Card className="card-clinical md:col-span-2">
+              <Card className="card-clinical lg:col-span-2">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <TrendingUp className="w-5 h-5 text-primary" />
-                    Adherencia Semanal
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <TrendingUp className="w-5 h-5 text-primary shrink-0" />
+                    <span>Adherencia Semanal</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="grid grid-cols-8 gap-2">
+                    <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
                       {adherence.weeklyAdherence.map((percentage, index) => (
                         <div key={index} className="text-center">
                           <div className="text-xs text-muted-foreground mb-2">
                             S{index + 1}
                           </div>
-                          <div className="h-20 bg-muted/30 rounded-lg relative overflow-hidden">
+                          <div className="h-16 sm:h-20 bg-muted/30 rounded-lg relative overflow-hidden">
                             <div
                               className="absolute bottom-0 w-full bg-gradient-to-t from-accent to-accent-soft transition-all duration-300"
                               style={{ height: `${percentage}%` }}
@@ -416,44 +455,44 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
 
             <Card className="card-clinical">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-success" />
-                  Recomendaciones de Adherencia
+                <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                  <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
+                  <span>Recomendaciones de Adherencia</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid gap-6 lg:grid-cols-2">
                   <div className="space-y-3">
-                    <h4 className="font-medium text-success">Fortalezas Identificadas:</h4>
+                    <h4 className="font-medium text-success text-sm lg:text-base">Fortalezas Identificadas:</h4>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 shrink-0" />
                         <span>Adherencia general superior al 90%</span>
                       </li>
                       <li className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 shrink-0" />
                         <span>Consistencia en la mayoría de las semanas</span>
                       </li>
                       <li className="flex items-start gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-success mt-0.5 shrink-0" />
                         <span>Buen seguimiento del cronograma</span>
                       </li>
                     </ul>
                   </div>
                   
                   <div className="space-y-3">
-                    <h4 className="font-medium text-warning">Áreas de Mejora:</h4>
+                    <h4 className="font-medium text-warning text-sm lg:text-base">Áreas de Mejora:</h4>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2 text-sm">
-                        <AlertCircle className="w-4 h-4 text-warning mt-0.5 flex-shrink-0" />
+                        <AlertCircle className="w-4 h-4 text-warning mt-0.5 shrink-0" />
                         <span>Semana 6 mostró adherencia del 85%</span>
                       </li>
                       <li className="flex items-start gap-2 text-sm">
-                        <AlertCircle className="w-4 h-4 text-warning mt-0.5 flex-shrink-0" />
+                        <AlertCircle className="w-4 h-4 text-warning mt-0.5 shrink-0" />
                         <span>Considerar recordatorios adicionales</span>
                       </li>
                       <li className="flex items-start gap-2 text-sm">
-                        <AlertCircle className="w-4 h-4 text-warning mt-0.5 flex-shrink-0" />
+                        <AlertCircle className="w-4 h-4 text-warning mt-0.5 shrink-0" />
                         <span>Revisar barreras para la toma de medicamentos</span>
                       </li>
                     </ul>
@@ -466,59 +505,107 @@ const PharmacotherapyView: React.FC<PharmacotherapyViewProps> = ({
           <TabsContent value="history" className="space-y-6">
             <Card className="card-clinical">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-primary" />
-                  Historial Completo de Medicamentos
+                <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                  <Calendar className="w-5 h-5 text-primary shrink-0" />
+                  <span>Historial Completo de Medicamentos</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Medicamento</TableHead>
-                      <TableHead>Fecha Inicio</TableHead>
-                      <TableHead>Fecha Fin</TableHead>
-                      <TableHead>Duración</TableHead>
-                      <TableHead>Estado</TableHead>
-                      <TableHead>Indicación</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {mockMedications.map((medication) => (
-                      <TableRow key={medication.id} className="hover:bg-muted/50">
-                        <TableCell className="font-medium">
-                          {medication.name}
-                        </TableCell>
-                        <TableCell>
-                          {new Date(medication.startDate).toLocaleDateString()}
-                        </TableCell>
-                        <TableCell>
+                {/* Mobile View */}
+                <div className="block lg:hidden space-y-4">
+                  {mockMedications.map((medication) => (
+                    <div key={medication.id} className="p-4 bg-muted/30 rounded-lg space-y-3">
+                      <div className="flex items-start justify-between">
+                        <h3 className="font-medium text-primary text-sm">{medication.name}</h3>
+                        {getStatusBadge(medication.status)}
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Fecha Inicio:</span>
+                          <p className="font-medium">
+                            {new Date(medication.startDate).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">Fecha Fin:</span>
+                          <p className="font-medium">
+                            {medication.endDate 
+                              ? new Date(medication.endDate).toLocaleDateString()
+                              : "En curso"
+                            }
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-muted-foreground shrink-0" />
+                        <span className="text-sm">
                           {medication.endDate 
-                            ? new Date(medication.endDate).toLocaleDateString()
-                            : "En curso"
+                            ? `${Math.ceil((new Date(medication.endDate).getTime() - new Date(medication.startDate).getTime()) / (1000 * 3600 * 24))} días`
+                            : `${Math.ceil((new Date().getTime() - new Date(medication.startDate).getTime()) / (1000 * 3600 * 24))} días`
                           }
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-muted-foreground" />
-                            <span className="text-sm">
-                              {medication.endDate 
-                                ? `${Math.ceil((new Date(medication.endDate).getTime() - new Date(medication.startDate).getTime()) / (1000 * 3600 * 24))} días`
-                                : `${Math.ceil((new Date().getTime() - new Date(medication.startDate).getTime()) / (1000 * 3600 * 24))} días`
-                              }
-                            </span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          {getStatusBadge(medication.status)}
-                        </TableCell>
-                        <TableCell className="text-sm text-muted-foreground max-w-xs">
-                          {medication.indication}
-                        </TableCell>
+                        </span>
+                      </div>
+                      
+                      <div>
+                        <span className="text-muted-foreground text-sm">Indicación:</span>
+                        <p className="text-sm text-muted-foreground">{medication.indication}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop View */}
+                <div className="hidden lg:block">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Medicamento</TableHead>
+                        <TableHead>Fecha Inicio</TableHead>
+                        <TableHead>Fecha Fin</TableHead>
+                        <TableHead>Duración</TableHead>
+                        <TableHead>Estado</TableHead>
+                        <TableHead>Indicación</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {mockMedications.map((medication) => (
+                        <TableRow key={medication.id} className="hover:bg-muted/50">
+                          <TableCell className="font-medium">
+                            {medication.name}
+                          </TableCell>
+                          <TableCell>
+                            {new Date(medication.startDate).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            {medication.endDate 
+                              ? new Date(medication.endDate).toLocaleDateString()
+                              : "En curso"
+                            }
+                          </TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Clock className="w-4 h-4 text-muted-foreground" />
+                              <span className="text-sm">
+                                {medication.endDate 
+                                  ? `${Math.ceil((new Date(medication.endDate).getTime() - new Date(medication.startDate).getTime()) / (1000 * 3600 * 24))} días`
+                                  : `${Math.ceil((new Date().getTime() - new Date(medication.startDate).getTime()) / (1000 * 3600 * 24))} días`
+                                }
+                              </span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            {getStatusBadge(medication.status)}
+                          </TableCell>
+                          <TableCell className="text-sm text-muted-foreground max-w-xs">
+                            {medication.indication}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
