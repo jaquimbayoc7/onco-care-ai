@@ -84,7 +84,7 @@ const Landing = () => {
         <div className="absolute top-1/3 left-8 w-8 h-8 bg-accent/30 rounded-full blur-lg animate-pulse hidden md:block" />
         
         <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start min-h-[80vh]">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-end min-h-[80vh]">
             {/* Left Column - Doctor Image */}
             <div className="order-1 lg:order-1">
               <div className="relative">
@@ -106,9 +106,9 @@ const Landing = () => {
             </div>
 
             {/* Right Column - Content and Form */}
-            <div className="order-2 lg:order-2 h-[400px] sm:h-[500px] lg:h-[600px] flex flex-col">
+            <div className="order-2 lg:order-2 flex flex-col justify-end">
               {/* Hero Content - Top Section */}
-              <div className="text-center lg:text-left space-y-3 mb-4">
+              <div className="text-center lg:text-left space-y-3 mb-8">
                 <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
                   <Shield className="w-4 h-4" />
                   Certificado para uso clínico
@@ -126,7 +126,7 @@ const Landing = () => {
               </div>
 
               {/* Stats - Compact */}
-              <div className="hidden sm:grid grid-cols-3 gap-4 mb-4">
+              <div className="hidden sm:grid grid-cols-3 gap-4 mb-8">
                 <div className="text-center lg:text-left">
                   <div className="text-lg lg:text-xl font-bold text-accent">95%</div>
                   <div className="text-xs text-white/70">Precisión diagnóstica</div>
@@ -141,94 +141,92 @@ const Landing = () => {
                 </div>
               </div>
 
-              {/* Login Form Container - Perfectly aligned with image */}
-              <div className="flex-1 flex items-end">
-                <Card className="w-full card-elevated backdrop-blur-sm bg-background/95 rounded-2xl">
-                  <CardContent className="p-6 lg:p-8">
-                    <div className="text-center mb-6">
-                      <h2 className="text-xl lg:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
-                      <p className="text-sm text-muted-foreground">Ingrese sus credenciales profesionales</p>
+              {/* Login Form - Compact and aligned with bottom */}
+              <Card className="w-full max-w-md card-elevated backdrop-blur-sm bg-background/95 rounded-2xl">
+                <CardContent className="p-6">
+                  <div className="text-center mb-4">
+                    <h2 className="text-lg lg:text-xl font-bold text-primary mb-2">Acceso Clínico</h2>
+                    <p className="text-sm text-muted-foreground">Ingrese sus credenciales profesionales</p>
+                  </div>
+                  
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-sm font-medium">
+                        Email Institucional
+                      </Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="doctor@hospital.com"
+                          className="pl-10 h-11 rounded-xl"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
                     </div>
                     
-                    <form onSubmit={handleLogin} className="space-y-5">
-                      <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium">
-                          Email Institucional
-                        </Label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                          <Input
-                            id="email"
-                            type="email"
-                            placeholder="doctor@hospital.com"
-                            className="pl-10 h-12 lg:h-14 rounded-xl"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                          />
-                        </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password" className="text-sm font-medium">
+                        Contraseña
+                      </Label>
+                      <div className="relative">
+                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                        <Input
+                          id="password"
+                          type="password"
+                          placeholder="••••••••"
+                          className="pl-10 h-11 rounded-xl"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
                       </div>
-                      
-                      <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium">
-                          Contraseña
-                        </Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                          <Input
-                            id="password"
-                            type="password"
-                            placeholder="••••••••"
-                            className="pl-10 h-12 lg:h-14 rounded-xl"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                          />
-                        </div>
-                      </div>
-                      
-                      <ClinicalButton 
-                        type="submit" 
-                        variant="hero" 
-                        size="lg" 
-                        className="w-full h-12 lg:h-14 rounded-xl"
-                        disabled={isLoading}
-                      >
-                        {isLoading ? "Iniciando..." : "Iniciar Sesión"}
-                        <ArrowRight className="w-4 h-4" />
-                      </ClinicalButton>
-                    </form>
-                    
-                    <div className="text-center mt-5">
-                      <button 
-                        type="button"
-                        onClick={() => setShowForgotPassword(true)}
-                        className="text-sm text-accent hover:underline transition-colors"
-                      >
-                        ¿Olvidó su contraseña?
-                      </button>
                     </div>
+                    
+                    <ClinicalButton 
+                      type="submit" 
+                      variant="hero" 
+                      size="lg" 
+                      className="w-full h-11 rounded-xl"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Iniciando..." : "Iniciar Sesión"}
+                      <ArrowRight className="w-4 h-4" />
+                    </ClinicalButton>
+                  </form>
+                  
+                  <div className="text-center mt-4">
+                    <button 
+                      type="button"
+                      onClick={() => setShowForgotPassword(true)}
+                      className="text-sm text-accent hover:underline transition-colors"
+                    >
+                      ¿Olvidó su contraseña?
+                    </button>
+                  </div>
 
-                    {/* Stats for mobile */}
-                    <div className="sm:hidden mt-6 pt-4 border-t border-border/20">
-                      <div className="grid grid-cols-3 gap-3 text-center">
-                        <div>
-                          <div className="text-lg font-bold text-accent">95%</div>
-                          <div className="text-xs text-muted-foreground">Precisión</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-accent">10k+</div>
-                          <div className="text-xs text-muted-foreground">Casos</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-bold text-accent">24/7</div>
-                          <div className="text-xs text-muted-foreground">Activo</div>
-                        </div>
+                  {/* Stats for mobile */}
+                  <div className="sm:hidden mt-4 pt-4 border-t border-border/20">
+                    <div className="grid grid-cols-3 gap-3 text-center">
+                      <div>
+                        <div className="text-lg font-bold text-accent">95%</div>
+                        <div className="text-xs text-muted-foreground">Precisión</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-accent">10k+</div>
+                        <div className="text-xs text-muted-foreground">Casos</div>
+                      </div>
+                      <div>
+                        <div className="text-lg font-bold text-accent">24/7</div>
+                        <div className="text-xs text-muted-foreground">Activo</div>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
