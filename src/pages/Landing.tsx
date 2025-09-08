@@ -84,14 +84,14 @@ const Landing = () => {
         <div className="absolute top-1/3 left-8 w-8 h-8 bg-accent/30 rounded-full blur-lg animate-pulse hidden md:block" />
         
         <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-end min-h-[80vh]">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start min-h-[80vh]">
             {/* Doctor Image - Left Side */}
-            <div className="lg:col-span-5 relative order-1 lg:order-1 flex flex-col justify-end">
+            <div className="lg:col-span-5 relative order-1 lg:order-1">
               <div className="relative">
                 <img 
                   src={doctorHero} 
                   alt="Profesional médico especialista en oncología"
-                  className="w-full max-w-md mx-auto lg:max-w-none lg:w-full h-[400px] sm:h-[450px] lg:h-[550px] object-cover rounded-2xl shadow-2xl"
+                  className="w-full max-w-md mx-auto lg:max-w-none lg:w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] object-cover rounded-2xl shadow-2xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-accent/20 rounded-2xl" />
                 
@@ -106,8 +106,8 @@ const Landing = () => {
             </div>
 
             {/* Content and Form - Right Side */}
-            <div className="lg:col-span-7 order-2 lg:order-2 flex flex-col justify-end space-y-6 lg:space-y-8">
-              {/* Hero Content */}
+            <div className="lg:col-span-7 order-2 lg:order-2 flex flex-col justify-between min-h-[400px] sm:min-h-[500px] lg:min-h-[600px] xl:min-h-[700px]">
+              {/* Hero Content - Top Section */}
               <div className="text-center lg:text-left space-y-6">
                 <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
                   <Shield className="w-4 h-4" />
@@ -141,8 +141,8 @@ const Landing = () => {
                 </div>
               </div>
 
-              {/* Login Form - Aligned with bottom of doctor image */}
-              <div className="flex justify-center lg:justify-start">
+              {/* Login Form - Bottom Section (aligned with bottom of doctor image) */}
+              <div className="flex justify-center lg:justify-start mt-8 lg:mt-0">
                 <Card className="w-full max-w-sm sm:max-w-md lg:max-w-lg card-elevated backdrop-blur-sm bg-background/95">
                   <CardContent className="p-4 sm:p-6 lg:p-8">
                     <div className="text-center mb-4 sm:mb-6">
