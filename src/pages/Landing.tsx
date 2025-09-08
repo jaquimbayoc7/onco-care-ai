@@ -15,6 +15,10 @@ import {
   Mail 
 } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
+import doctorHero from "@/assets/doctor-hero.jpg";
+import aiMedicalTech from "@/assets/ai-medical-tech.jpg";
+import medicalDashboard from "@/assets/medical-dashboard.jpg";
+import medicalDecorative from "@/assets/medical-decorative.jpg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -63,97 +67,144 @@ const Landing = () => {
     <div className="min-h-screen bg-gradient-subtle">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Images */}
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-15"
           style={{ backgroundImage: `url(${heroBackground})` }}
         />
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          style={{ backgroundImage: `url(${medicalDecorative})` }}
+        />
         <div className="absolute inset-0 gradient-hero opacity-90" />
+        
+        {/* Decorative Medical Elements */}
+        <div className="absolute top-20 right-20 w-16 h-16 bg-accent/20 rounded-full blur-xl animate-pulse hidden lg:block" />
+        <div className="absolute bottom-32 left-16 w-24 h-24 bg-primary/20 rounded-full blur-2xl animate-pulse hidden lg:block" />
+        <div className="absolute top-1/3 left-8 w-8 h-8 bg-accent/30 rounded-full blur-lg animate-pulse hidden md:block" />
         
         <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Hero Content */}
             <div className="text-center lg:text-left order-2 lg:order-1">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                Inteligencia Artificial al Servicio de la{" "}
-                <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
-                  Oncología
-                </span>
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
-                y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
-              </p>
+              <div className="mb-6 lg:mb-8">
+                <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium mb-4">
+                  <Shield className="w-4 h-4" />
+                  Certificado para uso clínico
+                </div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight">
+                  Inteligencia Artificial al Servicio de la{" "}
+                  <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
+                    Oncología
+                  </span>
+                </h1>
+                <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-lg mx-auto lg:mx-0">
+                  OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
+                  y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
+                </p>
+              </div>
+              
+              {/* Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 lg:mb-0">
+                <div className="text-center lg:text-left">
+                  <div className="text-2xl md:text-3xl font-bold text-accent">95%</div>
+                  <div className="text-sm text-white/70">Precisión diagnóstica</div>
+                </div>
+                <div className="text-center lg:text-left">
+                  <div className="text-2xl md:text-3xl font-bold text-accent">10k+</div>
+                  <div className="text-sm text-white/70">Casos analizados</div>
+                </div>
+                <div className="text-center lg:text-left col-span-2 md:col-span-1">
+                  <div className="text-2xl md:text-3xl font-bold text-accent">24/7</div>
+                  <div className="text-sm text-white/70">Monitoreo continuo</div>
+                </div>
+              </div>
             </div>
 
-            {/* Login Form */}
-            <div className="flex justify-center lg:justify-end order-1 lg:order-2">
-              <Card className="w-full max-w-sm sm:max-w-md card-elevated">
-                <CardContent className="p-4 sm:p-6 md:p-8">
-                  <div className="text-center mb-4 sm:mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
-                    <p className="text-muted-foreground">Ingrese sus credenciales profesionales</p>
-                  </div>
-                  
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="email" className="text-sm font-medium">
-                        Email Institucional
-                      </Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="doctor@hospital.com"
-                          className="pl-10"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          required
-                        />
-                      </div>
+            {/* Right Side - Doctor Image + Login Form */}
+            <div className="relative order-1 lg:order-2">
+              {/* Doctor Image - Hidden on mobile, visible on larger screens */}
+              <div className="hidden lg:block absolute -top-20 -right-10 z-0">
+                <div className="relative">
+                  <img 
+                    src={doctorHero} 
+                    alt="Profesional médico"
+                    className="w-80 h-96 object-cover rounded-2xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl" />
+                </div>
+              </div>
+              
+              {/* Login Form */}
+              <div className="relative z-10 flex justify-center lg:justify-start">
+                <Card className="w-full max-w-sm sm:max-w-md card-elevated backdrop-blur-sm bg-background/95">
+                  <CardContent className="p-4 sm:p-6 md:p-8">
+                    <div className="text-center mb-4 sm:mb-6">
+                      <h2 className="text-xl sm:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
+                      <p className="text-muted-foreground">Ingrese sus credenciales profesionales</p>
                     </div>
                     
-                    <div className="space-y-2">
-                      <Label htmlFor="password" className="text-sm font-medium">
-                        Contraseña
-                      </Label>
-                      <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                        <Input
-                          id="password"
-                          type="password"
-                          placeholder="••••••••"
-                          className="pl-10"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          required
-                        />
+                    <form onSubmit={handleLogin} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email Institucional
+                        </Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="doctor@hospital.com"
+                            className="pl-10"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                          />
+                        </div>
                       </div>
-                    </div>
+                      
+                      <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium">
+                          Contraseña
+                        </Label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                          <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            className="pl-10"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </div>
+                      
+                      <ClinicalButton 
+                        type="submit" 
+                        variant="hero" 
+                        size="lg" 
+                        className="w-full"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Iniciando..." : "Iniciar Sesión"}
+                        <ArrowRight className="w-4 h-4" />
+                      </ClinicalButton>
+                    </form>
                     
-                    <ClinicalButton 
-                      type="submit" 
-                      variant="hero" 
-                      size="lg" 
-                      className="w-full"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Iniciando..." : "Iniciar Sesión"}
-                      <ArrowRight className="w-4 h-4" />
-                    </ClinicalButton>
-                  </form>
-                  
-                  <div className="text-center mt-4">
-                    <button 
-                      type="button"
-                      onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-accent hover:underline"
-                    >
-                      ¿Olvidó su contraseña?
-                    </button>
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="text-center mt-4">
+                      <button 
+                        type="button"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-accent hover:underline"
+                      >
+                        ¿Olvidó su contraseña?
+                      </button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </div>
@@ -173,47 +224,77 @@ const Landing = () => {
           </div>
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {/* Feature 1 */}
-            <Card className="card-clinical text-center p-4 sm:p-6 md:p-8 ai-enhanced">
-              <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                <Activity className="w-8 h-8 text-white" />
+            {/* Feature 1 - Vista 360° */}
+            <Card className="card-clinical group overflow-hidden relative ai-enhanced hover:shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 opacity-10 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+                   style={{ backgroundImage: `url(${medicalDashboard})` }} />
+              <div className="relative z-10 p-4 sm:p-6 md:p-8 text-center">
+                <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Activity className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-primary mb-4">
+                  Vista 360° del Paciente
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Centralice historiales, vitales y tratamientos en un panel 
+                  unificado para una visión completa del estado clínico.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-primary mb-4">
-                Vista 360° del Paciente
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Centralice historiales, vitales y tratamientos en un panel 
-                unificado para una visión completa del estado clínico.
-              </p>
             </Card>
 
-            {/* Feature 2 */}
-            <Card className="card-clinical text-center p-4 sm:p-6 md:p-8 ai-enhanced">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <Brain className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+            {/* Feature 2 - IA */}
+            <Card className="card-clinical group overflow-hidden relative ai-enhanced hover:shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 opacity-10 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+                   style={{ backgroundImage: `url(${aiMedicalTech})` }} />
+              <div className="relative z-10 p-4 sm:p-6 md:p-8 text-center">
+                <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Brain className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-primary mb-4">
+                  Motor de Recomendación IA
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Reciba sugerencias de tratamiento basadas en evidencia 
+                  y perfiles genómicos personalizados para cada paciente.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-primary mb-4">
-                Motor de Recomendación IA
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Reciba sugerencias de tratamiento basadas en evidencia 
-                y perfiles genómicos personalizados para cada paciente.
-              </p>
             </Card>
 
-            {/* Feature 3 */}
-            <Card className="card-clinical text-center p-4 sm:p-6 md:p-8 ai-enhanced">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                <TrendingUp className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+            {/* Feature 3 - Monitoreo */}
+            <Card className="card-clinical group overflow-hidden relative ai-enhanced hover:shadow-2xl transition-all duration-300 sm:col-span-2 lg:col-span-1">
+              <div className="absolute inset-0 opacity-10 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+                   style={{ backgroundImage: `url(${medicalDashboard})` }} />
+              <div className="relative z-10 p-4 sm:p-6 md:p-8 text-center">
+                <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <TrendingUp className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold text-primary mb-4">
+                  Monitoreo Proactivo
+                </h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Supervise la adherencia al tratamiento y los efectos 
+                  secundarios en tiempo real con alertas inteligentes.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-primary mb-4">
-                Monitoreo Proactivo
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Supervise la adherencia al tratamiento y los efectos 
-                secundarios en tiempo real con alertas inteligentes.
-              </p>
             </Card>
+          </div>
+          
+          {/* Additional Info Section */}
+          <div className="mt-16 text-center">
+            <div className="inline-flex items-center gap-8 bg-card/50 backdrop-blur-sm rounded-2xl p-6 border border-border/50">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Users className="w-5 h-5 text-accent" />
+                <span className="text-sm">+500 médicos</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Shield className="w-5 h-5 text-accent" />
+                <span className="text-sm">Certificado ISO 27001</span>
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Eye className="w-5 h-5 text-accent" />
+                <span className="text-sm">Cumple HIPAA</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
