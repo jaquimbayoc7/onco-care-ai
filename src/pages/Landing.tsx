@@ -84,14 +84,14 @@ const Landing = () => {
         <div className="absolute top-1/3 left-8 w-8 h-8 bg-accent/30 rounded-full blur-lg animate-pulse hidden md:block" />
         
         <div className="relative z-10 container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 min-h-[80vh]">
-            {/* Doctor Image - Left Side */}
-            <div className="lg:col-span-5 relative order-1 lg:order-1">
-              <div className="relative h-full flex flex-col">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start min-h-[80vh]">
+            {/* Left Column - Doctor Image */}
+            <div className="order-1 lg:order-1">
+              <div className="relative">
                 <img 
                   src={doctorHero} 
                   alt="Profesional médico especialista en oncología"
-                  className="w-full max-w-md mx-auto lg:max-w-none lg:w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] object-cover rounded-2xl shadow-2xl flex-1"
+                  className="w-full h-[400px] sm:h-[500px] lg:h-[600px] object-cover rounded-2xl shadow-2xl"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-accent/20 rounded-2xl" />
                 
@@ -105,131 +105,129 @@ const Landing = () => {
               </div>
             </div>
 
-            {/* Content Section - Right Side */}
-            <div className="lg:col-span-7 order-2 lg:order-2">
-              <div className="h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] flex flex-col">
-                {/* Hero Content - Top */}
-                <div className="text-center lg:text-left space-y-4 mb-8">
-                  <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
-                    <Shield className="w-4 h-4" />
-                    Certificado para uso clínico
+            {/* Right Column - Content and Form */}
+            <div className="order-2 lg:order-2 flex flex-col justify-between h-[400px] sm:h-[500px] lg:h-[600px]">
+              {/* Hero Content - Top */}
+              <div className="text-center lg:text-left space-y-4">
+                <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
+                  <Shield className="w-4 h-4" />
+                  Certificado para uso clínico
+                </div>
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight">
+                  Inteligencia Artificial al Servicio de la{" "}
+                  <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
+                    Oncología
+                  </span>
+                </h1>
+                <p className="text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed">
+                  OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
+                  y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
+                </p>
+                
+                {/* Stats - Compact */}
+                <div className="hidden sm:grid grid-cols-3 gap-4">
+                  <div className="text-center lg:text-left">
+                    <div className="text-lg lg:text-xl font-bold text-accent">95%</div>
+                    <div className="text-xs text-white/70">Precisión diagnóstica</div>
                   </div>
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight">
-                    Inteligencia Artificial al Servicio de la{" "}
-                    <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
-                      Oncología
-                    </span>
-                  </h1>
-                  <p className="text-sm sm:text-base lg:text-lg text-white/90 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                    OncoSimil AI potencia sus decisiones clínicas con análisis predictivos 
-                    y recomendaciones de tratamiento personalizadas basadas en evidencia científica.
-                  </p>
-                  
-                  {/* Stats - Compact version */}
-                  <div className="hidden sm:grid grid-cols-3 gap-4 py-4">
-                    <div className="text-center lg:text-left">
-                      <div className="text-lg lg:text-xl xl:text-2xl font-bold text-accent">95%</div>
-                      <div className="text-xs text-white/70">Precisión diagnóstica</div>
-                    </div>
-                    <div className="text-center lg:text-left">
-                      <div className="text-lg lg:text-xl xl:text-2xl font-bold text-accent">10k+</div>
-                      <div className="text-xs text-white/70">Casos analizados</div>
-                    </div>
-                    <div className="text-center lg:text-left">
-                      <div className="text-lg lg:text-xl xl:text-2xl font-bold text-accent">24/7</div>
-                      <div className="text-xs text-white/70">Monitoreo continuo</div>
-                    </div>
+                  <div className="text-center lg:text-left">
+                    <div className="text-lg lg:text-xl font-bold text-accent">10k+</div>
+                    <div className="text-xs text-white/70">Casos analizados</div>
+                  </div>
+                  <div className="text-center lg:text-left">
+                    <div className="text-lg lg:text-xl font-bold text-accent">24/7</div>
+                    <div className="text-xs text-white/70">Monitoreo continuo</div>
                   </div>
                 </div>
+              </div>
 
-                {/* Login Form - Takes remaining height */}
-                <div className="flex-1 flex justify-center lg:justify-start items-end">
-                  <Card className="w-full max-w-sm sm:max-w-md lg:max-w-lg card-elevated backdrop-blur-sm bg-background/95">
-                    <CardContent className="p-6 lg:p-8">
-                      <div className="text-center mb-6">
-                        <h2 className="text-xl lg:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
-                        <p className="text-sm lg:text-base text-muted-foreground">Ingrese sus credenciales profesionales</p>
+              {/* Login Form - Bottom */}
+              <div className="mt-8 lg:mt-0">
+                <Card className="w-full card-elevated backdrop-blur-sm bg-background/95">
+                  <CardContent className="p-6">
+                    <div className="text-center mb-6">
+                      <h2 className="text-xl lg:text-2xl font-bold text-primary mb-2">Acceso Clínico</h2>
+                      <p className="text-sm text-muted-foreground">Ingrese sus credenciales profesionales</p>
+                    </div>
+                    
+                    <form onSubmit={handleLogin} className="space-y-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          Email Institucional
+                        </Label>
+                        <div className="relative">
+                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="doctor@hospital.com"
+                            className="pl-10 h-12"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                          />
+                        </div>
                       </div>
                       
-                      <form onSubmit={handleLogin} className="space-y-5">
-                        <div className="space-y-2">
-                          <Label htmlFor="email" className="text-sm font-medium">
-                            Email Institucional
-                          </Label>
-                          <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                            <Input
-                              id="email"
-                              type="email"
-                              placeholder="doctor@hospital.com"
-                              className="pl-10 h-12 lg:h-14"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                              required
-                            />
-                          </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password" className="text-sm font-medium">
+                          Contraseña
+                        </Label>
+                        <div className="relative">
+                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                          <Input
+                            id="password"
+                            type="password"
+                            placeholder="••••••••"
+                            className="pl-10 h-12"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                          />
                         </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="password" className="text-sm font-medium">
-                            Contraseña
-                          </Label>
-                          <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                            <Input
-                              id="password"
-                              type="password"
-                              placeholder="••••••••"
-                              className="pl-10 h-12 lg:h-14"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                              required
-                            />
-                          </div>
-                        </div>
-                        
-                        <ClinicalButton 
-                          type="submit" 
-                          variant="hero" 
-                          size="lg" 
-                          className="w-full h-12 lg:h-14"
-                          disabled={isLoading}
-                        >
-                          {isLoading ? "Iniciando..." : "Iniciar Sesión"}
-                          <ArrowRight className="w-4 h-4" />
-                        </ClinicalButton>
-                      </form>
+                      </div>
                       
-                      <div className="text-center mt-4">
-                        <button 
-                          type="button"
-                          onClick={() => setShowForgotPassword(true)}
-                          className="text-sm text-accent hover:underline transition-colors"
-                        >
-                          ¿Olvidó su contraseña?
-                        </button>
-                      </div>
+                      <ClinicalButton 
+                        type="submit" 
+                        variant="hero" 
+                        size="lg" 
+                        className="w-full h-12"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Iniciando..." : "Iniciar Sesión"}
+                        <ArrowRight className="w-4 h-4" />
+                      </ClinicalButton>
+                    </form>
+                    
+                    <div className="text-center mt-4">
+                      <button 
+                        type="button"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-accent hover:underline transition-colors"
+                      >
+                        ¿Olvidó su contraseña?
+                      </button>
+                    </div>
 
-                      {/* Stats for mobile */}
-                      <div className="sm:hidden mt-6 pt-4 border-t border-border/20">
-                        <div className="grid grid-cols-3 gap-3 text-center">
-                          <div>
-                            <div className="text-lg font-bold text-accent">95%</div>
-                            <div className="text-xs text-muted-foreground">Precisión</div>
-                          </div>
-                          <div>
-                            <div className="text-lg font-bold text-accent">10k+</div>
-                            <div className="text-xs text-muted-foreground">Casos</div>
-                          </div>
-                          <div>
-                            <div className="text-lg font-bold text-accent">24/7</div>
-                            <div className="text-xs text-muted-foreground">Activo</div>
-                          </div>
+                    {/* Stats for mobile */}
+                    <div className="sm:hidden mt-6 pt-4 border-t border-border/20">
+                      <div className="grid grid-cols-3 gap-3 text-center">
+                        <div>
+                          <div className="text-lg font-bold text-accent">95%</div>
+                          <div className="text-xs text-muted-foreground">Precisión</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold text-accent">10k+</div>
+                          <div className="text-xs text-muted-foreground">Casos</div>
+                        </div>
+                        <div>
+                          <div className="text-lg font-bold text-accent">24/7</div>
+                          <div className="text-xs text-muted-foreground">Activo</div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
