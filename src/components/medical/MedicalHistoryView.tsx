@@ -155,22 +155,26 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
         </DialogHeader>
 
         <Tabs defaultValue="diagnosis" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="diagnosis" className="flex items-center gap-2">
-              <Stethoscope className="w-4 h-4" />
-              Diagnóstico
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 gap-1 h-auto p-1">
+            <TabsTrigger value="diagnosis" className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2 p-2 lg:p-3 text-xs lg:text-sm">
+              <Stethoscope className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline lg:inline">Diagnóstico</span>
+              <span className="sm:hidden">Diag.</span>
             </TabsTrigger>
-            <TabsTrigger value="risk-factors" className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4" />
-              Factores de Riesgo
+            <TabsTrigger value="risk-factors" className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2 p-2 lg:p-3 text-xs lg:text-sm">
+              <AlertTriangle className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline lg:inline">Factores de Riesgo</span>
+              <span className="sm:hidden">Riesgo</span>
             </TabsTrigger>
-            <TabsTrigger value="lifestyle" className="flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              Estilo de Vida
+            <TabsTrigger value="lifestyle" className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2 p-2 lg:p-3 text-xs lg:text-sm">
+              <Heart className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline lg:inline">Estilo de Vida</span>
+              <span className="sm:hidden">Estilo</span>
             </TabsTrigger>
-            <TabsTrigger value="treatment" className="flex items-center gap-2">
-              <Target className="w-4 h-4" />
-              Tratamientos
+            <TabsTrigger value="treatment" className="flex flex-col lg:flex-row items-center gap-1 lg:gap-2 p-2 lg:p-3 text-xs lg:text-sm">
+              <Target className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline lg:inline">Tratamientos</span>
+              <span className="sm:hidden">Trat.</span>
             </TabsTrigger>
           </TabsList>
 
@@ -178,9 +182,9 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="card-clinical">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Stethoscope className="w-5 h-5 text-primary" />
-                    Información del Diagnóstico
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <Stethoscope className="w-5 h-5 text-primary shrink-0" />
+                    <span>Información del Diagnóstico</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -210,9 +214,9 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
 
               <Card className="card-clinical">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Shield className="w-5 h-5 text-primary" />
-                    Acceso y Seguimiento
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <Shield className="w-5 h-5 text-primary shrink-0" />
+                    <span>Acceso y Seguimiento</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -240,9 +244,9 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
 
             <Card className="card-clinical">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-accent" />
-                  Estado de Recurrencia
+                <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                  <TrendingUp className="w-5 h-5 text-accent shrink-0" />
+                  <span>Estado de Recurrencia</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -275,7 +279,10 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
           <TabsContent value="risk-factors" className="space-y-6">
             <Card className="card-clinical">
               <CardHeader>
-                <CardTitle>Factores de Riesgo Genéticos y Familiares</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                  <AlertTriangle className="w-5 h-5 text-danger shrink-0" />
+                  <span>Factores de Riesgo Genéticos y Familiares</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-6">
@@ -312,7 +319,10 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="card-clinical">
                 <CardHeader>
-                  <CardTitle>Métricas de Salud</CardTitle>
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <Activity className="w-5 h-5 text-success shrink-0" />
+                    <span>Métricas de Salud</span>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
@@ -335,7 +345,10 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
 
               <Card className="card-clinical">
                 <CardHeader>
-                  <CardTitle>Hábitos Alimentarios</CardTitle>
+                  <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                    <Heart className="w-5 h-5 text-accent shrink-0" />
+                    <span>Hábitos Alimentarios</span>
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
@@ -362,9 +375,9 @@ const MedicalHistoryView: React.FC<MedicalHistoryViewProps> = ({
           <TabsContent value="treatment" className="space-y-6">
             <Card className="card-clinical">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Target className="w-5 h-5 text-primary" />
-                  Historial de Tratamientos Recibidos
+                <CardTitle className="flex items-center gap-2 text-base lg:text-lg">
+                  <Target className="w-5 h-5 text-primary shrink-0" />
+                  <span>Historial de Tratamientos Recibidos</span>
                 </CardTitle>
               </CardHeader>
               <CardContent>
