@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import AIRecommendationsModal from "@/components/modals/AIRecommendationsModal";
 import NewPatientForm from "@/components/forms/NewPatientForm";
 import MedicalHistoryView from "@/components/medical/MedicalHistoryView";
-import PharmacotherapyView from "@/components/medical/PharmacotherapyView";
+
 import NavHeader from "@/components/layout/NavHeader";
 import patientMaria from "@/assets/patient-maria.jpg";
 import patientCarlos from "@/assets/patient-carlos.jpg";
@@ -92,7 +92,7 @@ const Dashboard = () => {
   const [showAIRecommendations, setShowAIRecommendations] = useState(false);
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
-  const [showPharmacotherapy, setShowPharmacotherapy] = useState(false);
+  
   const [editMode, setEditMode] = useState<'create' | 'edit'>('create');
   const [editingPatient, setEditingPatient] = useState<any>(null);
 
@@ -324,26 +324,15 @@ const Dashboard = () => {
                   <Brain className="w-5 h-5" />
                   <span className="font-semibold">Recomendaciones IA</span>
                 </ClinicalButton>
-                <div className="grid grid-cols-2 gap-3">
-                  <ClinicalButton 
-                    variant="clinical" 
-                    size="lg"
-                    onClick={() => setShowMedicalHistory(true)}
-                    className="h-12 flex-col gap-1"
-                  >
-                    <FileText className="w-5 h-5" />
-                    <span className="text-sm">Historial</span>
-                  </ClinicalButton>
-                  <ClinicalButton 
-                    variant="outline" 
-                    size="lg"
-                    onClick={() => setShowPharmacotherapy(true)}
-                    className="h-12 flex-col gap-1"
-                  >
-                    <Activity className="w-5 h-5" />
-                    <span className="text-sm">Medicación</span>
-                  </ClinicalButton>
-                </div>
+                <ClinicalButton 
+                  variant="clinical" 
+                  size="lg"
+                  onClick={() => setShowMedicalHistory(true)}
+                  className="h-12 flex-col gap-1"
+                >
+                  <FileText className="w-5 h-5" />
+                  <span className="text-sm">Historial</span>
+                </ClinicalButton>
               </div>
             </div>
           )}
@@ -530,12 +519,12 @@ const Dashboard = () => {
               </Card>
 
               {/* Action Buttons */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <ClinicalButton 
                   variant="ai" 
                   size="lg"
                   onClick={() => setShowAIRecommendations(true)}
-                  className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 sm:col-span-2 lg:col-span-1"
+                  className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
                 >
                   <Brain className="w-6 h-6" />
                   <span className="font-semibold">Recomendaciones IA</span>
@@ -548,15 +537,6 @@ const Dashboard = () => {
                 >
                   <FileText className="w-6 h-6" />
                   <span>Historial Médico</span>
-                </ClinicalButton>
-                <ClinicalButton 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => setShowPharmacotherapy(true)}
-                  className="h-16 flex-col gap-2"
-                >
-                  <Activity className="w-6 h-6" />
-                  <span>Farmacoterapia</span>
                 </ClinicalButton>
               </div>
             </div>
@@ -589,11 +569,6 @@ const Dashboard = () => {
         patient={selectedPatient}
       />
 
-      <PharmacotherapyView
-        isOpen={showPharmacotherapy}
-        onClose={() => setShowPharmacotherapy(false)}
-        patient={selectedPatient}
-      />
     </div>
   );
 };
