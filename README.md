@@ -1,73 +1,99 @@
-# Welcome to your Lovable project
+# OncoCare AI 🩺⚛️
 
-## Project info
+OncoCare AI es una aplicación web moderna diseñada para la detección temprana y el diagnóstico del cáncer. Construida con un stack de tecnologías de vanguardia, la herramienta ofrece una interfaz de usuario rápida, responsiva e intuitiva para analizar datos médicos y predecir la probabilidad de que un paciente tenga cáncer, sirviendo como un sistema de apoyo a la decisión clínica.
 
-**URL**: https://lovable.dev/projects/e73cc5fc-a6d7-4e48-a2b1-d0aff4af8af0
+## ✨ Características Principales
 
-## How can I edit this code?
+*   **Interfaz de Usuario Moderna:** Desarrollada con React y TypeScript para una experiencia de usuario robusta y escalable.
+*   **Diseño Elegante:** Utiliza componentes de **shadcn-ui** y **Tailwind CSS** para un diseño limpio, personalizable y totalmente responsivo.
+*   **Rendimiento Optimizado:** Empaquetado con **Vite** para un arranque en desarrollo casi instantáneo y un empaquetado optimizado para producción.
+*   **Soporte a la Decisión Clínica:** Proporciona a los médicos una herramienta ágil y accesible para evaluar el riesgo de cáncer en pacientes.
+*   **Código Abierto:** El proyecto es de código abierto, permitiendo la colaboración y mejora continua por parte de la comunidad.
 
-There are several ways of editing your application.
+## 🛠️ Stack de Tecnologías
 
-**Use Lovable**
+Este proyecto fue construido utilizando las siguientes tecnologías:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e73cc5fc-a6d7-4e48-a2b1-d0aff4af8af0) and start prompting.
+*   **Entorno de Desarrollo:** [Vite](https://vitejs.dev/)
+*   **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+*   **Librería de UI:** [React](https://react.dev/)
+*   **Componentes UI:** [shadcn-ui](https://ui.shadcn.com/)
+*   **Estilos CSS:** [Tailwind CSS](https://tailwindcss.com/)
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Cómo Empezar
 
-**Use your preferred IDE**
+Sigue estos pasos para tener una copia del proyecto funcionando en tu máquina local.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerrequisitos
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Asegúrate de tener [Node.js](https://nodejs.org/) (versión 18 o superior) y [pnpm](https://pnpm.io/installation) (o npm/yarn) instalado en tu sistema.
 
-Follow these steps:
+### Instalación
+
+1.  **Clona el repositorio:**
+    ```sh
+    git clone https://github.com/jaquimbayoc7/onco-care-ai.git
+    ```
+
+2.  **Navega al directorio del proyecto:**
+    ```sh
+    cd onco-care-ai
+    ```
+
+3.  **Instala las dependencias:**
+    ```sh
+    pnpm install
+    # o si usas npm:
+    # npm install
+    # o si usas yarn:
+    # yarn install
+    ```
+
+### Ejecución
+
+Una vez que hayas instalado las dependencias, puedes iniciar el servidor de desarrollo con:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+pnpm dev
+# o si usas npm:
+# npm run dev
+# o si usas yarn:
+# yarn dev
 ```
+Abre tu navegador y ve a http://localhost:5173 (o el puerto que indique Vite) para ver la aplicación en funcionamiento.
 
-**Edit a file directly in GitHub**
+📁 Estructura del Proyecto (Típica)
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+````
+onco-care-ai/
+├── public/               # Archivos estáticos
+├── src/
+│   ├── assets/           # Imágenes, fuentes, etc.
+│   ├── components/       # Componentes de React (UI)
+│   ├── lib/              # Funciones de utilidad
+│   ├── App.tsx           # Componente principal de la aplicación
+│   └── main.tsx          # Punto de entrada de la aplicación
+├── .eslintrc.cjs         # Configuración de ESLint
+├── index.html            # Plantilla HTML principal
+├── package.json          # Dependencias y scripts del proyecto
+├── postcss.config.js     # Configuración de PostCSS
+├── tailwind.config.js    # Configuración de Tailwind CSS
+├── tsconfig.json         # Configuración de TypeScript
+├── tsconfig.node.json
+└── vite.config.ts        # Configuración de Vite
+````
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/e73cc5fc-a6d7-4e48-a2b1-d0aff4af8af0) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+🤝 Contribuciones
+```
+Las contribuciones son bienvenidas. Si tienes alguna idea para mejorar la aplicación,
+por favor, abre un "issue" para discutir los cambios o envía directamente un "pull request".
+````
+👤 Autores
+```
+Jorge Sanabria - 2502301
+Cristian Alexander Valencia Torres 2502493
+Julián Quimbayo Castro - 2508350
+Andrés Valdés - 2508057
+María Jiménez - 2507713
+Laura Carolina Valero Echeverri – 2503039
+````
