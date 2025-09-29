@@ -23,7 +23,6 @@ import { Input } from "@/components/ui/input";
 import AIRecommendationsModal from "@/components/modals/AIRecommendationsModal";
 import NewPatientForm from "@/components/forms/NewPatientForm";
 import MedicalHistoryView from "@/components/medical/MedicalHistoryView";
-import ClinicalHistoryForm from "@/components/forms/ClinicalHistoryForm";
 
 import NavHeader from "@/components/layout/NavHeader";
 import patientMaria from "@/assets/patient-maria.jpg";
@@ -138,13 +137,10 @@ const Dashboard = () => {
   const [showAIRecommendations, setShowAIRecommendations] = useState(false);
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
-  const [showClinicalHistoryForm, setShowClinicalHistoryForm] = useState(false);
   const [loading, setLoading] = useState(true);
   
   const [editMode, setEditMode] = useState<'create' | 'edit'>('create');
   const [editingPatient, setEditingPatient] = useState<any>(null);
-  const [currentClinicalHistory, setCurrentClinicalHistory] = useState<ClinicalHistoryRead | undefined>(undefined);
-  const [clinicalHistoryMode, setClinicalHistoryMode] = useState<'create' | 'edit'>('create');
   const { toast } = useToast();
 
   // Load patients from API on component mount
@@ -260,35 +256,6 @@ const Dashboard = () => {
     setEditMode('create');
     setEditingPatient(null);
     setShowNewPatientForm(true);
-  };
-
-  const handleClinicalHistoryClick = async (patient: UIPatient) => {
-    try {
-      // Try to load existing clinical history
-      const response = await PatientsAPI.getClinicalHistory(patient.document_id);
-      if (response.data) {
-        setCurrentClinicalHistory(response.data);
-        setClinicalHistoryMode('edit');
-      } else {
-        setCurrentClinicalHistory(undefined);
-        setClinicalHistoryMode('create');
-      }
-      setSelectedPatient(patient);
-      setShowClinicalHistoryForm(true);
-    } catch (error) {
-      // No clinical history exists, create new one
-      setCurrentClinicalHistory(undefined);
-      setClinicalHistoryMode('create');
-      setSelectedPatient(patient);
-      setShowClinicalHistoryForm(true);
-    }
-  };
-
-  const handleClinicalHistorySuccess = () => {
-    toast({
-      title: "Éxito",
-      description: clinicalHistoryMode === 'create' ? "Historial clínico creado exitosamente" : "Historial clínico actualizado exitosamente"
-    });
   };
 
   if (loading) {
@@ -494,15 +461,6 @@ const Dashboard = () => {
                   className="h-12 flex-col gap-1"
                 >
                   <FileText className="w-5 h-5" />
-                  <span className="text-sm">Historial</span>
-                </ClinicalButton>
-                <ClinicalButton 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => selectedPatient && handleClinicalHistoryClick(selectedPatient)}
-                  className="h-12 flex-col gap-1 border-primary/30"
-                >
-                  <Plus className="w-5 h-5" />
                   <span className="text-sm">Historial Clínico</span>
                 </ClinicalButton>
               </div>
@@ -691,7 +649,7 @@ const Dashboard = () => {
               </Card>
 
               {/* Action Buttons */}
-              <div className="grid sm:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-2 gap-4">
                 <ClinicalButton 
                   variant="ai" 
                   size="lg"
@@ -708,15 +666,6 @@ const Dashboard = () => {
                   className="h-16 flex-col gap-2"
                 >
                   <FileText className="w-6 h-6" />
-                  <span>Historial Médico</span>
-                </ClinicalButton>
-                <ClinicalButton 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => selectedPatient && handleClinicalHistoryClick(selectedPatient)}
-                  className="h-16 flex-col gap-2 border-primary/30 hover:border-primary/50"
-                >
-                  <Plus className="w-6 h-6" />
                   <span>Historial Clínico</span>
                 </ClinicalButton>
               </div>
@@ -748,18 +697,6 @@ const Dashboard = () => {
         isOpen={showMedicalHistory}
         onClose={() => setShowMedicalHistory(false)}
         patient={selectedPatient}
-      />
-
-      <ClinicalHistoryForm
-        isOpen={showClinicalHistoryForm}
-        onClose={() => {
-          setShowClinicalHistoryForm(false);
-          setCurrentClinicalHistory(undefined);
-          setClinicalHistoryMode('create');
-        }}
-        patientDocumentId={selectedPatient?.document_id || ''}
-        existingHistory={currentClinicalHistory}
-        onSuccess={handleClinicalHistorySuccess}
       />
 
     </div>
