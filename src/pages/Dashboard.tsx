@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClinicalButton } from "@/components/ui/clinical-button";
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +30,8 @@ import patientCarlos from "@/assets/patient-carlos.jpg";
 import patientAna from "@/assets/patient-ana.jpg";
 import medicalMonitoring from "@/assets/medical-monitoring.jpg";
 import { PatientRead } from "@/types/patient";
+import { PatientsAPI } from "@/services/patientsApi";
+import { useToast } from "@/hooks/use-toast";
 
 // Extended patient type for UI (includes PatientRead + additional UI fields)
 interface UIPatient extends PatientRead {
@@ -129,14 +131,83 @@ const mockPatients: UIPatient[] = [
 ];
 
 const Dashboard = () => {
-  const [selectedPatient, setSelectedPatient] = useState<UIPatient>(mockPatients[0]);
+  const [patients, setPatients] = useState<UIPatient[]>([]);
+  const [selectedPatient, setSelectedPatient] = useState<UIPatient | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAIRecommendations, setShowAIRecommendations] = useState(false);
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   const [editMode, setEditMode] = useState<'create' | 'edit'>('create');
   const [editingPatient, setEditingPatient] = useState<any>(null);
+  const { toast } = useToast();
+
+  // Load patients from API on component mount
+  useEffect(() => {
+    loadPatients();
+  }, []);
+
+  const loadPatients = async () => {
+    try {
+      setLoading(true);
+      const response = await PatientsAPI.getPatients();
+      
+      if (response.data && response.data.length > 0) {
+        // Convert API patients to UI patients with additional fields
+        const uiPatients: UIPatient[] = response.data.map((patient, index) => ({
+          ...patient,
+          diagnosis: mockPatients[index % mockPatients.length]?.diagnosis || "Diagnóstico pendiente",
+          stage: mockPatients[index % mockPatients.length]?.stage || "Sin definir",
+          status: mockPatients[index % mockPatients.length]?.status || "En evaluación",
+          lastVisit: new Date().toISOString().split('T')[0],
+          image: mockPatients[index % mockPatients.length]?.image || patientMaria,
+          vitals: mockPatients[index % mockPatients.length]?.vitals || {
+            heartRate: 72,
+            bloodPressure: "120/80",
+            temperature: 36.5,
+            oxygenSat: 98
+          }
+        }));
+        setPatients(uiPatients);
+        if (!selectedPatient && uiPatients.length > 0) {
+          setSelectedPatient(uiPatients[0]);
+        }
+      } else {
+        // Initialize with mock data if no patients exist
+        await initializeMockData();
+      }
+    } catch (error) {
+      console.error("Error loading patients:", error);
+      toast({
+        title: "Error",
+        description: "No se pudieron cargar los pacientes",
+        variant: "destructive"
+      });
+      // Fallback to mock data
+      setPatients(mockPatients);
+      setSelectedPatient(mockPatients[0]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const initializeMockData = async () => {
+    try {
+      // Create the mock patients in the API
+      for (const mockPatient of mockPatients) {
+        const { diagnosis, stage, status, lastVisit, image, vitals, ...patientData } = mockPatient;
+        await PatientsAPI.createPatient(patientData);
+      }
+      // Reload after initialization
+      await loadPatients();
+    } catch (error) {
+      console.error("Error initializing mock data:", error);
+      // Use mock data as fallback
+      setPatients(mockPatients);
+      setSelectedPatient(mockPatients[0]);
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -157,19 +228,22 @@ const Dashboard = () => {
     return <Activity className="w-4 h-4 text-success" />;
   };
 
-  const filteredPatients = mockPatients.filter(patient =>
+  const filteredPatients = patients.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     patient.diagnosis.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleNewPatient = (patientData: any) => {
+  const handleNewPatient = async (patientData: any) => {
     if (patientData) {
-      // Update the local patient list with the new/updated patient
-      // In a real app, this would trigger a refresh from the API
-      console.log("Patient saved:", patientData);
+      await loadPatients(); // Reload patients after creation/update
+      toast({
+        title: "Éxito",
+        description: editMode === 'create' ? "Paciente creado exitosamente" : "Paciente actualizado exitosamente"
+      });
     }
     setEditMode('create');
     setEditingPatient(null);
+    setShowNewPatientForm(false);
   };
 
   const handleEditPatient = (patient: any) => {
@@ -183,6 +257,22 @@ const Dashboard = () => {
     setEditingPatient(null);
     setShowNewPatientForm(true);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <NavHeader />
+        <div className="container max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-3 sm:py-4 lg:py-6">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <Activity className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
+              <p className="text-muted-foreground">Cargando pacientes...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -226,7 +316,7 @@ const Dashboard = () => {
                     ? 'ring-2 ring-accent bg-accent/5' 
                     : 'hover:bg-muted/30'
                 }`}
-                      onClick={() => setSelectedPatient(patient as UIPatient)}
+                       onClick={() => setSelectedPatient(patient)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
@@ -415,7 +505,7 @@ const Dashboard = () => {
                           ? 'bg-accent/10 border-l-4 border-l-accent' 
                           : 'hover:bg-muted/50'
                       }`}
-                      onClick={() => setSelectedPatient(patient as UIPatient)}
+                      onClick={() => setSelectedPatient(patient)}
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <img 
