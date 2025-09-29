@@ -342,38 +342,39 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <DialogTitle className="text-2xl font-bold">
+      <DialogContent className="max-w-6xl max-h-[90vh] md:max-h-[90vh] h-screen md:h-auto overflow-y-auto p-4 md:p-6">
+        <DialogHeader className="space-y-3">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-xl md:text-2xl font-bold truncate">
                 Historial Clínico - {patient.name}
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-sm">
                 Información completa del historial clínico del paciente
               </DialogDescription>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-shrink-0">
               {!isEditing && (
-                <Button onClick={handleEdit} variant="outline" size="sm">
-                  <Edit className="w-4 h-4 mr-2" />
-                  {clinicalHistory ? "Editar" : "Crear"}
+                <Button onClick={handleEdit} variant="outline" size="sm" className="text-xs md:text-sm">
+                  <Edit className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+                  <span className="hidden md:inline">{clinicalHistory ? "Editar" : "Crear"}</span>
                 </Button>
               )}
               {isEditing && (
                 <>
-                  <Button onClick={handleCancel} variant="outline" size="sm">
-                    <X className="w-4 h-4 mr-2" />
-                    Cancelar
+                  <Button onClick={handleCancel} variant="outline" size="sm" className="text-xs md:text-sm">
+                    <X className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+                    <span className="hidden md:inline">Cancelar</span>
                   </Button>
                   <Button 
                     onClick={form.handleSubmit(onSubmit)} 
                     size="sm"
                     disabled={isSaving}
+                    className="text-xs md:text-sm"
                   >
-                    {isSaving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                    <Save className="w-4 h-4 mr-2" />
-                    Guardar
+                    {isSaving && <Loader2 className="w-3 h-3 md:w-4 md:h-4 md:mr-2 animate-spin" />}
+                    <Save className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+                    <span className="hidden md:inline">Guardar</span>
                   </Button>
                 </>
               )}
@@ -405,15 +406,27 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
               </Card>
             ) : (
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                   <Tabs defaultValue="diagnosis" className="w-full">
-                    <TabsList className="grid w-full grid-cols-5">
-                      <TabsTrigger value="diagnosis">Diagnóstico</TabsTrigger>
-                      <TabsTrigger value="vitals">Signos Vitales</TabsTrigger>
-                      <TabsTrigger value="lifestyle">Estilo de Vida</TabsTrigger>
-                      <TabsTrigger value="treatment">Tratamiento</TabsTrigger>
-                      <TabsTrigger value="follow-up">Seguimiento</TabsTrigger>
-                    </TabsList>
+                    <div className="w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+                      <TabsList className="inline-flex md:grid w-auto md:w-full md:grid-cols-5 h-auto">
+                        <TabsTrigger value="diagnosis" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
+                          Diagnóstico
+                        </TabsTrigger>
+                        <TabsTrigger value="vitals" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
+                          Signos Vitales
+                        </TabsTrigger>
+                        <TabsTrigger value="lifestyle" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
+                          Estilo de Vida
+                        </TabsTrigger>
+                        <TabsTrigger value="treatment" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
+                          Tratamiento
+                        </TabsTrigger>
+                        <TabsTrigger value="follow-up" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
+                          Seguimiento
+                        </TabsTrigger>
+                      </TabsList>
+                    </div>
 
                     <TabsContent value="diagnosis" className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
