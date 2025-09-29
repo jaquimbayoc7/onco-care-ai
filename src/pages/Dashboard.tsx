@@ -98,26 +98,26 @@ const mockPatients: UIPatient[] = [
     vitals: {
       heartRate: 78,
       bloodPressure: "135/85",
-      temperature: 36.8,
-      oxygenSat: 95
+      temperature: 37.1,
+      oxygenSat: 96
     }
   },
   {
     id: 3,
     document_id: "11223344",
-    name: "Ana Rodríguez",
+    name: "Ana María López",
     age: 45,
     gender: "Female",
     race: "Indígena",
     region: "Cali",
     urban_or_rural: "Rural",
-    email: "ana.rodriguez@email.com",
-    phone: "+57 302 555 8888",
-    address: "Vereda El Retiro, Cali",
+    email: "ana.lopez@email.com",
+    phone: "+57 302 555 1234",
+    address: "Vereda El Carmen, Cali",
     created: "2024-01-03T12:00:00Z",
-    edited: "2024-01-10T07:45:00Z",
-    diagnosis: "Melanoma",
-    stage: "IB",
+    edited: "2024-01-10T14:20:00Z",
+    diagnosis: "Cáncer Colorrectal",
+    stage: "IIIA",
     status: "Remission",
     lastVisit: "2024-01-10",
     image: patientAna,
@@ -220,7 +220,7 @@ const Dashboard = () => {
         const { diagnosis, stage, status, lastVisit, image, vitals, ...patientData } = mockPatient;
         await PatientsAPI.createPatient(patientData);
       }
-      // Reload after initialization
+      // Reload patients after initialization
       await loadPatients();
     } catch (error) {
       console.error("Error initializing mock data:", error);
@@ -272,23 +272,6 @@ const Dashboard = () => {
     setEditMode('edit');
     setShowNewPatientForm(true);
   };
-    if (patientData) {
-      await loadPatients(); // Reload patients after creation/update
-      toast({
-        title: "Éxito",
-        description: editMode === 'create' ? "Paciente creado exitosamente" : "Paciente actualizado exitosamente"
-      });
-    }
-    setEditMode('create');
-    setEditingPatient(null);
-    setShowNewPatientForm(false);
-  };
-
-  const handleEditPatient = (patient: any) => {
-    setEditingPatient(patient);
-    setEditMode('edit');
-    setShowNewPatientForm(true);
-  };
 
   // Get vital signs for selected patient from clinical history
   const getVitalSigns = (patient: UIPatient | null) => {
@@ -307,6 +290,12 @@ const Dashboard = () => {
     }
     
     return patient.vitals;
+  };
+
+  const handleNewPatientClick = () => {
+    setEditMode('create');
+    setEditingPatient(null);
+    setShowNewPatientForm(true);
   };
 
   if (loading) {
@@ -338,426 +327,432 @@ const Dashboard = () => {
               <div className="flex items-center justify-between mb-4">
                 <CardTitle className="text-lg">Dashboard Clínico</CardTitle>
                 <ClinicalButton 
-                  variant="outline" 
-                  size="sm"
                   onClick={handleNewPatientClick}
+                  variant="clinical" 
+                  size="sm"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nuevo
                 </ClinicalButton>
               </div>
+              
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   placeholder="Buscar pacientes..."
-                  className="pl-10"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
                 />
               </div>
             </CardHeader>
-          </Card>
-
-          {/* Mobile Patient Cards */}
-          <div className="space-y-3">
-            {filteredPatients.map((patient) => (
-              <Card 
-                key={patient.id}
-                className={`card-clinical cursor-pointer transition-all ${
-                  selectedPatient.id === patient.id 
-                    ? 'ring-2 ring-accent bg-accent/5' 
-                    : 'hover:bg-muted/30'
-                }`}
-                       onClick={() => setSelectedPatient(patient)}
-              >
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4">
-                    <img 
-                      src={patient.image} 
-                      alt={patient.name}
-                      className="w-16 h-16 rounded-full object-cover shadow-md"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <h3 className="font-semibold text-primary text-base">{patient.name}</h3>
-                          <p className="text-sm text-muted-foreground">{patient.age} años • {patient.gender}</p>
-                        </div>
-                        <Badge className={`text-xs ${getStatusColor(patient.status)}`}>
-                          {patient.status}
-                        </Badge>
+            <CardContent>
+              <div className="space-y-3">
+                {filteredPatients.map((patient) => (
+                  <div
+                    key={patient.id}
+                    onClick={() => setSelectedPatient(patient as UIPatient)}
+                    className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                      selectedPatient?.id === patient.id 
+                        ? "bg-primary/10 border-primary/20" 
+                        : "bg-card hover:bg-muted/50"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <img 
+                        src={patient.image} 
+                        alt={patient.name}
+                        className="w-10 h-10 rounded-full object-cover"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="font-semibold text-sm truncate">{patient.name}</p>
+                        <p className="text-xs text-muted-foreground">{patient.diagnosis}</p>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-1 truncate">{patient.diagnosis}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Última visita: {new Date(patient.lastVisit).toLocaleDateString()}
-                      </p>
+                      <Badge className={`text-xs ${getStatusColor(patient.status)}`}>
+                        {patient.status}
+                      </Badge>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Mobile Patient Details */}
           {selectedPatient && (
-            <div className="space-y-4">
-              {/* Patient Header - Mobile */}
+            <>
               <Card className="card-clinical">
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-4 mb-4">
-                    <img 
-                      src={selectedPatient.image} 
-                      alt={selectedPatient.name}
-                      className="w-20 h-20 rounded-full object-cover shadow-lg"
-                    />
-                     <div className="flex-1">
-                       <h2 className="text-xl font-bold text-primary mb-1">{selectedPatient.name}</h2>
-                       <p className="text-sm text-muted-foreground mb-2">ID: {selectedPatient.document_id}</p>
-                       <Badge className={`text-xs ${getStatusColor(selectedPatient.status)}`}>
-                         {selectedPatient.status}
-                       </Badge>
-                     </div>
-                     <ClinicalButton 
-                       variant="outline" 
-                       size="sm"
-                       onClick={() => handleEditPatient(selectedPatient)}
-                       className="border-primary/20"
-                     >
-                       <Edit className="w-4 h-4" />
-                     </ClinicalButton>
-                   </div>
-                   
-                   <div className="grid grid-cols-2 gap-4">
-                     <div className="space-y-1">
-                       <p className="text-xs text-muted-foreground">Edad</p>
-                       <p className="font-semibold text-sm">{selectedPatient.age} años</p>
-                     </div>
-                     <div className="space-y-1">
-                       <p className="text-xs text-muted-foreground">Género</p>
-                       <p className="font-semibold text-sm">{selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}</p>
-                     </div>
-                    <div className="space-y-1 col-span-2">
-                      <p className="text-xs text-muted-foreground">Diagnóstico</p>
-                      <p className="font-semibold text-sm">{selectedPatient.diagnosis}</p>
-                      <Badge variant="outline" className="text-xs">
-                        Etapa {selectedPatient.stage}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Mobile Vitals */}
-              <Card className="card-clinical relative overflow-hidden">
-                <div className="absolute inset-0 opacity-5 bg-cover bg-center"
-                     style={{ backgroundImage: `url(${medicalMonitoring})` }} />
-                <CardHeader className="relative z-10 pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Activity className="w-5 h-5 text-accent" />
-                    Signos Vitales
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="relative z-10 p-4">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                       <div className="flex items-center justify-center gap-2 mb-2">
-                         <Heart className="w-5 h-5 text-danger" />
-                         {getTrendIcon(getVitalSigns(selectedPatient).heartRate, 70)}
-                       </div>
-                       <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).heartRate}</div>
-                       <div className="text-xs text-muted-foreground">BPM</div>
-                    </div>
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Activity className="w-5 h-5 text-accent" />
-                        <Activity className="w-4 h-4 text-success" />
-                      </div>
-                       <div className="text-lg font-bold text-primary">{getVitalSigns(selectedPatient).bloodPressure}</div>
-                       <div className="text-xs text-muted-foreground">mmHg</div>
-                    </div>
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                       <div className="flex items-center justify-center gap-2 mb-2">
-                         <Activity className="w-5 h-5 text-warning" />
-                         {getTrendIcon(getVitalSigns(selectedPatient).temperature, 36.5)}
-                       </div>
-                       <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).temperature}°</div>
-                       <div className="text-xs text-muted-foreground">Celsius</div>
-                    </div>
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                       <div className="flex items-center justify-center gap-2 mb-2">
-                         <Activity className="w-5 h-5 text-success" />
-                         {getTrendIcon(getVitalSigns(selectedPatient).oxygenSat, 98)}
-                       </div>
-                       <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).oxygenSat}%</div>
-                       <div className="text-xs text-muted-foreground">SpO2</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Mobile Action Buttons */}
-              <div className="grid grid-cols-1 gap-3">
-                <ClinicalButton 
-                  variant="ai" 
-                  size="lg"
-                  onClick={() => setShowAIRecommendations(true)}
-                  className="h-14 flex items-center justify-center gap-3 bg-gradient-to-r from-accent to-accent-soft hover:shadow-lg"
-                >
-                  <Brain className="w-5 h-5" />
-                  <span className="font-semibold">Recomendaciones IA</span>
-                </ClinicalButton>
-                <ClinicalButton 
-                  variant="clinical" 
-                  size="lg"
-                  onClick={() => setShowMedicalHistory(true)}
-                  className="h-12 flex-col gap-1"
-                >
-                  <FileText className="w-5 h-5" />
-                  <span className="text-sm">Historial Clínico</span>
-                </ClinicalButton>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Desktop Layout */}
-        <div className="hidden lg:grid lg:grid-cols-12 gap-6">
-          {/* Patient List - Left Column */}
-          <div className="lg:col-span-4 order-2 lg:order-1">
-            <Card className="card-clinical">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Lista de Pacientes</CardTitle>
-                  <ClinicalButton 
-                    variant="outline" 
-                    size="sm"
-                    onClick={handleNewPatientClick}
-                  >
-                    <Plus className="w-4 h-4" />
-                    Nuevo Paciente
-                  </ClinicalButton>
-                </div>
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-                  <Input
-                    placeholder="Buscar pacientes..."
-                    className="pl-10"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="space-y-2">
-                  {filteredPatients.map((patient) => (
-                    <div
-                      key={patient.id}
-                      className={`p-4 cursor-pointer transition-all border-b last:border-b-0 ${
-                        selectedPatient.id === patient.id 
-                          ? 'bg-accent/10 border-l-4 border-l-accent' 
-                          : 'hover:bg-muted/50'
-                      }`}
-                      onClick={() => setSelectedPatient(patient)}
-                    >
-                      <div className="flex items-center gap-3 mb-2">
-                        <img 
-                          src={patient.image} 
-                          alt={patient.name}
-                          className="w-12 h-12 rounded-full object-cover shadow-sm"
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h3 className="font-medium text-primary">{patient.name}</h3>
-                              <p className="text-sm text-muted-foreground">ID: {patient.document_id}</p>
-                            </div>
-                            <Badge className={`text-xs ${getStatusColor(patient.status)}`}>
-                              {patient.status}
-                            </Badge>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-1 ml-15">{patient.diagnosis}</p>
-                      <p className="text-xs text-muted-foreground ml-15">
-                        Última visita: {new Date(patient.lastVisit).toLocaleDateString()}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Patient Details - Right Column */}
-          <div className="lg:col-span-8 order-1 lg:order-2">
-            <div className="space-y-6">
-              {/* Patient Header Card */}
-              <Card className="card-clinical">
-                <CardHeader>
+                <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3">
                       <img 
                         src={selectedPatient.image} 
                         alt={selectedPatient.name}
-                        className="w-16 h-16 rounded-full object-cover shadow-lg"
+                        className="w-12 h-12 rounded-full object-cover"
                       />
                       <div>
-                        <h2 className="text-2xl font-bold text-primary">{selectedPatient.name}</h2>
-                        <p className="text-muted-foreground">Paciente ID: {selectedPatient.document_id}</p>
+                        <CardTitle className="text-lg">{selectedPatient.name}</CardTitle>
+                        <p className="text-sm text-muted-foreground">ID: {selectedPatient.document_id}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <ClinicalButton 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleEditPatient(selectedPatient)}
-                        className="border-primary/20 hover:border-primary/40"
-                      >
-                        <Edit className="w-4 h-4" />
-                        Editar
-                      </ClinicalButton>
-                      <Badge className={`${getStatusColor(selectedPatient.status)}`}>
-                        {selectedPatient.status}
-                      </Badge>
-                    </div>
+                    <ClinicalButton 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => handleEditPatient(selectedPatient)}
+                      className="border-primary/20"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </ClinicalButton>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">Edad</span>
-                      </div>
-                      <p className="font-semibold">{selectedPatient.age} años</p>
+                  
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Edad</p>
+                      <p className="font-semibold text-sm">{selectedPatient.age} años</p>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <User className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">Género</span>
-                      </div>
-                      <p className="font-semibold">{selectedPatient.gender}</p>
+                    <div className="space-y-1">
+                      <p className="text-xs text-muted-foreground">Género</p>
+                      <p className="font-semibold text-sm">{selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}</p>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">Diagnóstico</span>
-                      </div>
-                      <p className="font-semibold">{selectedPatient.diagnosis}</p>
-                      <Badge variant="outline" className="text-xs">
-                        Etapa {selectedPatient.stage}
-                      </Badge>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                   <div className="space-y-1 col-span-2">
+                     <p className="text-xs text-muted-foreground">Diagnóstico</p>
+                     <p className="font-semibold text-sm">{selectedPatient.diagnosis}</p>
+                     <Badge variant="outline" className="text-xs">
+                       Etapa {selectedPatient.stage}
+                     </Badge>
+                   </div>
+                 </div>
+               </CardHeader>
+               <CardContent>
+               </CardContent>
+             </Card>
 
-              {/* Vitals Card */}
-              <Card className="card-clinical relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10 bg-cover bg-center"
-                     style={{ backgroundImage: `url(${medicalMonitoring})` }} />
-                <CardHeader className="relative z-10">
-                  <CardTitle className="flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-accent" />
-                    Signos Vitales Actuales
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="relative z-10">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+             {/* Mobile Vitals */}
+             <Card className="card-clinical relative overflow-hidden">
+               <div className="absolute inset-0 opacity-5 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${medicalMonitoring})` }} />
+               <CardHeader className="relative z-10 pb-3">
+                 <CardTitle className="flex items-center gap-2 text-lg">
+                   <Activity className="w-5 h-5 text-accent" />
+                   Signos Vitales
+                 </CardTitle>
+               </CardHeader>
+               <CardContent className="relative z-10 p-4">
+                 <div className="grid grid-cols-2 gap-3">
+                   <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                     <div className="flex items-center justify-center gap-2 mb-2">
+                       <Heart className="w-5 h-5 text-danger" />
+                       {getTrendIcon(getVitalSigns(selectedPatient).heartRate, 70)}
+                     </div>
+                     <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).heartRate}</div>
+                     <div className="text-xs text-muted-foreground">BPM</div>
+                   </div>
+                   <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                     <div className="flex items-center justify-center gap-2 mb-2">
+                       <Activity className="w-5 h-5 text-accent" />
+                       <Activity className="w-4 h-4 text-success" />
+                     </div>
+                     <div className="text-lg font-bold text-primary">{getVitalSigns(selectedPatient).bloodPressure}</div>
+                     <div className="text-xs text-muted-foreground">mmHg</div>
+                   </div>
+                   <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                     <div className="flex items-center justify-center gap-2 mb-2">
+                       <Activity className="w-5 h-5 text-warning" />
+                       {getTrendIcon(getVitalSigns(selectedPatient).temperature, 36.5)}
+                     </div>
+                     <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).temperature}°</div>
+                     <div className="text-xs text-muted-foreground">Celsius</div>
+                   </div>
+                   <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                     <div className="flex items-center justify-center gap-2 mb-2">
+                       <Activity className="w-5 h-5 text-success" />
+                       {getTrendIcon(getVitalSigns(selectedPatient).oxygenSat, 98)}
+                     </div>
+                     <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).oxygenSat}%</div>
+                     <div className="text-xs text-muted-foreground">SpO2</div>
+                   </div>
+                 </div>
+               </CardContent>
+             </Card>
+
+             {/* Mobile Action Buttons */}
+             <div className="grid grid-cols-1 gap-3">
+               <ClinicalButton 
+                 variant="ai" 
+                 size="lg"
+                 onClick={() => setShowAIRecommendations(true)}
+                 className="h-14 flex items-center justify-center gap-3 bg-gradient-to-r from-accent to-accent-soft hover:shadow-lg"
+               >
+                 <Brain className="w-5 h-5" />
+                 <span className="font-semibold">Recomendaciones IA</span>
+               </ClinicalButton>
+               <ClinicalButton 
+                 variant="clinical" 
+                 size="lg"
+                 onClick={() => setShowMedicalHistory(true)}
+                 className="h-12 flex-col gap-1"
+               >
+                 <FileText className="w-5 h-5" />
+                 <span className="text-sm">Historial Clínico</span>
+               </ClinicalButton>
+             </div>
+           </>
+         )}
+       </div>
+
+       {/* Desktop Layout */}
+       <div className="hidden lg:grid lg:grid-cols-4 gap-6">
+         {/* Patient List */}
+         <div className="lg:col-span-1">
+           <Card className="card-clinical h-fit">
+             <CardHeader className="pb-4">
+               <div className="flex items-center justify-between mb-4">
+                 <CardTitle className="text-xl">Pacientes</CardTitle>
+                 <ClinicalButton 
+                   onClick={handleNewPatientClick}
+                   variant="clinical" 
+                   size="sm"
+                   className="shrink-0"
+                 >
+                   <Plus className="w-4 h-4 mr-2" />
+                   Nuevo
+                 </ClinicalButton>
+               </div>
+               
+               <div className="relative">
+                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                 <Input
+                   placeholder="Buscar pacientes..."
+                   value={searchTerm}
+                   onChange={(e) => setSearchTerm(e.target.value)}
+                   className="pl-10"
+                 />
+               </div>
+             </CardHeader>
+             <CardContent className="p-0">
+               <div className="max-h-96 overflow-y-auto">
+                 {filteredPatients.map((patient) => (
+                   <div
+                     key={patient.id}
+                     onClick={() => setSelectedPatient(patient as UIPatient)}
+                     className={`p-4 border-b cursor-pointer transition-all hover:bg-muted/50 ${
+                       selectedPatient?.id === patient.id ? "bg-primary/10 border-r-4 border-r-primary" : ""
+                     }`}
+                   >
+                     <div className="flex items-center gap-3">
+                       <img 
+                         src={patient.image} 
+                         alt={patient.name}
+                         className="w-10 h-10 rounded-full object-cover"
+                       />
+                       <div className="flex-1 min-w-0">
+                         <p className="font-semibold text-sm truncate">{patient.name}</p>
+                         <p className="text-xs text-muted-foreground truncate">{patient.diagnosis}</p>
+                         <div className="flex items-center gap-2 mt-1">
+                           <Badge className={`text-xs ${getStatusColor(patient.status)}`}>
+                             {patient.status}
+                           </Badge>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+                 ))}
+               </div>
+             </CardContent>
+           </Card>
+         </div>
+
+         {/* Main Content */}
+         <div className="lg:col-span-3 space-y-6">
+           {selectedPatient ? (
+             <>
+               {/* Patient Header */}
+               <Card className="card-clinical relative overflow-hidden">
+                 <div className="absolute inset-0 opacity-5 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${selectedPatient.image})` }} />
+                 <CardHeader className="relative z-10">
+                   <div className="flex items-start justify-between">
+                     <div className="flex items-center gap-4">
+                       <img 
+                         src={selectedPatient.image} 
+                         alt={selectedPatient.name}
+                         className="w-16 h-16 rounded-full object-cover border-4 border-background shadow-lg"
+                       />
+                       <div>
+                         <CardTitle className="text-2xl font-bold">{selectedPatient.name}</CardTitle>
+                         <p className="text-muted-foreground">ID: {selectedPatient.document_id}</p>
+                         <div className="flex items-center gap-4 mt-2">
+                           <span className="flex items-center gap-1 text-sm">
+                             <User className="w-4 h-4" />
+                             {selectedPatient.age} años, {selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}
+                           </span>
+                           <span className="flex items-center gap-1 text-sm">
+                             <MapPin className="w-4 h-4" />
+                             {selectedPatient.region}
+                           </span>
+                           <span className="flex items-center gap-1 text-sm">
+                             <Phone className="w-4 h-4" />
+                             {selectedPatient.phone}
+                           </span>
+                         </div>
+                       </div>
+                     </div>
+                     <div className="flex items-center gap-2">
+                       <Badge className={`${getStatusColor(selectedPatient.status)} text-sm px-3 py-1`}>
+                         {selectedPatient.status}
+                       </Badge>
+                       <ClinicalButton 
+                         variant="outline" 
+                         size="sm"
+                         onClick={() => handleEditPatient(selectedPatient)}
+                         className="border-primary/20"
+                       >
+                         <Edit className="w-4 h-4 mr-2" />
+                         Editar
+                       </ClinicalButton>
+                     </div>
+                   </div>
+                 </CardHeader>
+                 <CardContent className="relative z-10">
+                   <div className="grid grid-cols-2 gap-6">
+                     <div>
+                       <h4 className="font-semibold text-sm text-muted-foreground mb-2">DIAGNÓSTICO PRINCIPAL</h4>
+                       <p className="font-bold text-lg">{selectedPatient.diagnosis}</p>
+                       <Badge variant="outline" className="mt-2">
+                         Etapa {selectedPatient.stage}
+                       </Badge>
+                     </div>
+                     <div>
+                       <h4 className="font-semibold text-sm text-muted-foreground mb-2">ÚLTIMA VISITA</h4>
+                       <p className="flex items-center gap-2">
+                         <Calendar className="w-4 h-4" />
+                         {new Date(selectedPatient.lastVisit).toLocaleDateString('es-ES')}
+                       </p>
+                     </div>
+                   </div>
+                 </CardContent>
+               </Card>
+
+               {/* Vital Signs */}
+               <Card className="card-clinical relative overflow-hidden">
+                 <div className="absolute inset-0 opacity-5 bg-cover bg-center"
+                      style={{ backgroundImage: `url(${medicalMonitoring})` }} />
+                 <CardHeader className="relative z-10">
+                   <CardTitle className="flex items-center gap-2 text-xl">
+                     <Activity className="w-5 h-5 text-accent" />
+                     Signos Vitales Actuales
+                   </CardTitle>
+                 </CardHeader>
+                 <CardContent className="relative z-10">
+                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
                        <div className="flex items-center justify-center gap-2 mb-2">
                          <Heart className="w-5 h-5 text-danger" />
                          {getTrendIcon(getVitalSigns(selectedPatient).heartRate, 70)}
                        </div>
                        <div className="vital-display text-primary">{getVitalSigns(selectedPatient).heartRate}</div>
                        <div className="metric-label">BPM</div>
-                    </div>
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Activity className="w-5 h-5 text-accent" />
-                        <Activity className="w-4 h-4 text-success" />
-                      </div>
+                     </div>
+                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Activity className="w-5 h-5 text-accent" />
+                         <Activity className="w-4 h-4 text-success" />
+                       </div>
                        <div className="vital-display text-primary">{getVitalSigns(selectedPatient).bloodPressure}</div>
                        <div className="metric-label">mmHg</div>
-                    </div>
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                     </div>
+                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
                        <div className="flex items-center justify-center gap-2 mb-2">
                          <Activity className="w-5 h-5 text-warning" />
                          {getTrendIcon(getVitalSigns(selectedPatient).temperature, 36.5)}
                        </div>
                        <div className="vital-display text-primary">{getVitalSigns(selectedPatient).temperature}°</div>
                        <div className="metric-label">Celsius</div>
-                    </div>
-                    <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
+                     </div>
+                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
                        <div className="flex items-center justify-center gap-2 mb-2">
                          <Activity className="w-5 h-5 text-success" />
                          {getTrendIcon(getVitalSigns(selectedPatient).oxygenSat, 98)}
                        </div>
                        <div className="vital-display text-primary">{getVitalSigns(selectedPatient).oxygenSat}%</div>
                        <div className="metric-label">SpO2</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                     </div>
+                   </div>
+                 </CardContent>
+               </Card>
 
-              {/* Action Buttons */}
-              <div className="grid sm:grid-cols-2 gap-4">
-                <ClinicalButton 
-                  variant="ai" 
-                  size="lg"
-                  onClick={() => setShowAIRecommendations(true)}
-                  className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-                >
-                  <Brain className="w-6 h-6" />
-                  <span className="font-semibold">Recomendaciones IA</span>
-                </ClinicalButton>
-                <ClinicalButton 
-                  variant="clinical" 
-                  size="lg"
-                  onClick={() => setShowMedicalHistory(true)}
-                  className="h-16 flex-col gap-2"
-                >
-                  <FileText className="w-6 h-6" />
-                  <span>Historial Clínico</span>
-                </ClinicalButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+               {/* Action Buttons */}
+               <div className="grid sm:grid-cols-2 gap-4">
+                 <ClinicalButton 
+                   variant="ai" 
+                   size="lg"
+                   onClick={() => setShowAIRecommendations(true)}
+                   className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                 >
+                   <Brain className="w-6 h-6" />
+                   <span className="font-semibold">Recomendaciones IA</span>
+                 </ClinicalButton>
+                 <ClinicalButton 
+                   variant="clinical" 
+                   size="lg"
+                   onClick={() => setShowMedicalHistory(true)}
+                   className="h-16 flex-col gap-2"
+                 >
+                   <FileText className="w-6 h-6" />
+                   <span>Historial Clínico</span>
+                 </ClinicalButton>
+               </div>
+             </>
+           ) : (
+             <Card className="card-clinical">
+               <CardContent className="flex items-center justify-center h-64">
+                 <div className="text-center">
+                   <User className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+                   <h3 className="text-lg font-semibold mb-2">Selecciona un Paciente</h3>
+                   <p className="text-muted-foreground">
+                     Elige un paciente de la lista para ver su información detallada
+                   </p>
+                 </div>
+               </CardContent>
+             </Card>
+           )}
+         </div>
+       </div>
+     </div>
 
-      {/* Modals */}
-      <AIRecommendationsModal
-        isOpen={showAIRecommendations}
-        onClose={() => setShowAIRecommendations(false)}
-        patient={selectedPatient}
-      />
+     {/* Modals */}
+     <AIRecommendationsModal
+       isOpen={showAIRecommendations}
+       onClose={() => setShowAIRecommendations(false)}
+       patient={selectedPatient}
+     />
 
-      <NewPatientForm
-        isOpen={showNewPatientForm}
-        onClose={() => {
-          setShowNewPatientForm(false);
-          setEditMode('create');
-          setEditingPatient(null);
-        }}
-        onSubmit={handleNewPatient}
-        editPatient={editingPatient}
-        mode={editMode}
-      />
+     <NewPatientForm
+       isOpen={showNewPatientForm}
+       onClose={() => {
+         setShowNewPatientForm(false);
+         setEditMode('create');
+         setEditingPatient(null);
+       }}
+       onSubmit={handleNewPatient}
+       editPatient={editingPatient}
+       mode={editMode}
+     />
 
-      <MedicalHistoryView
-        isOpen={showMedicalHistory}
-        onClose={() => {
-          setShowMedicalHistory(false);
-          // Reload clinical histories after potential updates
-          if (patients.length > 0) {
-            loadClinicalHistories(patients);
-          }
-        }}
-        patient={selectedPatient}
-      />
+     <MedicalHistoryView
+       isOpen={showMedicalHistory}
+       onClose={() => {
+         setShowMedicalHistory(false);
+         // Reload clinical histories after potential updates
+         if (patients.length > 0) {
+           loadClinicalHistories(patients);
+         }
+       }}
+       patient={selectedPatient}
+     />
 
-    </div>
-  );
+   </div>
+ );
 };
 
 export default Dashboard;
