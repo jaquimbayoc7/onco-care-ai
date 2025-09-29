@@ -120,13 +120,11 @@ const Dashboard = () => {
     patient.diagnosis.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleNewPatient = (data: any) => {
-    if (editMode === 'edit') {
-      console.log("Paciente editado:", data);
-      // Aquí iría la lógica para actualizar el paciente en la base de datos
-    } else {
-      console.log("Nuevo paciente creado:", data);
-      // Aquí iría la lógica para guardar el paciente en la base de datos
+  const handleNewPatient = (patientData: any) => {
+    if (patientData) {
+      // Update the local patient list with the new/updated patient
+      // In a real app, this would trigger a refresh from the API
+      console.log("Patient saved:", patientData);
     }
     setEditMode('create');
     setEditingPatient(null);

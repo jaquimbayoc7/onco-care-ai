@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { PatientsAPI } from '@/services/patientsApi';
 
 interface User {
   id: string;
@@ -11,7 +12,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => boolean;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -38,19 +39,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = (email: string, password: string): boolean => {
-    // Mock authentication - in real app this would validate against backend
-    if (email && password) {
-      setUser(mockUser);
-      localStorage.setItem('oncosimil_user', JSON.stringify(mockUser));
-      return true;
+  const login = async (email: string, password: string): Promise<boolean> => {
+    try {
+      const result = await PatientsAPI.authenticate(email, password);
+      
+      if (result.error) {
+        return false;
+      }
+
+      if (result.data) {
+        setUser(result.data.user);
+        localStorage.setItem('oncosimil_user', JSON.stringify(result.data.user));
+        localStorage.setItem('oncosimil_token', result.data.token);
+        return true;
+      }
+    } catch (error) {
+      return false;
     }
+    
     return false;
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('oncosimil_user');
+    localStorage.removeItem('oncosimil_token');
   };
 
   const value = {

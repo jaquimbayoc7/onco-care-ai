@@ -1,0 +1,1492 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Oncoassist Patients",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/patients/": {
+      "post": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Create Patient",
+        "description": "Create a new patient.",
+        "operationId": "create_patient_patients__post",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientCreate",
+                "examples": {
+                  "valid": {
+                    "summary": "Valid patient",
+                    "value": {
+                      "document_id": "12345678",
+                      "name": "Jane Doe",
+                      "age": 42,
+                      "email": "jane.doe@example.com",
+                      "phone": "+57 300 123 4567",
+                      "address": "Calle 123 #45-67, Bogotá"
+                    }
+                  },
+                  "invalid": {
+                    "summary": "Invalid types",
+                    "value": {
+                      "document_id": 123,
+                      "name": 999,
+                      "age": -5,
+                      "email": "not-an-email"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation or business error"
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "List Patients",
+        "description": "List patients (optional pagination).",
+        "operationId": "list_patients_patients__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "Page Size"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PatientRead"
+                  },
+                  "title": "Response List Patients Patients  Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/patients/{document_id}": {
+      "get": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Get Patient",
+        "description": "Get patient information by document ID.",
+        "operationId": "get_patient_patients__document_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Patient not found"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Update Patient",
+        "description": "Partially update a patient by document ID.",
+        "operationId": "update_patient_patients__document_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation or business error"
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Patient not found"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "patients"
+        ],
+        "summary": "Delete Patient",
+        "description": "Delete a patient by document ID.",
+        "operationId": "delete_patient_patients__document_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Patient not found"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clinical_histories/{history_id}": {
+      "get": {
+        "tags": [
+          "clinical_histories"
+        ],
+        "summary": "Get Clinical History",
+        "description": "Get a clinical history by ID.",
+        "operationId": "get_clinical_history_clinical_histories__history_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "history_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "History Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClinicalHistoryRead"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Clinical history not found"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "clinical_histories"
+        ],
+        "summary": "Update Clinical History",
+        "description": "Partially update an existing clinical history.",
+        "operationId": "update_clinical_history_clinical_histories__history_id__patch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "history_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "History Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClinicalHistoryUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClinicalHistoryRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation or business error"
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Clinical history not found"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "clinical_histories"
+        ],
+        "summary": "Delete Clinical History",
+        "description": "Delete a clinical history by ID.",
+        "operationId": "delete_clinical_history_clinical_histories__history_id__delete",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "history_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "History Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "404": {
+            "description": "Clinical history not found"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clinical_histories/document/{document_id}": {
+      "get": {
+        "tags": [
+          "clinical_histories"
+        ],
+        "summary": "Get Histories By Document",
+        "description": "Get all clinical histories by patient document ID.",
+        "operationId": "get_histories_by_document_clinical_histories_document__document_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClinicalHistoryRead"
+                  },
+                  "title": "Response Get Histories By Document Clinical Histories Document  Document Id  Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/clinical_histories/": {
+      "post": {
+        "tags": [
+          "clinical_histories"
+        ],
+        "summary": "Create Clinical History",
+        "description": "Create a new clinical history.",
+        "operationId": "create_clinical_history_clinical_histories__post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClinicalHistoryCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClinicalHistoryRead"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - validation or business error"
+          },
+          "401": {
+            "description": "Authorization required"
+          },
+          "403": {
+            "description": "Invalid token"
+          },
+          "503": {
+            "description": "Database or Auth service unavailable"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AlcoholConsumption": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ],
+        "title": "AlcoholConsumption"
+      },
+      "ChemotherapyReceived": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "ChemotherapyReceived"
+      },
+      "ClinicalHistoryCreate": {
+        "properties": {
+          "family_history": {
+            "$ref": "#/components/schemas/FamilyHistory",
+            "description": "Indicates if there is a family history of cancer."
+          },
+          "previous_cancer_history": {
+            "$ref": "#/components/schemas/PreviousCancerHistory",
+            "description": "Indicates if the patient has had cancer previously."
+          },
+          "stage_at_diagnosis": {
+            "$ref": "#/components/schemas/StageAtDiagnosis",
+            "description": "Cancer stage at diagnosis."
+          },
+          "tumor_aggressiveness": {
+            "$ref": "#/components/schemas/TumorAggressiveness",
+            "description": "Level of tumor aggressiveness."
+          },
+          "colonoscopy_access": {
+            "$ref": "#/components/schemas/ColonoscopyAccess",
+            "description": "Indicates if the patient has access to colonoscopy."
+          },
+          "screening_regularity": {
+            "$ref": "#/components/schemas/ScreeningRegularity",
+            "description": "Frequency or regularity of screening tests."
+          },
+          "diet_type": {
+            "$ref": "#/components/schemas/DietType",
+            "description": "Predominant diet type."
+          },
+          "bmi": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100,
+                "minimum": 0
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Bmi",
+            "description": "Body Mass Index (BMI) value."
+          },
+          "physical_activity_level": {
+            "$ref": "#/components/schemas/PhysicalActivityLevel",
+            "description": "Physical activity level."
+          },
+          "smoking_status": {
+            "$ref": "#/components/schemas/SmokingStatus",
+            "description": "Patient's smoking status."
+          },
+          "alcohol_consumption": {
+            "$ref": "#/components/schemas/AlcoholConsumption",
+            "description": "Level of alcohol consumption."
+          },
+          "fiber_consumption": {
+            "$ref": "#/components/schemas/FiberConsumption",
+            "description": "Level of fiber consumption."
+          },
+          "insurance_coverage": {
+            "$ref": "#/components/schemas/InsuranceCoverage",
+            "description": "Patient's insurance coverage status."
+          },
+          "time_to_diagnosis": {
+            "$ref": "#/components/schemas/TimeToDiagnosis",
+            "description": "Timeliness of diagnosis."
+          },
+          "treatment_access": {
+            "$ref": "#/components/schemas/TreatmentAccess",
+            "description": "Patient's access to treatments."
+          },
+          "treatment_id": {
+            "type": "integer",
+            "title": "Treatment Id",
+            "description": "ID of the recommended treatment."
+          },
+          "chemotherapy_received": {
+            "$ref": "#/components/schemas/ChemotherapyReceived",
+            "description": "Indicates if chemotherapy was received."
+          },
+          "radiotherapy_received": {
+            "$ref": "#/components/schemas/RadiotherapyReceived",
+            "description": "Indicates if radiotherapy was received."
+          },
+          "surgery_received": {
+            "$ref": "#/components/schemas/SurgeryReceived",
+            "description": "Indicates if surgery was received."
+          },
+          "treatment_recommendation": {
+            "type": "string",
+            "title": "Treatment Recommendation",
+            "description": "AI treatment recommendation name."
+          },
+          "follow_up_adherence": {
+            "$ref": "#/components/schemas/FollowUpAdherence",
+            "description": "Degree of patient adherence to medical follow-up."
+          },
+          "recurrence": {
+            "$ref": "#/components/schemas/Recurrence",
+            "description": "Indicates if cancer recurrence occurred."
+          },
+          "time_to_recurrence": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Time To Recurrence",
+            "description": "Days until recurrence occurred."
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id",
+            "description": "Document ID of the patient."
+          }
+        },
+        "type": "object",
+        "required": [
+          "stage_at_diagnosis",
+          "tumor_aggressiveness",
+          "treatment_access",
+          "follow_up_adherence",
+          "document_id"
+        ],
+        "title": "ClinicalHistoryCreate",
+        "example": {
+          "alcohol_consumption": "Low",
+          "bmi": 33,
+          "chemotherapy_received": "Yes",
+          "colonoscopy_access": "No",
+          "diet_type": "Western",
+          "document_id": "12345678",
+          "family_history": "Yes",
+          "fiber_consumption": "Low",
+          "follow_up_adherence": "Good",
+          "insurance_coverage": "Yes",
+          "physical_activity_level": "Low",
+          "previous_cancer_history": "No",
+          "radiotherapy_received": "No",
+          "recurrence": "No",
+          "screening_regularity": "Regular",
+          "smoking_status": "Never",
+          "stage_at_diagnosis": "III",
+          "surgery_received": "No",
+          "time_to_diagnosis": "Delayed",
+          "time_to_recurrence": 16,
+          "treatment_access": "Adequate",
+          "treatment_id": 10,
+          "treatment_recommendation": "T2",
+          "tumor_aggressiveness": "High"
+        }
+      },
+      "ClinicalHistoryRead": {
+        "properties": {
+          "family_history": {
+            "$ref": "#/components/schemas/FamilyHistory",
+            "description": "Indicates if there is a family history of cancer."
+          },
+          "previous_cancer_history": {
+            "$ref": "#/components/schemas/PreviousCancerHistory",
+            "description": "Indicates if the patient has had cancer previously."
+          },
+          "stage_at_diagnosis": {
+            "$ref": "#/components/schemas/StageAtDiagnosis",
+            "description": "Cancer stage at diagnosis."
+          },
+          "tumor_aggressiveness": {
+            "$ref": "#/components/schemas/TumorAggressiveness",
+            "description": "Level of tumor aggressiveness."
+          },
+          "colonoscopy_access": {
+            "$ref": "#/components/schemas/ColonoscopyAccess",
+            "description": "Indicates if the patient has access to colonoscopy."
+          },
+          "screening_regularity": {
+            "$ref": "#/components/schemas/ScreeningRegularity",
+            "description": "Frequency or regularity of screening tests."
+          },
+          "diet_type": {
+            "$ref": "#/components/schemas/DietType",
+            "description": "Predominant diet type."
+          },
+          "bmi": {
+            "type": "string",
+            "title": "Bmi",
+            "description": "Body Mass Index (BMI) value."
+          },
+          "physical_activity_level": {
+            "$ref": "#/components/schemas/PhysicalActivityLevel",
+            "description": "Physical activity level."
+          },
+          "smoking_status": {
+            "$ref": "#/components/schemas/SmokingStatus",
+            "description": "Patient's smoking status."
+          },
+          "alcohol_consumption": {
+            "$ref": "#/components/schemas/AlcoholConsumption",
+            "description": "Level of alcohol consumption."
+          },
+          "fiber_consumption": {
+            "$ref": "#/components/schemas/FiberConsumption",
+            "description": "Level of fiber consumption."
+          },
+          "insurance_coverage": {
+            "$ref": "#/components/schemas/InsuranceCoverage",
+            "description": "Patient's insurance coverage status."
+          },
+          "time_to_diagnosis": {
+            "$ref": "#/components/schemas/TimeToDiagnosis",
+            "description": "Timeliness of diagnosis."
+          },
+          "treatment_access": {
+            "$ref": "#/components/schemas/TreatmentAccess",
+            "description": "Patient's access to treatments."
+          },
+          "treatment_id": {
+            "type": "integer",
+            "title": "Treatment Id",
+            "description": "ID of the recommended treatment."
+          },
+          "chemotherapy_received": {
+            "$ref": "#/components/schemas/ChemotherapyReceived",
+            "description": "Indicates if chemotherapy was received."
+          },
+          "radiotherapy_received": {
+            "$ref": "#/components/schemas/RadiotherapyReceived",
+            "description": "Indicates if radiotherapy was received."
+          },
+          "surgery_received": {
+            "$ref": "#/components/schemas/SurgeryReceived",
+            "description": "Indicates if surgery was received."
+          },
+          "treatment_recommendation": {
+            "type": "string",
+            "title": "Treatment Recommendation",
+            "description": "AI treatment recommendation name."
+          },
+          "follow_up_adherence": {
+            "$ref": "#/components/schemas/FollowUpAdherence",
+            "description": "Degree of patient adherence to medical follow-up."
+          },
+          "recurrence": {
+            "$ref": "#/components/schemas/Recurrence",
+            "description": "Indicates if cancer recurrence occurred."
+          },
+          "time_to_recurrence": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Time To Recurrence",
+            "description": "Days until recurrence occurred."
+          },
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Unique ID of the clinical history (primary key)."
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id",
+            "description": "Document ID of the patient."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created",
+            "description": "Date and time when the patient was created."
+          },
+          "edited": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Edited",
+            "description": "Date and time when the patient was last edited."
+          }
+        },
+        "type": "object",
+        "required": [
+          "stage_at_diagnosis",
+          "tumor_aggressiveness",
+          "treatment_access",
+          "follow_up_adherence",
+          "id",
+          "document_id",
+          "created",
+          "edited"
+        ],
+        "title": "ClinicalHistoryRead",
+        "example": {
+          "alcohol_consumption": "Low",
+          "bmi": 33,
+          "chemotherapy_received": "Yes",
+          "colonoscopy_access": "No",
+          "created": "2025-09-23T10:15:30Z",
+          "diet_type": "Western",
+          "document_id": "12345678",
+          "edited": "2025-09-23T10:15:30Z",
+          "family_history": "Yes",
+          "fiber_consumption": "Low",
+          "follow_up_adherence": "Good",
+          "id": 1,
+          "insurance_coverage": "Yes",
+          "physical_activity_level": "Low",
+          "previous_cancer_history": "No",
+          "radiotherapy_received": "No",
+          "recurrence": "No",
+          "screening_regularity": "Regular",
+          "smoking_status": "Never",
+          "stage_at_diagnosis": "III",
+          "surgery_received": "No",
+          "time_to_diagnosis": "Delayed",
+          "time_to_recurrence": 16,
+          "treatment_access": "Adequate",
+          "treatment_id": 10,
+          "treatment_recommendation": "T2",
+          "tumor_aggressiveness": "High"
+        }
+      },
+      "ClinicalHistoryUpdate": {
+        "properties": {
+          "family_history": {
+            "$ref": "#/components/schemas/FamilyHistory"
+          },
+          "previous_cancer_history": {
+            "$ref": "#/components/schemas/PreviousCancerHistory"
+          },
+          "stage_at_diagnosis": {
+            "$ref": "#/components/schemas/StageAtDiagnosis"
+          },
+          "tumor_aggressiveness": {
+            "$ref": "#/components/schemas/TumorAggressiveness"
+          },
+          "colonoscopy_access": {
+            "$ref": "#/components/schemas/ColonoscopyAccess"
+          },
+          "screening_regularity": {
+            "$ref": "#/components/schemas/ScreeningRegularity"
+          },
+          "diet_type": {
+            "$ref": "#/components/schemas/DietType"
+          },
+          "bmi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Bmi"
+          },
+          "physical_activity_level": {
+            "$ref": "#/components/schemas/PhysicalActivityLevel"
+          },
+          "smoking_status": {
+            "$ref": "#/components/schemas/SmokingStatus"
+          },
+          "alcohol_consumption": {
+            "$ref": "#/components/schemas/AlcoholConsumption"
+          },
+          "fiber_consumption": {
+            "$ref": "#/components/schemas/FiberConsumption"
+          },
+          "insurance_coverage": {
+            "$ref": "#/components/schemas/InsuranceCoverage"
+          },
+          "time_to_diagnosis": {
+            "$ref": "#/components/schemas/TimeToDiagnosis"
+          },
+          "treatment_access": {
+            "$ref": "#/components/schemas/TreatmentAccess"
+          },
+          "treatment_id": {
+            "type": "integer",
+            "title": "Treatment Id"
+          },
+          "chemotherapy_received": {
+            "$ref": "#/components/schemas/ChemotherapyReceived"
+          },
+          "radiotherapy_received": {
+            "$ref": "#/components/schemas/RadiotherapyReceived"
+          },
+          "surgery_received": {
+            "$ref": "#/components/schemas/SurgeryReceived"
+          },
+          "treatment_recommendation": {
+            "type": "string",
+            "title": "Treatment Recommendation"
+          },
+          "follow_up_adherence": {
+            "$ref": "#/components/schemas/FollowUpAdherence"
+          },
+          "recurrence": {
+            "$ref": "#/components/schemas/Recurrence"
+          },
+          "time_to_recurrence": {
+            "type": "integer",
+            "title": "Time To Recurrence"
+          }
+        },
+        "type": "object",
+        "title": "ClinicalHistoryUpdate"
+      },
+      "ColonoscopyAccess": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "ColonoscopyAccess"
+      },
+      "DietType": {
+        "type": "string",
+        "enum": [
+          "Vegetarian",
+          "Vegan",
+          "Omnivore",
+          "Mediterranean",
+          "Western"
+        ],
+        "title": "DietType"
+      },
+      "FamilyHistory": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "FamilyHistory"
+      },
+      "FiberConsumption": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ],
+        "title": "FiberConsumption"
+      },
+      "FollowUpAdherence": {
+        "type": "string",
+        "enum": [
+          "Good",
+          "Poor"
+        ],
+        "title": "FollowUpAdherence"
+      },
+      "Gender": {
+        "type": "string",
+        "enum": [
+          "Male",
+          "Female",
+          "Other"
+        ],
+        "title": "Gender"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InsuranceCoverage": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "InsuranceCoverage"
+      },
+      "PatientCreate": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "title": "Document Id",
+            "description": "Unique identification number of the patient."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Full name of the patient."
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Age",
+            "description": "Age of the patient."
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender",
+            "description": "Patient's gender."
+          },
+          "race": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Race",
+            "description": "Ethnic group or race."
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Region",
+            "description": "Geographical region where the patient lives."
+          },
+          "urban_or_rural": {
+            "$ref": "#/components/schemas/UrbanRural",
+            "description": "Indicates if they live in an urban or rural area."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Patient's email address."
+          },
+          "phone": {
+            "type": "string",
+            "title": "Phone",
+            "description": "Patient's phone number."
+          },
+          "address": {
+            "type": "string",
+            "title": "Address",
+            "description": "Patient's address."
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_id",
+          "name",
+          "age",
+          "gender",
+          "email"
+        ],
+        "title": "PatientCreate",
+        "example": {
+          "address": "Calle 123 #45-67, Bogotá",
+          "age": 42,
+          "document_id": "12345678",
+          "email": "jane.doe@example.com",
+          "gender": "Female",
+          "name": "Jane Doe",
+          "phone": "+57 300 123 4567",
+          "race": "Mixed",
+          "region": "Bogotá",
+          "urban_or_rural": "Urban"
+        }
+      },
+      "PatientRead": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "title": "Document Id",
+            "description": "Unique identification number of the patient."
+          },
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Full name of the patient."
+          },
+          "age": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Age",
+            "description": "Age of the patient."
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender",
+            "description": "Patient's gender."
+          },
+          "race": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Race",
+            "description": "Ethnic group or race."
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Region",
+            "description": "Geographical region where the patient lives."
+          },
+          "urban_or_rural": {
+            "$ref": "#/components/schemas/UrbanRural",
+            "description": "Indicates if they live in an urban or rural area."
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email",
+            "description": "Patient's email address."
+          },
+          "phone": {
+            "type": "string",
+            "title": "Phone",
+            "description": "Patient's phone number."
+          },
+          "address": {
+            "type": "string",
+            "title": "Address",
+            "description": "Patient's address."
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created",
+            "description": "Date and time when the patient was created."
+          },
+          "edited": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Edited",
+            "description": "Date and time when the patient was last edited."
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_id",
+          "name",
+          "age",
+          "gender",
+          "email",
+          "created",
+          "edited"
+        ],
+        "title": "PatientRead",
+        "example": {
+          "address": "Calle 123 #45-67, Bogotá",
+          "age": 42,
+          "created": "2025-09-23T10:15:30Z",
+          "document_id": "12345678",
+          "edited": "2025-09-23T10:15:30Z",
+          "email": "jane.doe@example.com",
+          "gender": "Female",
+          "name": "Jane Doe",
+          "phone": "+57 300 123 4567",
+          "race": "Mixed",
+          "region": "Bogotá",
+          "urban_or_rural": "Urban"
+        }
+      },
+      "PatientUpdate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "age": {
+            "type": "integer",
+            "title": "Age"
+          },
+          "gender": {
+            "$ref": "#/components/schemas/Gender"
+          },
+          "race": {
+            "type": "string",
+            "title": "Race"
+          },
+          "region": {
+            "type": "string",
+            "title": "Region"
+          },
+          "urban_or_rural": {
+            "$ref": "#/components/schemas/UrbanRural"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "title": "Email"
+          },
+          "phone": {
+            "type": "string",
+            "title": "Phone"
+          },
+          "address": {
+            "type": "string",
+            "title": "Address"
+          }
+        },
+        "type": "object",
+        "title": "PatientUpdate"
+      },
+      "PhysicalActivityLevel": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ],
+        "title": "PhysicalActivityLevel"
+      },
+      "PreviousCancerHistory": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "PreviousCancerHistory"
+      },
+      "RadiotherapyReceived": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "RadiotherapyReceived"
+      },
+      "Recurrence": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "Recurrence"
+      },
+      "ScreeningRegularity": {
+        "type": "string",
+        "enum": [
+          "Regular",
+          "Irregular",
+          "Never"
+        ],
+        "title": "ScreeningRegularity"
+      },
+      "SmokingStatus": {
+        "type": "string",
+        "enum": [
+          "Never",
+          "Current",
+          "Former"
+        ],
+        "title": "SmokingStatus"
+      },
+      "StageAtDiagnosis": {
+        "type": "string",
+        "enum": [
+          "I",
+          "II",
+          "III",
+          "IV"
+        ],
+        "title": "StageAtDiagnosis"
+      },
+      "SurgeryReceived": {
+        "type": "string",
+        "enum": [
+          "Yes",
+          "No"
+        ],
+        "title": "SurgeryReceived"
+      },
+      "TimeToDiagnosis": {
+        "type": "string",
+        "enum": [
+          "Delayed",
+          "Timely"
+        ],
+        "title": "TimeToDiagnosis"
+      },
+      "TreatmentAccess": {
+        "type": "string",
+        "enum": [
+          "Adequate",
+          "Limited"
+        ],
+        "title": "TreatmentAccess"
+      },
+      "TumorAggressiveness": {
+        "type": "string",
+        "enum": [
+          "Low",
+          "Medium",
+          "High"
+        ],
+        "title": "TumorAggressiveness"
+      },
+      "UrbanRural": {
+        "type": "string",
+        "enum": [
+          "Urban",
+          "Rural"
+        ],
+        "title": "UrbanRural"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

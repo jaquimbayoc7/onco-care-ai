@@ -44,23 +44,31 @@ const Landing = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    const success = login(email, password);
-    
-    if (success) {
+    try {
+      const success = await login(email, password);
+      
+      if (success) {
+        toast({
+          title: "Inicio de sesión exitoso",
+          description: "Bienvenido al sistema OncoSímil",
+        });
+        navigate('/dashboard');
+      } else {
+        toast({
+          title: "Error de autenticación",
+          description: "Credenciales incorrectas. Inténtalo de nuevo.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
       toast({
-        title: "Bienvenido",
-        description: "Sesión iniciada exitosamente",
-      });
-      navigate("/dashboard");
-    } else {
-      toast({
-        title: "Error de autenticación",
-        description: "Credenciales inválidas. Intente nuevamente.",
+        title: "Error de conexión",
+        description: "No se pudo conectar al servidor. Inténtalo de nuevo.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   return (
