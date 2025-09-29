@@ -27,7 +27,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 interface Patient {
-  id: string;
+  id: number;
   name: string;
   age: number;
   diagnosis: string;

@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 
 interface Patient {
-  id: string;
+  id: number;
   name: string;
   age: number;
   diagnosis: string;
