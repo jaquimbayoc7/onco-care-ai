@@ -119,7 +119,7 @@ export class PatientsAPI {
     }
   }
 
-  // Update patient
+  // Update patient by document_id
   static async updatePatient(documentId: string, updateData: PatientUpdate): Promise<APIResponse<PatientRead>> {
     await delay(400);
     
@@ -149,6 +149,64 @@ export class PatientsAPI {
     } catch (error) {
       return {
         error: 'Failed to update patient'
+      };
+    }
+  }
+
+  // Update patient by ID (new endpoint)
+  static async updatePatientById(patientId: number, updateData: PatientUpdate): Promise<APIResponse<PatientRead>> {
+    await delay(400);
+    
+    try {
+      const patients = getPatients();
+      const patientIndex = patients.findIndex(p => p.id === patientId);
+      
+      if (patientIndex === -1) {
+        return {
+          error: 'Patient not found'
+        };
+      }
+
+      const updatedPatient = {
+        ...patients[patientIndex],
+        ...updateData,
+        edited: new Date().toISOString()
+      };
+
+      patients[patientIndex] = updatedPatient;
+      savePatients(patients);
+
+      return {
+        data: updatedPatient,
+        message: 'Patient updated successfully'
+      };
+    } catch (error) {
+      return {
+        error: 'Failed to update patient'
+      };
+    }
+  }
+
+  // Get patient by ID (new endpoint)
+  static async getPatientById(patientId: number): Promise<APIResponse<PatientRead>> {
+    await delay(200);
+    
+    try {
+      const patients = getPatients();
+      const patient = patients.find(p => p.id === patientId);
+      
+      if (!patient) {
+        return {
+          error: 'Patient not found'
+        };
+      }
+
+      return {
+        data: patient
+      };
+    } catch (error) {
+      return {
+        error: 'Failed to fetch patient'
       };
     }
   }

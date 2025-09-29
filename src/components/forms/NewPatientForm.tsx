@@ -115,9 +115,10 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
     try {
       let result;
       
-      if (isEditMode) {
+      if (isEditMode && editPatient) {
         const updateData: PatientUpdate = { ...data };
-        result = await PatientsAPI.updatePatient(editPatient.document_id, updateData);
+        // Use patient ID for editing instead of document_id
+        result = await PatientsAPI.updatePatientById(editPatient.id, updateData);
       } else {
         const createData: PatientCreate = data as PatientCreate;
         result = await PatientsAPI.createPatient(createData);

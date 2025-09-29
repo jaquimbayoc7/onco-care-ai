@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClinicalButton } from "@/components/ui/clinical-button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   User, 
   Calendar, 
@@ -30,14 +29,39 @@ import patientMaria from "@/assets/patient-maria.jpg";
 import patientCarlos from "@/assets/patient-carlos.jpg";
 import patientAna from "@/assets/patient-ana.jpg";
 import medicalMonitoring from "@/assets/medical-monitoring.jpg";
+import { PatientRead } from "@/types/patient";
 
-// Mock data for patients
-const mockPatients = [
+// Extended patient type for UI (includes PatientRead + additional UI fields)
+interface UIPatient extends PatientRead {
+  diagnosis: string;
+  stage: string;
+  status: string;
+  lastVisit: string;
+  image: string;
+  vitals: {
+    heartRate: number;
+    bloodPressure: string;
+    temperature: number;
+    oxygenSat: number;
+  };
+}
+
+// Mock data for patients - now with proper IDs and contract fields
+const mockPatients: UIPatient[] = [
   {
-    id: "P001",
+    id: 1,
+    document_id: "12345678",
     name: "María González",
     age: 54,
-    gender: "Femenino",
+    gender: "Female",
+    race: "Mestizo",
+    region: "Bogotá",
+    urban_or_rural: "Urban",
+    email: "maria.gonzalez@email.com",
+    phone: "+57 300 123 4567",
+    address: "Calle 123 #45-67, Bogotá",
+    created: "2024-01-01T10:00:00Z",
+    edited: "2024-01-15T08:30:00Z",
     diagnosis: "Carcinoma de Mama",
     stage: "IIA",
     status: "Active Treatment",
@@ -51,10 +75,19 @@ const mockPatients = [
     }
   },
   {
-    id: "P002", 
+    id: 2,
+    document_id: "87654321",
     name: "Carlos Mendoza",
     age: 67,
-    gender: "Masculino",
+    gender: "Male",
+    race: "Afrodescendiente",
+    region: "Medellín",
+    urban_or_rural: "Urban",
+    email: "carlos.mendoza@email.com",
+    phone: "+57 301 987 6543",
+    address: "Carrera 50 #30-20, Medellín",
+    created: "2024-01-02T11:00:00Z",
+    edited: "2024-01-12T09:15:00Z",
     diagnosis: "Adenocarcinoma Pulmonar",
     stage: "IIIB",
     status: "Monitoring",
@@ -68,10 +101,19 @@ const mockPatients = [
     }
   },
   {
-    id: "P003",
+    id: 3,
+    document_id: "11223344",
     name: "Ana Rodríguez",
     age: 45,
-    gender: "Femenino", 
+    gender: "Female",
+    race: "Indígena",
+    region: "Cali",
+    urban_or_rural: "Rural",
+    email: "ana.rodriguez@email.com",
+    phone: "+57 302 555 8888",
+    address: "Vereda El Retiro, Cali",
+    created: "2024-01-03T12:00:00Z",
+    edited: "2024-01-10T07:45:00Z",
     diagnosis: "Melanoma",
     stage: "IB",
     status: "Remission",
@@ -87,7 +129,7 @@ const mockPatients = [
 ];
 
 const Dashboard = () => {
-  const [selectedPatient, setSelectedPatient] = useState(mockPatients[0]);
+  const [selectedPatient, setSelectedPatient] = useState<UIPatient>(mockPatients[0]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showAIRecommendations, setShowAIRecommendations] = useState(false);
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
@@ -184,7 +226,7 @@ const Dashboard = () => {
                     ? 'ring-2 ring-accent bg-accent/5' 
                     : 'hover:bg-muted/30'
                 }`}
-                onClick={() => setSelectedPatient(patient)}
+                      onClick={() => setSelectedPatient(patient as UIPatient)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-center gap-4">
@@ -226,32 +268,32 @@ const Dashboard = () => {
                       alt={selectedPatient.name}
                       className="w-20 h-20 rounded-full object-cover shadow-lg"
                     />
-                    <div className="flex-1">
-                      <h2 className="text-xl font-bold text-primary mb-1">{selectedPatient.name}</h2>
-                      <p className="text-sm text-muted-foreground mb-2">ID: {selectedPatient.id}</p>
-                      <Badge className={`text-xs ${getStatusColor(selectedPatient.status)}`}>
-                        {selectedPatient.status}
-                      </Badge>
-                    </div>
-                    <ClinicalButton 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleEditPatient(selectedPatient)}
-                      className="border-primary/20"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </ClinicalButton>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Edad</p>
-                      <p className="font-semibold text-sm">{selectedPatient.age} años</p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Género</p>
-                      <p className="font-semibold text-sm">{selectedPatient.gender}</p>
-                    </div>
+                     <div className="flex-1">
+                       <h2 className="text-xl font-bold text-primary mb-1">{selectedPatient.name}</h2>
+                       <p className="text-sm text-muted-foreground mb-2">ID: {selectedPatient.document_id}</p>
+                       <Badge className={`text-xs ${getStatusColor(selectedPatient.status)}`}>
+                         {selectedPatient.status}
+                       </Badge>
+                     </div>
+                     <ClinicalButton 
+                       variant="outline" 
+                       size="sm"
+                       onClick={() => handleEditPatient(selectedPatient)}
+                       className="border-primary/20"
+                     >
+                       <Edit className="w-4 h-4" />
+                     </ClinicalButton>
+                   </div>
+                   
+                   <div className="grid grid-cols-2 gap-4">
+                     <div className="space-y-1">
+                       <p className="text-xs text-muted-foreground">Edad</p>
+                       <p className="font-semibold text-sm">{selectedPatient.age} años</p>
+                     </div>
+                     <div className="space-y-1">
+                       <p className="text-xs text-muted-foreground">Género</p>
+                       <p className="font-semibold text-sm">{selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}</p>
+                     </div>
                     <div className="space-y-1 col-span-2">
                       <p className="text-xs text-muted-foreground">Diagnóstico</p>
                       <p className="font-semibold text-sm">{selectedPatient.diagnosis}</p>
@@ -373,7 +415,7 @@ const Dashboard = () => {
                           ? 'bg-accent/10 border-l-4 border-l-accent' 
                           : 'hover:bg-muted/50'
                       }`}
-                      onClick={() => setSelectedPatient(patient)}
+                      onClick={() => setSelectedPatient(patient as UIPatient)}
                     >
                       <div className="flex items-center gap-3 mb-2">
                         <img 
@@ -385,7 +427,7 @@ const Dashboard = () => {
                           <div className="flex items-start justify-between">
                             <div>
                               <h3 className="font-medium text-primary">{patient.name}</h3>
-                              <p className="text-sm text-muted-foreground">ID: {patient.id}</p>
+                              <p className="text-sm text-muted-foreground">ID: {patient.document_id}</p>
                             </div>
                             <Badge className={`text-xs ${getStatusColor(patient.status)}`}>
                               {patient.status}
@@ -419,7 +461,7 @@ const Dashboard = () => {
                       />
                       <div>
                         <h2 className="text-2xl font-bold text-primary">{selectedPatient.name}</h2>
-                        <p className="text-muted-foreground">Paciente ID: {selectedPatient.id}</p>
+                        <p className="text-muted-foreground">Paciente ID: {selectedPatient.document_id}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
