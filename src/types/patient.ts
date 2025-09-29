@@ -56,6 +56,12 @@ export interface ClinicalHistoryCreate {
   follow_up_adherence: 'Good' | 'Poor';
   recurrence?: 'Yes' | 'No';
   time_to_recurrence?: number;
+  // Signos vitales
+  heart_rate?: number;
+  blood_pressure_systolic?: number;
+  blood_pressure_diastolic?: number;
+  temperature?: number;
+  oxygen_saturation?: number;
 }
 
 export interface ClinicalHistoryRead extends ClinicalHistoryCreate {
@@ -88,6 +94,12 @@ export interface ClinicalHistoryUpdate {
   follow_up_adherence?: 'Good' | 'Poor';
   recurrence?: 'Yes' | 'No';
   time_to_recurrence?: number;
+  // Signos vitales
+  heart_rate?: number;
+  blood_pressure_systolic?: number;
+  blood_pressure_diastolic?: number;
+  temperature?: number;
+  oxygen_saturation?: number;
 }
 
 // API Response types

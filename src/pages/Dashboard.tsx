@@ -138,6 +138,7 @@ const Dashboard = () => {
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [patientClinicalHistories, setPatientClinicalHistories] = useState<Record<string, ClinicalHistoryRead>>({});
   
   const [editMode, setEditMode] = useState<'create' | 'edit'>('create');
   const [editingPatient, setEditingPatient] = useState<any>(null);
@@ -147,6 +148,24 @@ const Dashboard = () => {
   useEffect(() => {
     loadPatients();
   }, []);
+
+  // Load clinical histories for all patients
+  const loadClinicalHistories = async (patients: UIPatient[]) => {
+    const histories: Record<string, ClinicalHistoryRead> = {};
+    
+    for (const patient of patients) {
+      try {
+        const response = await PatientsAPI.getClinicalHistory(patient.document_id);
+        if (response.data) {
+          histories[patient.document_id] = response.data;
+        }
+      } catch (error) {
+        // History doesn't exist for this patient
+      }
+    }
+    
+    setPatientClinicalHistories(histories);
+  };
 
   const loadPatients = async () => {
     try {
@@ -162,7 +181,7 @@ const Dashboard = () => {
           status: mockPatients[index % mockPatients.length]?.status || "En evaluación",
           lastVisit: new Date().toISOString().split('T')[0],
           image: mockPatients[index % mockPatients.length]?.image || patientMaria,
-          vitals: mockPatients[index % mockPatients.length]?.vitals || {
+          vitals: {
             heartRate: 72,
             bloodPressure: "120/80",
             temperature: 36.5,
@@ -173,6 +192,8 @@ const Dashboard = () => {
         if (!selectedPatient && uiPatients.length > 0) {
           setSelectedPatient(uiPatients[0]);
         }
+        // Load clinical histories for vital signs
+        await loadClinicalHistories(uiPatients);
       } else {
         // Initialize with mock data if no patients exist
         await initializeMockData();
@@ -251,11 +272,41 @@ const Dashboard = () => {
     setEditMode('edit');
     setShowNewPatientForm(true);
   };
-
-  const handleNewPatientClick = () => {
+    if (patientData) {
+      await loadPatients(); // Reload patients after creation/update
+      toast({
+        title: "Éxito",
+        description: editMode === 'create' ? "Paciente creado exitosamente" : "Paciente actualizado exitosamente"
+      });
+    }
     setEditMode('create');
     setEditingPatient(null);
+    setShowNewPatientForm(false);
+  };
+
+  const handleEditPatient = (patient: any) => {
+    setEditingPatient(patient);
+    setEditMode('edit');
     setShowNewPatientForm(true);
+  };
+
+  // Get vital signs for selected patient from clinical history
+  const getVitalSigns = (patient: UIPatient | null) => {
+    if (!patient) return { heartRate: 72, bloodPressure: "120/80", temperature: 36.5, oxygenSat: 98 };
+    
+    const clinicalHistory = patientClinicalHistories[patient.document_id];
+    if (clinicalHistory) {
+      return {
+        heartRate: clinicalHistory.heart_rate || 72,
+        bloodPressure: (clinicalHistory.blood_pressure_systolic && clinicalHistory.blood_pressure_diastolic) 
+          ? `${clinicalHistory.blood_pressure_systolic}/${clinicalHistory.blood_pressure_diastolic}` 
+          : "120/80",
+        temperature: clinicalHistory.temperature || 36.5,
+        oxygenSat: clinicalHistory.oxygen_saturation || 98
+      };
+    }
+    
+    return patient.vitals;
   };
 
   if (loading) {
@@ -408,36 +459,36 @@ const Dashboard = () => {
                 <CardContent className="relative z-10 p-4">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Heart className="w-5 h-5 text-danger" />
-                        {getTrendIcon(selectedPatient.vitals.heartRate, 70)}
-                      </div>
-                      <div className="text-2xl font-bold text-primary">{selectedPatient.vitals.heartRate}</div>
-                      <div className="text-xs text-muted-foreground">BPM</div>
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Heart className="w-5 h-5 text-danger" />
+                         {getTrendIcon(getVitalSigns(selectedPatient).heartRate, 70)}
+                       </div>
+                       <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).heartRate}</div>
+                       <div className="text-xs text-muted-foreground">BPM</div>
                     </div>
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Activity className="w-5 h-5 text-accent" />
                         <Activity className="w-4 h-4 text-success" />
                       </div>
-                      <div className="text-lg font-bold text-primary">{selectedPatient.vitals.bloodPressure}</div>
-                      <div className="text-xs text-muted-foreground">mmHg</div>
+                       <div className="text-lg font-bold text-primary">{getVitalSigns(selectedPatient).bloodPressure}</div>
+                       <div className="text-xs text-muted-foreground">mmHg</div>
                     </div>
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Thermometer className="w-5 h-5 text-warning" />
-                        {getTrendIcon(selectedPatient.vitals.temperature, 36.5)}
-                      </div>
-                      <div className="text-2xl font-bold text-primary">{selectedPatient.vitals.temperature}°</div>
-                      <div className="text-xs text-muted-foreground">Celsius</div>
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Activity className="w-5 h-5 text-warning" />
+                         {getTrendIcon(getVitalSigns(selectedPatient).temperature, 36.5)}
+                       </div>
+                       <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).temperature}°</div>
+                       <div className="text-xs text-muted-foreground">Celsius</div>
                     </div>
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Activity className="w-5 h-5 text-success" />
-                        {getTrendIcon(selectedPatient.vitals.oxygenSat, 98)}
-                      </div>
-                      <div className="text-2xl font-bold text-primary">{selectedPatient.vitals.oxygenSat}%</div>
-                      <div className="text-xs text-muted-foreground">SpO2</div>
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Activity className="w-5 h-5 text-success" />
+                         {getTrendIcon(getVitalSigns(selectedPatient).oxygenSat, 98)}
+                       </div>
+                       <div className="text-2xl font-bold text-primary">{getVitalSigns(selectedPatient).oxygenSat}%</div>
+                       <div className="text-xs text-muted-foreground">SpO2</div>
                     </div>
                   </div>
                 </CardContent>
@@ -613,36 +664,36 @@ const Dashboard = () => {
                 <CardContent className="relative z-10">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Heart className="w-5 h-5 text-danger" />
-                        {getTrendIcon(selectedPatient.vitals.heartRate, 70)}
-                      </div>
-                      <div className="vital-display text-primary">{selectedPatient.vitals.heartRate}</div>
-                      <div className="metric-label">BPM</div>
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Heart className="w-5 h-5 text-danger" />
+                         {getTrendIcon(getVitalSigns(selectedPatient).heartRate, 70)}
+                       </div>
+                       <div className="vital-display text-primary">{getVitalSigns(selectedPatient).heartRate}</div>
+                       <div className="metric-label">BPM</div>
                     </div>
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
                       <div className="flex items-center justify-center gap-2 mb-2">
                         <Activity className="w-5 h-5 text-accent" />
                         <Activity className="w-4 h-4 text-success" />
                       </div>
-                      <div className="vital-display text-primary">{selectedPatient.vitals.bloodPressure}</div>
-                      <div className="metric-label">mmHg</div>
+                       <div className="vital-display text-primary">{getVitalSigns(selectedPatient).bloodPressure}</div>
+                       <div className="metric-label">mmHg</div>
                     </div>
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Thermometer className="w-5 h-5 text-warning" />
-                        {getTrendIcon(selectedPatient.vitals.temperature, 36.5)}
-                      </div>
-                      <div className="vital-display text-primary">{selectedPatient.vitals.temperature}°</div>
-                      <div className="metric-label">Celsius</div>
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Activity className="w-5 h-5 text-warning" />
+                         {getTrendIcon(getVitalSigns(selectedPatient).temperature, 36.5)}
+                       </div>
+                       <div className="vital-display text-primary">{getVitalSigns(selectedPatient).temperature}°</div>
+                       <div className="metric-label">Celsius</div>
                     </div>
                     <div className="text-center p-4 bg-background/80 backdrop-blur-sm rounded-lg border">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <Activity className="w-5 h-5 text-success" />
-                        {getTrendIcon(selectedPatient.vitals.oxygenSat, 98)}
-                      </div>
-                      <div className="vital-display text-primary">{selectedPatient.vitals.oxygenSat}%</div>
-                      <div className="metric-label">SpO2</div>
+                       <div className="flex items-center justify-center gap-2 mb-2">
+                         <Activity className="w-5 h-5 text-success" />
+                         {getTrendIcon(getVitalSigns(selectedPatient).oxygenSat, 98)}
+                       </div>
+                       <div className="vital-display text-primary">{getVitalSigns(selectedPatient).oxygenSat}%</div>
+                       <div className="metric-label">SpO2</div>
                     </div>
                   </div>
                 </CardContent>
@@ -695,7 +746,13 @@ const Dashboard = () => {
 
       <MedicalHistoryView
         isOpen={showMedicalHistory}
-        onClose={() => setShowMedicalHistory(false)}
+        onClose={() => {
+          setShowMedicalHistory(false);
+          // Reload clinical histories after potential updates
+          if (patients.length > 0) {
+            loadClinicalHistories(patients);
+          }
+        }}
         patient={selectedPatient}
       />
 

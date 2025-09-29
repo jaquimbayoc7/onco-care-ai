@@ -83,6 +83,12 @@ const clinicalHistorySchema = z.object({
   follow_up_adherence: z.enum(["Good", "Poor"]),
   recurrence: z.enum(["Yes", "No"]).optional(),
   time_to_recurrence: z.number().optional(),
+  // Signos vitales
+  heart_rate: z.number().min(30).max(250).optional(),
+  blood_pressure_systolic: z.number().min(70).max(300).optional(),
+  blood_pressure_diastolic: z.number().min(40).max(200).optional(),
+  temperature: z.number().min(30).max(45).optional(),
+  oxygen_saturation: z.number().min(50).max(100).optional(),
 });
 
 type ClinicalHistoryFormData = z.infer<typeof clinicalHistorySchema>;
@@ -136,6 +142,12 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         follow_up_adherence: clinicalHistory.follow_up_adherence,
         recurrence: clinicalHistory.recurrence,
         time_to_recurrence: clinicalHistory.time_to_recurrence,
+        // Signos vitales
+        heart_rate: clinicalHistory.heart_rate,
+        blood_pressure_systolic: clinicalHistory.blood_pressure_systolic,
+        blood_pressure_diastolic: clinicalHistory.blood_pressure_diastolic,
+        temperature: clinicalHistory.temperature,
+        oxygen_saturation: clinicalHistory.oxygen_saturation,
       });
     }
   }, [clinicalHistory, form]);
@@ -257,6 +269,12 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         follow_up_adherence: clinicalHistory.follow_up_adherence,
         recurrence: clinicalHistory.recurrence,
         time_to_recurrence: clinicalHistory.time_to_recurrence,
+        // Signos vitales
+        heart_rate: clinicalHistory.heart_rate,
+        blood_pressure_systolic: clinicalHistory.blood_pressure_systolic,
+        blood_pressure_diastolic: clinicalHistory.blood_pressure_diastolic,
+        temperature: clinicalHistory.temperature,
+        oxygen_saturation: clinicalHistory.oxygen_saturation,
       });
     }
   };
@@ -389,8 +407,9 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <Tabs defaultValue="diagnosis" className="w-full">
-                    <TabsList className="grid w-full grid-cols-4">
+                    <TabsList className="grid w-full grid-cols-5">
                       <TabsTrigger value="diagnosis">Diagnóstico</TabsTrigger>
+                      <TabsTrigger value="vitals">Signos Vitales</TabsTrigger>
                       <TabsTrigger value="lifestyle">Estilo de Vida</TabsTrigger>
                       <TabsTrigger value="treatment">Tratamiento</TabsTrigger>
                       <TabsTrigger value="follow-up">Seguimiento</TabsTrigger>
@@ -552,6 +571,190 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 <Badge variant={getBadgeVariant(clinicalHistory?.tumor_aggressiveness)}>
                                   {translateValue(clinicalHistory?.tumor_aggressiveness)}
                                 </Badge>
+                              </CardContent>
+                            </Card>
+                          </>
+                        )}
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="vitals" className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {isEditing ? (
+                          <>
+                            <FormField
+                              control={form.control}
+                              name="heart_rate"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Heart className="w-4 h-4" />
+                                    Frecuencia Cardíaca (BPM)
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      placeholder="Ej: 72"
+                                      {...field}
+                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="blood_pressure_systolic"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Activity className="w-4 h-4" />
+                                    Presión Sistólica (mmHg)
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      placeholder="Ej: 120"
+                                      {...field}
+                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="blood_pressure_diastolic"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Activity className="w-4 h-4" />
+                                    Presión Diastólica (mmHg)
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      placeholder="Ej: 80"
+                                      {...field}
+                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="temperature"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Activity className="w-4 h-4" />
+                                    Temperatura (°C)
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      step="0.1"
+                                      placeholder="Ej: 36.5"
+                                      {...field}
+                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="oxygen_saturation"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Activity className="w-4 h-4" />
+                                    Saturación O2 (%)
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      placeholder="Ej: 98"
+                                      {...field}
+                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </>
+                        ) : (
+                          <>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Heart className="w-4 h-4 text-danger" />
+                                  Frecuencia Cardíaca
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="text-center">
+                                  <div className="text-2xl font-bold text-primary">
+                                    {clinicalHistory?.heart_rate || "--"}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">BPM</div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Activity className="w-4 h-4 text-accent" />
+                                  Presión Arterial
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="text-center">
+                                  <div className="text-lg font-bold text-primary">
+                                    {clinicalHistory?.blood_pressure_systolic && clinicalHistory?.blood_pressure_diastolic
+                                      ? `${clinicalHistory.blood_pressure_systolic}/${clinicalHistory.blood_pressure_diastolic}`
+                                      : "--/--"}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">mmHg</div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Activity className="w-4 h-4 text-warning" />
+                                  Temperatura
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="text-center">
+                                  <div className="text-2xl font-bold text-primary">
+                                    {clinicalHistory?.temperature ? `${clinicalHistory.temperature}°` : "--°"}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">Celsius</div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Activity className="w-4 h-4 text-success" />
+                                  Saturación O2
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <div className="text-center">
+                                  <div className="text-2xl font-bold text-primary">
+                                    {clinicalHistory?.oxygen_saturation ? `${clinicalHistory.oxygen_saturation}%` : "--%"}
+                                  </div>
+                                  <div className="text-xs text-muted-foreground">SpO2</div>
+                                </div>
                               </CardContent>
                             </Card>
                           </>
