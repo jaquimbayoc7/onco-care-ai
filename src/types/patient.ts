@@ -40,7 +40,7 @@ export interface ClinicalHistoryCreate {
   colonoscopy_access?: 'Yes' | 'No';
   screening_regularity?: 'Regular' | 'Irregular' | 'Never';
   diet_type?: 'Vegetarian' | 'Vegan' | 'Omnivore' | 'Mediterranean' | 'Western';
-  bmi?: number | string;
+  bmi?: number;
   physical_activity_level?: 'Low' | 'Medium' | 'High';
   smoking_status?: 'Never' | 'Current' | 'Former';
   alcohol_consumption?: 'Low' | 'Medium' | 'High';
@@ -78,7 +78,7 @@ export interface ClinicalHistoryUpdate {
   colonoscopy_access?: 'Yes' | 'No';
   screening_regularity?: 'Regular' | 'Irregular' | 'Never';
   diet_type?: 'Vegetarian' | 'Vegan' | 'Omnivore' | 'Mediterranean' | 'Western';
-  bmi?: number | string;
+  bmi?: number;
   physical_activity_level?: 'Low' | 'Medium' | 'High';
   smoking_status?: 'Never' | 'Current' | 'Former';
   alcohol_consumption?: 'Low' | 'Medium' | 'High';

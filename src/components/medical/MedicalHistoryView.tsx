@@ -68,7 +68,7 @@ const clinicalHistorySchema = z.object({
   colonoscopy_access: z.enum(["Yes", "No"]).optional(),
   screening_regularity: z.enum(["Regular", "Irregular", "Never"]).optional(),
   diet_type: z.enum(["Vegetarian", "Vegan", "Omnivore", "Mediterranean", "Western"]).optional(),
-  bmi: z.union([z.number().min(10).max(60), z.string()]).optional(),
+  bmi: z.number().min(10).max(60).optional(),
   physical_activity_level: z.enum(["Low", "Medium", "High"]).optional(),
   smoking_status: z.enum(["Never", "Current", "Former"]).optional(),
   alcohol_consumption: z.enum(["Low", "Medium", "High"]).optional(),
