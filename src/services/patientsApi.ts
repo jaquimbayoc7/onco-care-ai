@@ -337,6 +337,33 @@ export class PatientsAPI {
     }
   }
 
+  // Delete clinical history by history_id
+  static async deleteClinicalHistory(historyId: number): Promise<APIResponse<void>> {
+    await delay(300);
+    
+    try {
+      const histories = getHistories();
+      const historyIndex = histories.findIndex(h => h.id === historyId);
+      
+      if (historyIndex === -1) {
+        return {
+          error: 'Clinical history not found'
+        };
+      }
+
+      histories.splice(historyIndex, 1);
+      saveHistories(histories);
+
+      return {
+        message: 'Clinical history deleted successfully'
+      };
+    } catch (error) {
+      return {
+        error: 'Failed to delete clinical history'
+      };
+    }
+  }
+
   // Auth simulation - returns mock token
   static async authenticate(email: string, password: string): Promise<APIResponse<{ token: string; user: any }>> {
     await delay(800);

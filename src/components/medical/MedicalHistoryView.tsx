@@ -31,7 +31,8 @@ import {
   Edit,
   Save,
   X,
-  Loader2
+  Loader2,
+  Trash2
 } from "lucide-react";
 import { PatientsAPI } from "@/services/patientsApi";
 import { ClinicalHistoryCreate, ClinicalHistoryRead, ClinicalHistoryUpdate } from "@/types/patient";
@@ -98,6 +99,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const { toast } = useToast();
 
   const form = useForm<ClinicalHistoryFormData>({
@@ -279,6 +281,41 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
     }
   };
 
+  const handleDeleteClinicalHistory = async () => {
+    if (!clinicalHistory) return;
+    
+    if (!confirm('¿Está seguro que desea eliminar este historial clínico? Esta acción no se puede deshacer.')) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await PatientsAPI.deleteClinicalHistory(clinicalHistory.id);
+      
+      if (response.error) {
+        toast({
+          title: "Error",
+          description: response.error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Éxito",
+          description: "Historial clínico eliminado correctamente",
+        });
+        handleClose();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Ocurrió un error inesperado",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   const getBadgeVariant = (value: string | undefined): "default" | "secondary" | "destructive" | "outline" => {
     if (!value) return "outline";
     
@@ -355,10 +392,25 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             </div>
             <div className="flex gap-2 flex-shrink-0">
               {!isEditing && (
-                <Button onClick={handleEdit} variant="outline" size="sm" className="text-xs md:text-sm">
-                  <Edit className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
-                  <span className="hidden md:inline">{clinicalHistory ? "Editar" : "Crear"}</span>
-                </Button>
+                <>
+                  <Button onClick={handleEdit} variant="outline" size="sm" className="text-xs md:text-sm">
+                    <Edit className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+                    <span className="hidden md:inline">{clinicalHistory ? "Editar" : "Crear"}</span>
+                  </Button>
+                  {clinicalHistory && (
+                    <Button
+                      onClick={handleDeleteClinicalHistory}
+                      variant="destructive"
+                      size="sm"
+                      disabled={isDeleting}
+                      className="text-xs md:text-sm"
+                    >
+                      {isDeleting && <Loader2 className="w-3 h-3 md:w-4 md:h-4 md:mr-2 animate-spin" />}
+                      <Trash2 className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+                      <span className="hidden md:inline">Eliminar</span>
+                    </Button>
+                  )}
+                </>
               )}
               {isEditing && (
                 <>

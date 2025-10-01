@@ -17,7 +17,8 @@ import {
   Plus,
   Search,
   Filter,
-  Edit
+  Edit,
+  Trash2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import AIRecommendationsModal from "@/components/modals/AIRecommendationsModal";
@@ -139,6 +140,7 @@ const Dashboard = () => {
   const [showMedicalHistory, setShowMedicalHistory] = useState(false);
   const [loading, setLoading] = useState(true);
   const [patientClinicalHistories, setPatientClinicalHistories] = useState<Record<string, ClinicalHistoryRead>>({});
+  const [deletingPatient, setDeletingPatient] = useState<string | null>(null);
   
   const [editMode, setEditMode] = useState<'create' | 'edit'>('create');
   const [editingPatient, setEditingPatient] = useState<any>(null);
@@ -273,6 +275,46 @@ const Dashboard = () => {
     setShowNewPatientForm(true);
   };
 
+  const handleDeletePatient = async (patient: UIPatient) => {
+    if (!confirm(`¿Está seguro que desea eliminar al paciente ${patient.name}? Esta acción no se puede deshacer.`)) {
+      return;
+    }
+
+    setDeletingPatient(patient.document_id);
+    try {
+      const response = await PatientsAPI.deletePatient(patient.document_id);
+      
+      if (response.error) {
+        toast({
+          title: "Error",
+          description: response.error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Éxito",
+          description: "Paciente eliminado correctamente",
+        });
+        
+        // Reload patients list
+        await loadPatients();
+        
+        // If the deleted patient was selected, clear selection
+        if (selectedPatient?.document_id === patient.document_id) {
+          setSelectedPatient(null);
+        }
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Ocurrió un error inesperado",
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingPatient(null);
+    }
+  };
+
   // Get vital signs for selected patient from clinical history
   const getVitalSigns = (patient: UIPatient | null) => {
     if (!patient) return { heartRate: 72, bloodPressure: "120/80", temperature: 36.5, oxygenSat: 98 };
@@ -395,14 +437,25 @@ const Dashboard = () => {
                         <p className="text-sm text-muted-foreground">ID: {selectedPatient.document_id}</p>
                       </div>
                     </div>
-                    <ClinicalButton 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => handleEditPatient(selectedPatient)}
-                      className="border-primary/20"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </ClinicalButton>
+                    <div className="flex items-center gap-2">
+                      <ClinicalButton 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleEditPatient(selectedPatient)}
+                        className="border-primary/20"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </ClinicalButton>
+                      <ClinicalButton 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleDeletePatient(selectedPatient)}
+                        disabled={deletingPatient === selectedPatient.document_id}
+                        className="border-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </ClinicalButton>
+                    </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -597,20 +650,30 @@ const Dashboard = () => {
                          </div>
                        </div>
                      </div>
-                     <div className="flex items-center gap-2">
-                       <Badge className={`${getStatusColor(selectedPatient.status)} text-sm px-3 py-1`}>
-                         {selectedPatient.status}
-                       </Badge>
-                       <ClinicalButton 
-                         variant="outline" 
-                         size="sm"
-                         onClick={() => handleEditPatient(selectedPatient)}
-                         className="border-primary/20"
-                       >
-                         <Edit className="w-4 h-4 mr-2" />
-                         Editar
-                       </ClinicalButton>
-                     </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={`${getStatusColor(selectedPatient.status)} text-sm px-3 py-1`}>
+                          {selectedPatient.status}
+                        </Badge>
+                        <ClinicalButton 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleEditPatient(selectedPatient)}
+                          className="border-primary/20"
+                        >
+                          <Edit className="w-4 h-4 mr-2" />
+                          Editar
+                        </ClinicalButton>
+                        <ClinicalButton 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleDeletePatient(selectedPatient)}
+                          disabled={deletingPatient === selectedPatient.document_id}
+                          className="border-destructive/20 text-destructive hover:bg-destructive hover:text-destructive-foreground"
+                        >
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Eliminar
+                        </ClinicalButton>
+                      </div>
                    </div>
                  </CardHeader>
                  <CardContent className="relative z-10">
