@@ -43,7 +43,7 @@ interface NewPatientFormProps {
 const patientSchema = z.object({
   document_id: z.string().min(1, "Document ID is required"),
   name: z.string().min(1, "Name is required"),
-  age: z.number().min(0, "Age must be positive"),
+  age: z.union([z.number().min(0, "Age must be positive"), z.nan()]).transform(val => isNaN(val) ? undefined : val).pipe(z.number().min(0, "Age must be positive")),
   gender: z.enum(['Male', 'Female', 'Other'], {
     required_error: "Gender is required",
   }),
@@ -74,7 +74,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
       return {
         document_id: editPatient.document_id || "",
         name: editPatient.name || "",
-        age: editPatient.age || 0,
+        age: editPatient.age || ("" as any),
         gender: editPatient.gender || "Male",
         race: editPatient.race || "",
         region: editPatient.region || "",
@@ -87,7 +87,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
     return {
       document_id: "",
       name: "",
-      age: 0,
+      age: "" as any,
       gender: "Male",
       race: "",
       region: "",
@@ -212,7 +212,11 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
                           type="number" 
                           placeholder="Años" 
                           {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          value={field.value || ""}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            field.onChange(value === "" ? "" : parseInt(value));
+                          }}
                         />
                       </FormControl>
                       <FormMessage />
