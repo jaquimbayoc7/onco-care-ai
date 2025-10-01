@@ -48,7 +48,7 @@ interface Treatment {
 interface AIRecommendationsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  patient: Patient;
+  patient: Patient | null;
 }
 
 const mockRecommendations: Treatment[] = [
@@ -156,6 +156,8 @@ const AIRecommendationsModal: React.FC<AIRecommendationsModalProps> = ({
     
     // Aquí iría la lógica para registrar el rechazo
   };
+
+  if (!patient) return null;
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

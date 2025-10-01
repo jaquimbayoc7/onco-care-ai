@@ -299,9 +299,11 @@ const Dashboard = () => {
         // Reload patients list
         await loadPatients();
         
-        // If the deleted patient was selected, clear selection
+        // If the deleted patient was selected, clear selection and close modals
         if (selectedPatient?.document_id === patient.document_id) {
           setSelectedPatient(null);
+          setShowAIRecommendations(false);
+          setShowMedicalHistory(false);
         }
       }
     } catch (error) {
