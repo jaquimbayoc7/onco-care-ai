@@ -68,7 +68,7 @@ const clinicalHistorySchema = z.object({
   colonoscopy_access: z.enum(["Yes", "No"]).optional(),
   screening_regularity: z.enum(["Regular", "Irregular", "Never"]).optional(),
   diet_type: z.enum(["Vegetarian", "Vegan", "Omnivore", "Mediterranean", "Western"]).optional(),
-  bmi: z.number().min(10).max(60).optional(),
+  bmi: z.number().min(10).max(60).optional().nullable(),
   physical_activity_level: z.enum(["Low", "Medium", "High"]).optional(),
   smoking_status: z.enum(["Never", "Current", "Former"]).optional(),
   alcohol_consumption: z.enum(["Low", "Medium", "High"]).optional(),
@@ -76,20 +76,20 @@ const clinicalHistorySchema = z.object({
   insurance_coverage: z.enum(["Yes", "No"]).optional(),
   time_to_diagnosis: z.enum(["Delayed", "Timely"]).optional(),
   treatment_access: z.enum(["Adequate", "Limited"]),
-  treatment_id: z.number().optional(),
+  treatment_id: z.number().optional().nullable(),
   chemotherapy_received: z.enum(["Yes", "No"]).optional(),
   radiotherapy_received: z.enum(["Yes", "No"]).optional(),
   surgery_received: z.enum(["Yes", "No"]).optional(),
   treatment_recommendation: z.string().optional(),
   follow_up_adherence: z.enum(["Good", "Poor"]),
   recurrence: z.enum(["Yes", "No"]).optional(),
-  time_to_recurrence: z.number().optional(),
+  time_to_recurrence: z.number().optional().nullable(),
   // Signos vitales
-  heart_rate: z.number().min(30).max(250).optional(),
-  blood_pressure_systolic: z.number().min(70).max(300).optional(),
-  blood_pressure_diastolic: z.number().min(40).max(200).optional(),
-  temperature: z.number().min(30).max(45).optional(),
-  oxygen_saturation: z.number().min(50).max(100).optional(),
+  heart_rate: z.number().min(30).max(250).optional().nullable(),
+  blood_pressure_systolic: z.number().min(70).max(300).optional().nullable(),
+  blood_pressure_diastolic: z.number().min(40).max(200).optional().nullable(),
+  temperature: z.number().min(30).max(45).optional().nullable(),
+  oxygen_saturation: z.number().min(50).max(100).optional().nullable(),
 });
 
 type ClinicalHistoryFormData = z.infer<typeof clinicalHistorySchema>;
@@ -177,24 +177,26 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
     const cleaned: any = {};
     
     for (const [key, value] of Object.entries(data)) {
-      // Skip undefined values
+      // Skip undefined, null values
       if (value === undefined || value === null) {
         continue;
       }
       
-      // Skip NaN values
-      if (typeof value === 'number' && isNaN(value)) {
+      // Skip NaN values (critical for numeric fields)
+      if (typeof value === 'number' && (isNaN(value) || !isFinite(value))) {
+        console.warn(`Skipping invalid numeric value for ${key}:`, value);
         continue;
       }
       
       // Skip empty strings for optional fields
-      if (value === '') {
+      if (value === '' || (typeof value === 'string' && value.trim() === '')) {
         continue;
       }
       
       cleaned[key] = value;
     }
     
+    console.log('Cleaned data for API:', cleaned);
     return cleaned;
   };
 
