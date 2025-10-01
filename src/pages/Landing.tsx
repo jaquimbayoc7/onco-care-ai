@@ -12,7 +12,8 @@ import {
   Eye,
   ArrowRight,
   Lock,
-  Mail 
+  Mail,
+  UserPlus
 } from "lucide-react";
 import heroBackground from "@/assets/hero-background.jpg";
 import doctorHero from "@/assets/doctor-hero.jpg";
@@ -23,12 +24,22 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import ForgotPasswordForm from "@/components/forms/ForgotPasswordForm";
+import { authAPI } from "@/services/authApi";
 
 const Landing = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+  
+  // Campos de registro
+  const [nombres, setNombres] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [tipoDoc, setTipoDoc] = useState("CC");
+  const [doc, setDoc] = useState("");
+  const [especialidades, setEspecialidades] = useState("");
+  
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
   const { toast } = useToast();
@@ -45,9 +56,9 @@ const Landing = () => {
     setIsLoading(true);
     
     try {
-      const success = await login(email, password);
+      const result = await login(email, password);
       
-      if (success) {
+      if (result.success) {
         toast({
           title: "Inicio de sesión exitoso",
           description: "Bienvenido al sistema OncoSímil",
@@ -56,7 +67,52 @@ const Landing = () => {
       } else {
         toast({
           title: "Error de autenticación",
-          description: "Credenciales incorrectas. Inténtalo de nuevo.",
+          description: result.error || "Credenciales incorrectas. Inténtalo de nuevo.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error de conexión",
+        description: "No se pudo conectar al servidor. Inténtalo de nuevo.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    try {
+      const { success, error } = await authAPI.register({
+        email,
+        password,
+        nombres,
+        apellidos,
+        tipo_doc: tipoDoc,
+        doc,
+        especialidades
+      });
+      
+      if (success) {
+        toast({
+          title: "Registro exitoso",
+          description: "Por favor inicia sesión con tus credenciales.",
+        });
+        // Cambiar a modo login
+        setIsRegistering(false);
+        // Limpiar campos de registro
+        setNombres("");
+        setApellidos("");
+        setDoc("");
+        setEspecialidades("");
+      } else {
+        toast({
+          title: "Error en el registro",
+          description: error || "No se pudo completar el registro. Inténtalo de nuevo.",
           variant: "destructive",
         });
       }
@@ -149,18 +205,108 @@ const Landing = () => {
                 </div>
               </div>
 
-              {/* Login Form - Compact and aligned with bottom */}
+              {/* Login/Register Form - Compact and aligned with bottom */}
               <Card className="w-full max-w-md card-elevated backdrop-blur-sm bg-background/95 rounded-2xl">
                 <CardContent className="p-6">
                   <div className="text-center mb-4">
-                    <h2 className="text-lg lg:text-xl font-bold text-primary mb-2">Acceso Clínico</h2>
-                    <p className="text-sm text-muted-foreground">Ingrese sus credenciales profesionales</p>
+                    <h2 className="text-lg lg:text-xl font-bold text-primary mb-2">
+                      {isRegistering ? "Registro Médico" : "Acceso Clínico"}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {isRegistering 
+                        ? "Complete sus datos profesionales" 
+                        : "Ingrese sus credenciales profesionales"
+                      }
+                    </p>
                   </div>
                   
-                  <form onSubmit={handleLogin} className="space-y-4">
+                  <form onSubmit={isRegistering ? handleRegister : handleLogin} className="space-y-4">
+                    {isRegistering && (
+                      <>
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="space-y-2">
+                            <Label htmlFor="nombres" className="text-sm font-medium">
+                              Nombres
+                            </Label>
+                            <Input
+                              id="nombres"
+                              type="text"
+                              placeholder="Juan"
+                              className="h-11 rounded-xl"
+                              value={nombres}
+                              onChange={(e) => setNombres(e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="apellidos" className="text-sm font-medium">
+                              Apellidos
+                            </Label>
+                            <Input
+                              id="apellidos"
+                              type="text"
+                              placeholder="Pérez"
+                              className="h-11 rounded-xl"
+                              value={apellidos}
+                              onChange={(e) => setApellidos(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="space-y-2">
+                            <Label htmlFor="tipoDoc" className="text-sm font-medium">
+                              Tipo Doc.
+                            </Label>
+                            <select
+                              id="tipoDoc"
+                              className="flex h-11 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                              value={tipoDoc}
+                              onChange={(e) => setTipoDoc(e.target.value)}
+                              required
+                            >
+                              <option value="CC">CC</option>
+                              <option value="CE">CE</option>
+                              <option value="PA">Pasaporte</option>
+                            </select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="doc" className="text-sm font-medium">
+                              Documento
+                            </Label>
+                            <Input
+                              id="doc"
+                              type="text"
+                              placeholder="12345678"
+                              className="h-11 rounded-xl"
+                              value={doc}
+                              onChange={(e) => setDoc(e.target.value)}
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label htmlFor="especialidades" className="text-sm font-medium">
+                            Especialidad
+                          </Label>
+                          <Input
+                            id="especialidades"
+                            type="text"
+                            placeholder="Oncología, Radiología..."
+                            className="h-11 rounded-xl"
+                            value={especialidades}
+                            onChange={(e) => setEspecialidades(e.target.value)}
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
+
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-sm font-medium">
-                        Email Institucional
+                        Email {isRegistering ? "Profesional" : "Institucional"}
                       </Label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
@@ -201,18 +347,43 @@ const Landing = () => {
                       className="w-full h-11 rounded-xl"
                       disabled={isLoading}
                     >
-                      {isLoading ? "Iniciando..." : "Iniciar Sesión"}
-                      <ArrowRight className="w-4 h-4" />
+                      {isLoading 
+                        ? (isRegistering ? "Registrando..." : "Iniciando...") 
+                        : (isRegistering ? "Registrarse" : "Iniciar Sesión")
+                      }
+                      {isRegistering ? <UserPlus className="w-4 h-4" /> : <ArrowRight className="w-4 h-4" />}
                     </ClinicalButton>
                   </form>
                   
-                  <div className="text-center mt-4">
-                    <button 
+                  <div className="text-center mt-4 space-y-2">
+                    {!isRegistering && (
+                      <button 
+                        type="button"
+                        onClick={() => setShowForgotPassword(true)}
+                        className="text-sm text-accent hover:underline transition-colors block w-full"
+                      >
+                        ¿Olvidó su contraseña?
+                      </button>
+                    )}
+                    
+                    <button
                       type="button"
-                      onClick={() => setShowForgotPassword(true)}
-                      className="text-sm text-accent hover:underline transition-colors"
+                      onClick={() => {
+                        setIsRegistering(!isRegistering);
+                        // Limpiar campos al cambiar
+                        setEmail("");
+                        setPassword("");
+                        setNombres("");
+                        setApellidos("");
+                        setDoc("");
+                        setEspecialidades("");
+                      }}
+                      className="text-sm text-muted-foreground hover:text-primary transition-colors"
                     >
-                      ¿Olvidó su contraseña?
+                      {isRegistering 
+                        ? "¿Ya tiene cuenta? Inicie sesión" 
+                        : "¿No tiene cuenta? Regístrese"
+                      }
                     </button>
                   </div>
 

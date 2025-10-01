@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { PatientsAPI } from '@/services/patientsApi';
+import { authAPI } from '@/services/authApi';
 
 interface User {
   id: string;
@@ -8,69 +8,107 @@ interface User {
   specialty: string;
   hospital: string;
   avatar?: string;
+  rol_id: number;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock user data
-const mockUser: User = {
-  id: "DR001",
-  name: "Dr. Ana Rodríguez",
-  email: "ana.rodriguez@hospital.com",
-  specialty: "Oncología Médica",
-  hospital: "Hospital San Rafael"
-};
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user was previously logged in
-    const storedUser = localStorage.getItem('oncosimil_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
+    const initAuth = async () => {
+      const storedUser = localStorage.getItem('oncosimil_user');
+      const token = localStorage.getItem('auth_token');
+      
+      if (storedUser && token) {
+        setUser(JSON.parse(storedUser));
+        setIsLoading(false);
+      } else if (token) {
+        // Si hay token pero no usuario, intentar obtener datos del usuario
+        const { user: userData, error } = await authAPI.getCurrentUser();
+        if (userData && !error) {
+          const userObj: User = {
+            id: userData.usuario.id,
+            email: userData.usuario.email,
+            name: `${userData.medico.nombres} ${userData.medico.apellidos}`.trim() || userData.usuario.email,
+            specialty: userData.medico.especialidades || 'Médico',
+            hospital: 'Hospital General',
+            rol_id: userData.usuario.rol_id,
+          };
+          setUser(userObj);
+          localStorage.setItem('oncosimil_user', JSON.stringify(userObj));
+        } else {
+          // Token inválido, limpiar
+          authAPI.logout();
+          localStorage.removeItem('oncosimil_user');
+        }
+        setIsLoading(false);
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    initAuth();
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
-      const result = await PatientsAPI.authenticate(email, password);
+      const { token, error } = await authAPI.login(email, password);
       
-      if (result.error) {
-        return false;
+      if (error) {
+        return { success: false, error };
       }
 
-      if (result.data) {
-        setUser(result.data.user);
-        localStorage.setItem('oncosimil_user', JSON.stringify(result.data.user));
-        localStorage.setItem('oncosimil_token', result.data.token);
-        return true;
+      if (token) {
+        // Obtener datos del usuario después del login
+        const { user: userData, error: userError } = await authAPI.getCurrentUser();
+        
+        if (userData && !userError) {
+          const userObj: User = {
+            id: userData.usuario.id,
+            email: userData.usuario.email,
+            name: `${userData.medico.nombres} ${userData.medico.apellidos}`.trim() || userData.usuario.email,
+            specialty: userData.medico.especialidades || 'Médico',
+            hospital: 'Hospital General',
+            rol_id: userData.usuario.rol_id,
+          };
+          
+          setUser(userObj);
+          localStorage.setItem('oncosimil_user', JSON.stringify(userObj));
+          return { success: true };
+        }
+        
+        return { success: false, error: userError || 'Error al obtener datos del usuario' };
       }
+      
+      return { success: false, error: 'Error desconocido' };
     } catch (error) {
-      return false;
+      return { success: false, error: 'Error de conexión' };
     }
-    
-    return false;
   };
 
   const logout = () => {
     setUser(null);
+    authAPI.logout();
     localStorage.removeItem('oncosimil_user');
-    localStorage.removeItem('oncosimil_token');
   };
 
   const value = {
     user,
     login,
     logout,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
+    isLoading
   };
 
   return (
