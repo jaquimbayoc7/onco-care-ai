@@ -521,17 +521,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Heart className="w-4 h-4" />
                                     Antecedentes Familiares
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -545,17 +545,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Shield className="w-4 h-4" />
                                     Historial de Cáncer Previo
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -569,19 +569,19 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <TrendingUp className="w-4 h-4" />
                                     Estadio al Diagnóstico *
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar estadio" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="I">Estadio I</SelectItem>
-                                      <SelectItem value="II">Estadio II</SelectItem>
-                                      <SelectItem value="III">Estadio III</SelectItem>
-                                      <SelectItem value="IV">Estadio IV</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar estadio" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="I">Estadio I</SelectItem>
+                                       <SelectItem value="II">Estadio II</SelectItem>
+                                       <SelectItem value="III">Estadio III</SelectItem>
+                                       <SelectItem value="IV">Estadio IV</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -595,18 +595,18 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Activity className="w-4 h-4" />
                                     Agresividad del Tumor *
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar nivel" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Low">Bajo</SelectItem>
-                                      <SelectItem value="Medium">Medio</SelectItem>
-                                      <SelectItem value="High">Alto</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar nivel" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Low">Bajo</SelectItem>
+                                       <SelectItem value="Medium">Medio</SelectItem>
+                                       <SelectItem value="High">Alto</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -620,17 +620,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Stethoscope className="w-4 h-4" />
                                     Acceso a Colonoscopía
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -644,18 +644,18 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Calendar className="w-4 h-4" />
                                     Regularidad de Chequeos
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Regular">Regular</SelectItem>
-                                      <SelectItem value="Irregular">Irregular</SelectItem>
-                                      <SelectItem value="Never">Nunca</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Regular">Regular</SelectItem>
+                                       <SelectItem value="Irregular">Irregular</SelectItem>
+                                       <SelectItem value="Never">Nunca</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -669,17 +669,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <CreditCard className="w-4 h-4" />
                                     Cobertura de Seguro
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -693,17 +693,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Clock className="w-4 h-4" />
                                     Tiempo al Diagnóstico
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Timely">Oportuno</SelectItem>
-                                      <SelectItem value="Delayed">Retrasado</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Timely">Oportuno</SelectItem>
+                                       <SelectItem value="Delayed">Retrasado</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1032,20 +1032,20 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Utensils className="w-4 h-4" />
                                     Tipo de Dieta
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Vegetarian">Vegetariana</SelectItem>
-                                      <SelectItem value="Vegan">Vegana</SelectItem>
-                                      <SelectItem value="Omnivore">Omnívora</SelectItem>
-                                      <SelectItem value="Mediterranean">Mediterránea</SelectItem>
-                                      <SelectItem value="Western">Occidental</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Vegetarian">Vegetariana</SelectItem>
+                                       <SelectItem value="Vegan">Vegana</SelectItem>
+                                       <SelectItem value="Omnivore">Omnívora</SelectItem>
+                                       <SelectItem value="Mediterranean">Mediterránea</SelectItem>
+                                       <SelectItem value="Western">Occidental</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1084,18 +1084,18 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Activity className="w-4 h-4" />
                                     Actividad Física
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Low">Bajo</SelectItem>
-                                      <SelectItem value="Medium">Medio</SelectItem>
-                                      <SelectItem value="High">Alto</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Low">Bajo</SelectItem>
+                                       <SelectItem value="Medium">Medio</SelectItem>
+                                       <SelectItem value="High">Alto</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1109,18 +1109,18 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Cigarette className="w-4 h-4" />
                                     Estado de Fumador
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Never">Nunca</SelectItem>
-                                      <SelectItem value="Current">Actual</SelectItem>
-                                      <SelectItem value="Former">Anterior</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Never">Nunca</SelectItem>
+                                       <SelectItem value="Current">Actual</SelectItem>
+                                       <SelectItem value="Former">Anterior</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1134,18 +1134,18 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Wine className="w-4 h-4" />
                                     Consumo de Alcohol
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Low">Bajo</SelectItem>
-                                      <SelectItem value="Medium">Medio</SelectItem>
-                                      <SelectItem value="High">Alto</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Low">Bajo</SelectItem>
+                                       <SelectItem value="Medium">Medio</SelectItem>
+                                       <SelectItem value="High">Alto</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1159,18 +1159,18 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Wheat className="w-4 h-4" />
                                     Consumo de Fibra
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Low">Bajo</SelectItem>
-                                      <SelectItem value="Medium">Medio</SelectItem>
-                                      <SelectItem value="High">Alto</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Low">Bajo</SelectItem>
+                                       <SelectItem value="Medium">Medio</SelectItem>
+                                       <SelectItem value="High">Alto</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1274,17 +1274,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Stethoscope className="w-4 h-4" />
                                     Acceso a Tratamiento *
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Adequate">Adecuado</SelectItem>
-                                      <SelectItem value="Limited">Limitado</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Adequate">Adecuado</SelectItem>
+                                       <SelectItem value="Limited">Limitado</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1298,17 +1298,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Syringe className="w-4 h-4" />
                                     Quimioterapia Recibida
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1322,17 +1322,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Zap className="w-4 h-4" />
                                     Radioterapia Recibida
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1346,17 +1346,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Scissors className="w-4 h-4" />
                                     Cirugía Recibida
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1509,17 +1509,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <RefreshCw className="w-4 h-4" />
                                     Adherencia al Seguimiento *
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Good">Buena</SelectItem>
-                                      <SelectItem value="Poor">Pobre</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Good">Buena</SelectItem>
+                                       <SelectItem value="Poor">Pobre</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}
@@ -1533,17 +1533,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <RefreshCw className="w-4 h-4" />
                                     Recurrencia
                                   </FormLabel>
-                                  <Select onValueChange={field.onChange} value={field.value}>
-                                    <FormControl>
-                                      <SelectTrigger>
-                                        <SelectValue placeholder="Seleccionar" />
-                                      </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                      <SelectItem value="Yes">Sí</SelectItem>
-                                      <SelectItem value="No">No</SelectItem>
-                                    </SelectContent>
-                                  </Select>
+                                   <Select onValueChange={field.onChange} value={field.value || ""}>
+                                     <FormControl>
+                                       <SelectTrigger>
+                                         <SelectValue placeholder="Seleccionar" />
+                                       </SelectTrigger>
+                                     </FormControl>
+                                     <SelectContent>
+                                       <SelectItem value="Yes">Sí</SelectItem>
+                                       <SelectItem value="No">No</SelectItem>
+                                     </SelectContent>
+                                   </Select>
                                   <FormMessage />
                                 </FormItem>
                               )}

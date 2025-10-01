@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -160,6 +161,9 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
             </div>
             {isEditMode ? 'Editar Paciente' : 'Nuevo Paciente'}
           </DialogTitle>
+          <DialogDescription>
+            {isEditMode ? 'Actualiza la información del paciente' : 'Registra un nuevo paciente en el sistema'}
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -229,9 +233,9 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
                   name="gender"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Género</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
+                  <FormLabel>Género</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value || ""}>
+                    <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Seleccionar género" />
                           </SelectTrigger>
@@ -280,9 +284,9 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
                   name="urban_or_rural"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Zona de Residencia</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <FormControl>
+                  <FormLabel>Zona de Residencia</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value || ""}>
+                    <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Seleccionar zona" />
                           </SelectTrigger>
