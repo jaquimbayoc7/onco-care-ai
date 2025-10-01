@@ -583,6 +583,103 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 </FormItem>
                               )}
                             />
+                            <FormField
+                              control={form.control}
+                              name="colonoscopy_access"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Stethoscope className="w-4 h-4" />
+                                    Acceso a Colonoscopía
+                                  </FormLabel>
+                                  <Select onValueChange={field.onChange} value={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Seleccionar" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Yes">Sí</SelectItem>
+                                      <SelectItem value="No">No</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="screening_regularity"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Calendar className="w-4 h-4" />
+                                    Regularidad de Chequeos
+                                  </FormLabel>
+                                  <Select onValueChange={field.onChange} value={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Seleccionar" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Regular">Regular</SelectItem>
+                                      <SelectItem value="Irregular">Irregular</SelectItem>
+                                      <SelectItem value="Never">Nunca</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="insurance_coverage"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <CreditCard className="w-4 h-4" />
+                                    Cobertura de Seguro
+                                  </FormLabel>
+                                  <Select onValueChange={field.onChange} value={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Seleccionar" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Yes">Sí</SelectItem>
+                                      <SelectItem value="No">No</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              control={form.control}
+                              name="time_to_diagnosis"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Clock className="w-4 h-4" />
+                                    Tiempo al Diagnóstico
+                                  </FormLabel>
+                                  <Select onValueChange={field.onChange} value={field.value}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Seleccionar" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      <SelectItem value="Timely">Oportuno</SelectItem>
+                                      <SelectItem value="Delayed">Retrasado</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
                           </>
                         ) : (
                           <>
@@ -638,6 +735,58 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 </Badge>
                               </CardContent>
                             </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Stethoscope className="w-4 h-4" />
+                                  Acceso a Colonoscopía
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Badge variant={getBadgeVariant(clinicalHistory?.colonoscopy_access)}>
+                                  {translateValue(clinicalHistory?.colonoscopy_access)}
+                                </Badge>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Calendar className="w-4 h-4" />
+                                  Regularidad de Chequeos
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Badge variant={getBadgeVariant(clinicalHistory?.screening_regularity)}>
+                                  {translateValue(clinicalHistory?.screening_regularity)}
+                                </Badge>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <CreditCard className="w-4 h-4" />
+                                  Cobertura de Seguro
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Badge variant={getBadgeVariant(clinicalHistory?.insurance_coverage)}>
+                                  {translateValue(clinicalHistory?.insurance_coverage)}
+                                </Badge>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Clock className="w-4 h-4" />
+                                  Tiempo al Diagnóstico
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Badge variant={getBadgeVariant(clinicalHistory?.time_to_diagnosis)}>
+                                  {translateValue(clinicalHistory?.time_to_diagnosis)}
+                                </Badge>
+                              </CardContent>
+                            </Card>
                           </>
                         )}
                       </div>
@@ -660,8 +809,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Input
                                       type="number"
                                       placeholder="Ej: 72"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseInt(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -681,8 +833,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Input
                                       type="number"
                                       placeholder="Ej: 120"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseInt(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -702,8 +857,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Input
                                       type="number"
                                       placeholder="Ej: 80"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseInt(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -724,8 +882,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                       type="number"
                                       step="0.1"
                                       placeholder="Ej: 36.5"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || undefined)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseFloat(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -745,8 +906,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Input
                                       type="number"
                                       placeholder="Ej: 98"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseInt(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -872,8 +1036,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                       type="number"
                                       step="0.1"
                                       placeholder="Ej: 25.5"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseFloat(e.target.value) || e.target.value)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseFloat(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -1166,6 +1333,30 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 </FormItem>
                               )}
                             />
+                            <FormField
+                              control={form.control}
+                              name="treatment_id"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel className="flex items-center gap-2">
+                                    <Stethoscope className="w-4 h-4" />
+                                    ID de Tratamiento
+                                  </FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      placeholder="Ej: 10"
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseInt(value));
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
                           </>
                         ) : (
                           <>
@@ -1218,6 +1409,19 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                               <CardContent>
                                 <Badge variant={getBadgeVariant(clinicalHistory?.surgery_received)}>
                                   {translateValue(clinicalHistory?.surgery_received)}
+                                </Badge>
+                              </CardContent>
+                            </Card>
+                            <Card>
+                              <CardHeader className="pb-3">
+                                <CardTitle className="flex items-center gap-2 text-base">
+                                  <Stethoscope className="w-4 h-4" />
+                                  ID de Tratamiento
+                                </CardTitle>
+                              </CardHeader>
+                              <CardContent>
+                                <Badge variant="outline">
+                                  {clinicalHistory?.treatment_id || "No especificado"}
                                 </Badge>
                               </CardContent>
                             </Card>
@@ -1329,8 +1533,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                     <Input
                                       type="number"
                                       placeholder="Ej: 12"
-                                      {...field}
-                                      onChange={(e) => field.onChange(parseInt(e.target.value) || undefined)}
+                                      value={field.value ?? ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === '' ? undefined : parseInt(value));
+                                      }}
                                     />
                                   </FormControl>
                                   <FormMessage />
