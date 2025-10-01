@@ -172,6 +172,32 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
     }
   };
 
+  // Helper function to clean data before sending to API
+  const cleanDataForAPI = (data: any) => {
+    const cleaned: any = {};
+    
+    for (const [key, value] of Object.entries(data)) {
+      // Skip undefined values
+      if (value === undefined || value === null) {
+        continue;
+      }
+      
+      // Skip NaN values
+      if (typeof value === 'number' && isNaN(value)) {
+        continue;
+      }
+      
+      // Skip empty strings for optional fields
+      if (value === '') {
+        continue;
+      }
+      
+      cleaned[key] = value;
+    }
+    
+    return cleaned;
+  };
+
   const onSubmit = async (data: ClinicalHistoryFormData) => {
     if (!patient) return;
     
@@ -179,7 +205,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
     try {
       if (clinicalHistory) {
         // Update existing clinical history
-        const updateData: ClinicalHistoryUpdate = data;
+        const updateData = cleanDataForAPI(data) as ClinicalHistoryUpdate;
         const response = await PatientsAPI.updateClinicalHistory(patient.document_id, updateData);
         
         if (response.error) {
@@ -198,15 +224,15 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         }
       } else {
         // Create new clinical history
-        const createData: ClinicalHistoryCreate = {
+        const cleanedData = cleanDataForAPI({
           document_id: patient.document_id,
           stage_at_diagnosis: data.stage_at_diagnosis,
           tumor_aggressiveness: data.tumor_aggressiveness,
           treatment_access: data.treatment_access,
           follow_up_adherence: data.follow_up_adherence,
           ...data
-        };
-        const response = await PatientsAPI.createClinicalHistory(createData);
+        });
+        const response = await PatientsAPI.createClinicalHistory(cleanedData as ClinicalHistoryCreate);
         
         if (response.error) {
           toast({
