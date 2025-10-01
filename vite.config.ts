@@ -14,6 +14,11 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/patients-api': {
+        target: 'https://patientoncoassist.onrender.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/patients-api/, ''),
+      },
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
