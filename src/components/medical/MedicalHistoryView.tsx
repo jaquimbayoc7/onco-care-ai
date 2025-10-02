@@ -84,7 +84,7 @@ const clinicalHistorySchema = z.object({
   chemotherapy_received: z.enum(["Yes", "No"]).optional(),
   radiotherapy_received: z.enum(["Yes", "No"]).optional(),
   surgery_received: z.enum(["Yes", "No"]).optional(),
-  treatment_recommendation: z.string().optional().or(z.literal('')),
+  treatment_recommendation: z.string().default("T2"),
   follow_up_adherence: z.enum(["Good", "Poor"]),
   recurrence: z.enum(["Yes", "No"]).optional(),
   time_to_recurrence: z.number().optional(),
@@ -138,7 +138,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         chemotherapy_received: clinicalHistory.chemotherapy_received,
         radiotherapy_received: clinicalHistory.radiotherapy_received,
         surgery_received: clinicalHistory.surgery_received,
-        treatment_recommendation: clinicalHistory.treatment_recommendation,
+        treatment_recommendation: clinicalHistory.treatment_recommendation || "T2",
         follow_up_adherence: clinicalHistory.follow_up_adherence,
         recurrence: clinicalHistory.recurrence,
         time_to_recurrence: clinicalHistory.time_to_recurrence,
@@ -310,7 +310,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         chemotherapy_received: clinicalHistory.chemotherapy_received,
         radiotherapy_received: clinicalHistory.radiotherapy_received,
         surgery_received: clinicalHistory.surgery_received,
-        treatment_recommendation: clinicalHistory.treatment_recommendation,
+        treatment_recommendation: clinicalHistory.treatment_recommendation || "T2",
         follow_up_adherence: clinicalHistory.follow_up_adherence,
         recurrence: clinicalHistory.recurrence,
         time_to_recurrence: clinicalHistory.time_to_recurrence,
@@ -1277,7 +1277,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                       className="resize-none bg-muted"
                                       readOnly
                                       disabled
-                                      value={field.value || ''}
+                                      value={field.value || 'T2'}
                                       onChange={field.onChange}
                                     />
                                   </FormControl>
