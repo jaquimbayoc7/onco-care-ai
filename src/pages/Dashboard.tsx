@@ -636,20 +636,20 @@ const Dashboard = () => {
                        <div>
                          <CardTitle className="text-2xl font-bold">{selectedPatient.name}</CardTitle>
                          <p className="text-muted-foreground">ID: {selectedPatient.document_id}</p>
-                         <div className="flex items-center gap-4 mt-2">
-                           <span className="flex items-center gap-1 text-sm">
-                             <User className="w-4 h-4" />
-                             {selectedPatient.age} años, {selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}
-                           </span>
-                           <span className="flex items-center gap-1 text-sm">
-                             <MapPin className="w-4 h-4" />
-                             {selectedPatient.region}
-                           </span>
-                           <span className="flex items-center gap-1 text-sm">
-                             <Phone className="w-4 h-4" />
-                             {selectedPatient.phone}
-                           </span>
-                         </div>
+                          <div className="flex items-center gap-4 mt-2">
+                            <span key="age-gender" className="flex items-center gap-1 text-sm">
+                              <User className="w-4 h-4" />
+                              {selectedPatient.age} años, {selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}
+                            </span>
+                            <span key="region" className="flex items-center gap-1 text-sm">
+                              <MapPin className="w-4 h-4" />
+                              {selectedPatient.region}
+                            </span>
+                            <span key="phone" className="flex items-center gap-1 text-sm">
+                              <Phone className="w-4 h-4" />
+                              {selectedPatient.phone}
+                            </span>
+                          </div>
                        </div>
                      </div>
                       <div className="flex items-center gap-2">
