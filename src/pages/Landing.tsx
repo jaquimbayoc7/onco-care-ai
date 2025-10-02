@@ -420,7 +420,7 @@ const Landing = () => {
             </p>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
             {/* Feature 1 - Vista 360° */}
             <Card className="card-clinical group overflow-hidden relative ai-enhanced hover:shadow-2xl transition-all duration-300">
               <div className="absolute inset-0 opacity-10 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
