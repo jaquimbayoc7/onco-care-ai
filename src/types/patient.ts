@@ -40,7 +40,7 @@ export interface ClinicalHistoryCreate {
   colonoscopy_access?: 'Yes' | 'No';
   screening_regularity?: 'Regular' | 'Irregular' | 'Never';
   diet_type?: 'Vegetarian' | 'Vegan' | 'Omnivore' | 'Mediterranean' | 'Western';
-  bmi?: number;
+  bmi?: number | string; // Backend requires string to avoid Decimal serialization error
   physical_activity_level?: 'Low' | 'Medium' | 'High';
   smoking_status?: 'Never' | 'Current' | 'Former';
   alcohol_consumption?: 'Low' | 'Medium' | 'High';
@@ -68,7 +68,7 @@ export interface ClinicalHistoryRead extends ClinicalHistoryCreate {
   id: number;
   created: string;
   edited: string;
-  bmi?: number;
+  bmi?: number | string;
 }
 
 export interface ClinicalHistoryUpdate {
@@ -79,7 +79,7 @@ export interface ClinicalHistoryUpdate {
   colonoscopy_access?: 'Yes' | 'No';
   screening_regularity?: 'Regular' | 'Irregular' | 'Never';
   diet_type?: 'Vegetarian' | 'Vegan' | 'Omnivore' | 'Mediterranean' | 'Western';
-  bmi?: number;
+  bmi?: number | string; // Backend requires string to avoid Decimal serialization error
   physical_activity_level?: 'Low' | 'Medium' | 'High';
   smoking_status?: 'Never' | 'Current' | 'Former';
   alcohol_consumption?: 'Low' | 'Medium' | 'High';

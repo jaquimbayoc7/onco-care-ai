@@ -122,7 +122,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         colonoscopy_access: clinicalHistory.colonoscopy_access,
         screening_regularity: clinicalHistory.screening_regularity,
         diet_type: clinicalHistory.diet_type,
-        bmi: clinicalHistory.bmi,
+        bmi: clinicalHistory.bmi ? (typeof clinicalHistory.bmi === 'string' ? parseFloat(clinicalHistory.bmi) : clinicalHistory.bmi) : undefined,
         physical_activity_level: clinicalHistory.physical_activity_level,
         smoking_status: clinicalHistory.smoking_status,
         alcohol_consumption: clinicalHistory.alcohol_consumption,
@@ -181,12 +181,16 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         continue;
       }
       
-      // Convert numeric fields to integers (avoid Decimal serialization issues)
+      // Convert numeric fields (backend has Decimal serialization issues, send as strings where needed)
       if (typeof value === 'number') {
+        // BMI must be sent as STRING to avoid backend Decimal serialization error
+        if (key === 'bmi') {
+          cleaned[key] = Math.round(value).toString();
+        }
         // These fields should be sent as integers
-        if (key === 'bmi' || key === 'time_to_recurrence' || key === 'treatment_id' || 
-            key === 'heart_rate' || key === 'blood_pressure_systolic' || 
-            key === 'blood_pressure_diastolic' || key === 'oxygen_saturation') {
+        else if (key === 'time_to_recurrence' || key === 'treatment_id' || 
+                 key === 'heart_rate' || key === 'blood_pressure_systolic' || 
+                 key === 'blood_pressure_diastolic' || key === 'oxygen_saturation') {
           cleaned[key] = parseInt(value.toString(), 10);
         } 
         // Temperature can have decimals
