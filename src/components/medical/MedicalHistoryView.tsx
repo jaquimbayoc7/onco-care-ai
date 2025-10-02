@@ -122,7 +122,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         colonoscopy_access: clinicalHistory.colonoscopy_access,
         screening_regularity: clinicalHistory.screening_regularity,
         diet_type: clinicalHistory.diet_type,
-        bmi: clinicalHistory.bmi ? (typeof clinicalHistory.bmi === 'string' ? parseFloat(clinicalHistory.bmi) : clinicalHistory.bmi) : undefined,
+        bmi: clinicalHistory.bmi,
         physical_activity_level: clinicalHistory.physical_activity_level,
         smoking_status: clinicalHistory.smoking_status,
         alcohol_consumption: clinicalHistory.alcohol_consumption,
@@ -183,12 +183,8 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
       
       // Convert fields to proper types for API
       if (typeof value === 'number') {
-        // BMI should be sent as string to avoid serialization issues
-        if (key === 'bmi') {
-          cleaned[key] = Math.round(value).toString();
-        } 
-        // Treatment_id and time_to_recurrence should be integers
-        else if (key === 'time_to_recurrence' || key === 'treatment_id') {
+        // BMI, treatment_id and time_to_recurrence must be integers
+        if (key === 'bmi' || key === 'time_to_recurrence' || key === 'treatment_id') {
           cleaned[key] = Math.round(value);
         } else {
           cleaned[key] = value;

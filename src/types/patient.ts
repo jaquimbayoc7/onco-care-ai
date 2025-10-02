@@ -40,7 +40,7 @@ export interface ClinicalHistoryCreate {
   colonoscopy_access?: 'Yes' | 'No';
   screening_regularity?: 'Regular' | 'Irregular' | 'Never';
   diet_type?: 'Vegetarian' | 'Vegan' | 'Omnivore' | 'Mediterranean' | 'Western';
-  bmi?: number | string; // API accepts both number and string
+  bmi?: number;
   physical_activity_level?: 'Low' | 'Medium' | 'High';
   smoking_status?: 'Never' | 'Current' | 'Former';
   alcohol_consumption?: 'Low' | 'Medium' | 'High';
@@ -68,7 +68,7 @@ export interface ClinicalHistoryRead extends ClinicalHistoryCreate {
   id: number;
   created: string;
   edited: string;
-  bmi?: string; // API returns BMI as string
+  bmi?: number;
 }
 
 export interface ClinicalHistoryUpdate {
@@ -79,7 +79,7 @@ export interface ClinicalHistoryUpdate {
   colonoscopy_access?: 'Yes' | 'No';
   screening_regularity?: 'Regular' | 'Irregular' | 'Never';
   diet_type?: 'Vegetarian' | 'Vegan' | 'Omnivore' | 'Mediterranean' | 'Western';
-  bmi?: number | string; // API accepts both number and string
+  bmi?: number;
   physical_activity_level?: 'Low' | 'Medium' | 'High';
   smoking_status?: 'Never' | 'Current' | 'Former';
   alcohol_consumption?: 'Low' | 'Medium' | 'High';
