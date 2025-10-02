@@ -181,7 +181,16 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         continue;
       }
       
-      cleaned[key] = value;
+      // Convert numeric fields to integers to ensure proper JSON serialization
+      if (typeof value === 'number') {
+        if (key === 'bmi' || key === 'time_to_recurrence' || key === 'treatment_id') {
+          cleaned[key] = Math.round(value);
+        } else {
+          cleaned[key] = value;
+        }
+      } else {
+        cleaned[key] = value;
+      }
     }
     
     console.log('Cleaned data for API:', cleaned);
