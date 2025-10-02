@@ -496,61 +496,6 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             ) : (
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
-                  {/* Datos Relevantes del Historial Clínico */}
-                  {!isEditing && clinicalHistory && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <FileText className="h-5 w-5 text-primary" />
-                          Datos Clínicos Relevantes
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                            <div className="text-sm text-muted-foreground font-medium">Estadio al Diagnóstico</div>
-                            <div className="text-lg font-semibold">
-                              {clinicalHistory.stage_at_diagnosis ? `Estadio ${clinicalHistory.stage_at_diagnosis}` : 'No especificado'}
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                            <div className="text-sm text-muted-foreground font-medium">IMC (BMI)</div>
-                            <div className="text-lg font-semibold">
-                              {clinicalHistory.bmi ? `${clinicalHistory.bmi} kg/m²` : 'No registrado'}
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                            <div className="text-sm text-muted-foreground font-medium">Recurrencia</div>
-                            <div className="text-lg font-semibold">
-                              {clinicalHistory.recurrence === 'Yes' ? (
-                                <span className="text-destructive">Positiva</span>
-                              ) : clinicalHistory.recurrence === 'No' ? (
-                                <span className="text-green-600">Negativa</span>
-                              ) : (
-                                'No evaluada'
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                            <div className="text-sm text-muted-foreground font-medium">Adherencia al Seguimiento</div>
-                            <div className="text-lg font-semibold">
-                              {clinicalHistory.follow_up_adherence === 'Good' ? (
-                                <span className="text-green-600">Buena</span>
-                              ) : clinicalHistory.follow_up_adherence === 'Poor' ? (
-                                <span className="text-amber-600">Pobre</span>
-                              ) : (
-                                'No evaluada'
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
-
                   <Tabs defaultValue="diagnosis" className="w-full">
                     <div className="w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
                       <TabsList className="inline-flex md:grid w-auto md:w-full md:grid-cols-4 h-auto">
