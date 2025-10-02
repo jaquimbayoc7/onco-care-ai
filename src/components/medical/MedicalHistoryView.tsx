@@ -496,124 +496,59 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             ) : (
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
-                  {/* Signos Vitales y Datos Relevantes - Solo Vista */}
+                  {/* Datos Relevantes del Historial Clínico */}
                   {!isEditing && clinicalHistory && (
-                    <div className="space-y-4">
-                      {/* Signos Vitales Actuales */}
-                      {(clinicalHistory.heart_rate || clinicalHistory.blood_pressure_systolic || 
-                        clinicalHistory.temperature || clinicalHistory.oxygen_saturation) && (
-                        <Card>
-                          <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                              <Activity className="h-5 w-5 text-primary" />
-                              Signos Vitales Actuales
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                              <div className="space-y-2">
-                                <div className="text-sm text-muted-foreground flex items-center gap-2">
-                                  <Heart className="h-4 w-4" />
-                                  Frecuencia Cardíaca
-                                </div>
-                                <div className="text-2xl font-bold text-primary">
-                                  {clinicalHistory.heart_rate || '--'} 
-                                  <span className="text-sm font-normal text-muted-foreground ml-1">bpm</span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-2">
-                                <div className="text-sm text-muted-foreground flex items-center gap-2">
-                                  <Droplet className="h-4 w-4" />
-                                  Presión Arterial
-                                </div>
-                                <div className="text-2xl font-bold text-primary">
-                                  {clinicalHistory.blood_pressure_systolic && clinicalHistory.blood_pressure_diastolic 
-                                    ? `${clinicalHistory.blood_pressure_systolic}/${clinicalHistory.blood_pressure_diastolic}`
-                                    : '--'} 
-                                  <span className="text-sm font-normal text-muted-foreground ml-1">mmHg</span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-2">
-                                <div className="text-sm text-muted-foreground flex items-center gap-2">
-                                  <Thermometer className="h-4 w-4" />
-                                  Temperatura
-                                </div>
-                                <div className="text-2xl font-bold text-primary">
-                                  {clinicalHistory.temperature || '--'} 
-                                  <span className="text-sm font-normal text-muted-foreground ml-1">°C</span>
-                                </div>
-                              </div>
-
-                              <div className="space-y-2">
-                                <div className="text-sm text-muted-foreground flex items-center gap-2">
-                                  <Wind className="h-4 w-4" />
-                                  Saturación O₂
-                                </div>
-                                <div className="text-2xl font-bold text-primary">
-                                  {clinicalHistory.oxygen_saturation || '--'} 
-                                  <span className="text-sm font-normal text-muted-foreground ml-1">%</span>
-                                </div>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      )}
-
-                      {/* Datos Relevantes del Historial Clínico */}
-                      <Card>
-                        <CardHeader>
-                          <CardTitle className="flex items-center gap-2">
-                            <FileText className="h-5 w-5 text-primary" />
-                            Datos Clínicos Relevantes
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                              <div className="text-sm text-muted-foreground font-medium">Estadio al Diagnóstico</div>
-                              <div className="text-lg font-semibold">
-                                {clinicalHistory.stage_at_diagnosis ? `Estadio ${clinicalHistory.stage_at_diagnosis}` : 'No especificado'}
-                              </div>
-                            </div>
-
-                            <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                              <div className="text-sm text-muted-foreground font-medium">IMC (BMI)</div>
-                              <div className="text-lg font-semibold">
-                                {clinicalHistory.bmi ? `${clinicalHistory.bmi} kg/m²` : 'No registrado'}
-                              </div>
-                            </div>
-
-                            <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                              <div className="text-sm text-muted-foreground font-medium">Recurrencia</div>
-                              <div className="text-lg font-semibold">
-                                {clinicalHistory.recurrence === 'Yes' ? (
-                                  <span className="text-destructive">Positiva</span>
-                                ) : clinicalHistory.recurrence === 'No' ? (
-                                  <span className="text-green-600">Negativa</span>
-                                ) : (
-                                  'No evaluada'
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
-                              <div className="text-sm text-muted-foreground font-medium">Adherencia al Seguimiento</div>
-                              <div className="text-lg font-semibold">
-                                {clinicalHistory.follow_up_adherence === 'Good' ? (
-                                  <span className="text-green-600">Buena</span>
-                                ) : clinicalHistory.follow_up_adherence === 'Poor' ? (
-                                  <span className="text-amber-600">Pobre</span>
-                                ) : (
-                                  'No evaluada'
-                                )}
-                              </div>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <FileText className="h-5 w-5 text-primary" />
+                          Datos Clínicos Relevantes
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
+                            <div className="text-sm text-muted-foreground font-medium">Estadio al Diagnóstico</div>
+                            <div className="text-lg font-semibold">
+                              {clinicalHistory.stage_at_diagnosis ? `Estadio ${clinicalHistory.stage_at_diagnosis}` : 'No especificado'}
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    </div>
+
+                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
+                            <div className="text-sm text-muted-foreground font-medium">IMC (BMI)</div>
+                            <div className="text-lg font-semibold">
+                              {clinicalHistory.bmi ? `${clinicalHistory.bmi} kg/m²` : 'No registrado'}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
+                            <div className="text-sm text-muted-foreground font-medium">Recurrencia</div>
+                            <div className="text-lg font-semibold">
+                              {clinicalHistory.recurrence === 'Yes' ? (
+                                <span className="text-destructive">Positiva</span>
+                              ) : clinicalHistory.recurrence === 'No' ? (
+                                <span className="text-green-600">Negativa</span>
+                              ) : (
+                                'No evaluada'
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="space-y-2 p-4 rounded-lg bg-muted/50 border">
+                            <div className="text-sm text-muted-foreground font-medium">Adherencia al Seguimiento</div>
+                            <div className="text-lg font-semibold">
+                              {clinicalHistory.follow_up_adherence === 'Good' ? (
+                                <span className="text-green-600">Buena</span>
+                              ) : clinicalHistory.follow_up_adherence === 'Poor' ? (
+                                <span className="text-amber-600">Pobre</span>
+                              ) : (
+                                'No evaluada'
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   )}
 
                   <Tabs defaultValue="diagnosis" className="w-full">
