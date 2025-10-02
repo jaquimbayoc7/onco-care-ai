@@ -68,7 +68,7 @@ const clinicalHistorySchema = z.object({
   colonoscopy_access: z.enum(["Yes", "No"]).optional(),
   screening_regularity: z.enum(["Regular", "Irregular", "Never"]).optional(),
   diet_type: z.enum(["Vegetarian", "Vegan", "Omnivore", "Mediterranean", "Western"]).optional(),
-  bmi: z.number().min(10).max(60).optional().nullable(),
+  bmi: z.number().min(10).max(60).optional(),
   physical_activity_level: z.enum(["Low", "Medium", "High"]).optional(),
   smoking_status: z.enum(["Never", "Current", "Former"]).optional(),
   alcohol_consumption: z.enum(["Low", "Medium", "High"]).optional(),
@@ -76,20 +76,14 @@ const clinicalHistorySchema = z.object({
   insurance_coverage: z.enum(["Yes", "No"]).optional(),
   time_to_diagnosis: z.enum(["Delayed", "Timely"]).optional(),
   treatment_access: z.enum(["Adequate", "Limited"]),
-  treatment_id: z.number().optional().nullable(),
+  treatment_id: z.number().optional(),
   chemotherapy_received: z.enum(["Yes", "No"]).optional(),
   radiotherapy_received: z.enum(["Yes", "No"]).optional(),
   surgery_received: z.enum(["Yes", "No"]).optional(),
   treatment_recommendation: z.string().optional(),
   follow_up_adherence: z.enum(["Good", "Poor"]),
   recurrence: z.enum(["Yes", "No"]).optional(),
-  time_to_recurrence: z.number().optional().nullable(),
-  // Signos vitales
-  heart_rate: z.number().min(30).max(250).optional().nullable(),
-  blood_pressure_systolic: z.number().min(70).max(300).optional().nullable(),
-  blood_pressure_diastolic: z.number().min(40).max(200).optional().nullable(),
-  temperature: z.number().min(30).max(45).optional().nullable(),
-  oxygen_saturation: z.number().min(50).max(100).optional().nullable(),
+  time_to_recurrence: z.number().optional(),
 });
 
 type ClinicalHistoryFormData = z.infer<typeof clinicalHistorySchema>;
@@ -144,12 +138,6 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         follow_up_adherence: clinicalHistory.follow_up_adherence,
         recurrence: clinicalHistory.recurrence,
         time_to_recurrence: clinicalHistory.time_to_recurrence,
-        // Signos vitales
-        heart_rate: clinicalHistory.heart_rate,
-        blood_pressure_systolic: clinicalHistory.blood_pressure_systolic,
-        blood_pressure_diastolic: clinicalHistory.blood_pressure_diastolic,
-        temperature: clinicalHistory.temperature,
-        oxygen_saturation: clinicalHistory.oxygen_saturation,
       });
     }
   }, [clinicalHistory, form]);
@@ -299,12 +287,6 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         follow_up_adherence: clinicalHistory.follow_up_adherence,
         recurrence: clinicalHistory.recurrence,
         time_to_recurrence: clinicalHistory.time_to_recurrence,
-        // Signos vitales
-        heart_rate: clinicalHistory.heart_rate,
-        blood_pressure_systolic: clinicalHistory.blood_pressure_systolic,
-        blood_pressure_diastolic: clinicalHistory.blood_pressure_diastolic,
-        temperature: clinicalHistory.temperature,
-        oxygen_saturation: clinicalHistory.oxygen_saturation,
       });
     }
   };
@@ -489,12 +471,9 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                   <Tabs defaultValue="diagnosis" className="w-full">
                     <div className="w-full overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
-                      <TabsList className="inline-flex md:grid w-auto md:w-full md:grid-cols-5 h-auto">
+                      <TabsList className="inline-flex md:grid w-auto md:w-full md:grid-cols-4 h-auto">
                         <TabsTrigger value="diagnosis" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
                           Diagnóstico
-                        </TabsTrigger>
-                        <TabsTrigger value="vitals" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
-                          Signos Vitales
                         </TabsTrigger>
                         <TabsTrigger value="lifestyle" className="text-xs md:text-sm whitespace-nowrap px-3 md:px-4">
                           Estilo de Vida
@@ -813,205 +792,6 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 <Badge variant={getBadgeVariant(clinicalHistory?.time_to_diagnosis)}>
                                   {translateValue(clinicalHistory?.time_to_diagnosis)}
                                 </Badge>
-                              </CardContent>
-                            </Card>
-                          </>
-                        )}
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="vitals" className="space-y-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {isEditing ? (
-                          <>
-                            <FormField
-                              control={form.control}
-                              name="heart_rate"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="flex items-center gap-2">
-                                    <Heart className="w-4 h-4" />
-                                    Frecuencia Cardíaca (BPM)
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      placeholder="Ej: 72"
-                                      value={field.value ?? ''}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value === '' ? undefined : parseInt(value));
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="blood_pressure_systolic"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="flex items-center gap-2">
-                                    <Activity className="w-4 h-4" />
-                                    Presión Sistólica (mmHg)
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      placeholder="Ej: 120"
-                                      value={field.value ?? ''}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value === '' ? undefined : parseInt(value));
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="blood_pressure_diastolic"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="flex items-center gap-2">
-                                    <Activity className="w-4 h-4" />
-                                    Presión Diastólica (mmHg)
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      placeholder="Ej: 80"
-                                      value={field.value ?? ''}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value === '' ? undefined : parseInt(value));
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="temperature"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="flex items-center gap-2">
-                                    <Activity className="w-4 h-4" />
-                                    Temperatura (°C)
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      step="0.1"
-                                      placeholder="Ej: 36.5"
-                                      value={field.value ?? ''}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value === '' ? undefined : parseFloat(value));
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                            <FormField
-                              control={form.control}
-                              name="oxygen_saturation"
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormLabel className="flex items-center gap-2">
-                                    <Activity className="w-4 h-4" />
-                                    Saturación O2 (%)
-                                  </FormLabel>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      placeholder="Ej: 98"
-                                      value={field.value ?? ''}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value === '' ? undefined : parseInt(value));
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormMessage />
-                                </FormItem>
-                              )}
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <Card>
-                              <CardHeader className="pb-3">
-                                <CardTitle className="flex items-center gap-2 text-base">
-                                  <Heart className="w-4 h-4 text-danger" />
-                                  Frecuencia Cardíaca
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <div className="text-center">
-                                  <div className="text-2xl font-bold text-primary">
-                                    {clinicalHistory?.heart_rate || "--"}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">BPM</div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                            <Card>
-                              <CardHeader className="pb-3">
-                                <CardTitle className="flex items-center gap-2 text-base">
-                                  <Activity className="w-4 h-4 text-accent" />
-                                  Presión Arterial
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <div className="text-center">
-                                  <div className="text-lg font-bold text-primary">
-                                    {clinicalHistory?.blood_pressure_systolic && clinicalHistory?.blood_pressure_diastolic
-                                      ? `${clinicalHistory.blood_pressure_systolic}/${clinicalHistory.blood_pressure_diastolic}`
-                                      : "--/--"}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">mmHg</div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                            <Card>
-                              <CardHeader className="pb-3">
-                                <CardTitle className="flex items-center gap-2 text-base">
-                                  <Activity className="w-4 h-4 text-warning" />
-                                  Temperatura
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <div className="text-center">
-                                  <div className="text-2xl font-bold text-primary">
-                                    {clinicalHistory?.temperature ? `${clinicalHistory.temperature}°` : "--°"}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">Celsius</div>
-                                </div>
-                              </CardContent>
-                            </Card>
-                            <Card>
-                              <CardHeader className="pb-3">
-                                <CardTitle className="flex items-center gap-2 text-base">
-                                  <Activity className="w-4 h-4 text-success" />
-                                  Saturación O2
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <div className="text-center">
-                                  <div className="text-2xl font-bold text-primary">
-                                    {clinicalHistory?.oxygen_saturation ? `${clinicalHistory.oxygen_saturation}%` : "--%"}
-                                  </div>
-                                  <div className="text-xs text-muted-foreground">SpO2</div>
-                                </div>
                               </CardContent>
                             </Card>
                           </>
