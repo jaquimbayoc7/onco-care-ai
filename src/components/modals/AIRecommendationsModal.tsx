@@ -130,31 +130,53 @@ const AIRecommendationsModal: React.FC<AIRecommendationsModalProps> = ({
     }));
   };
 
-  const handleAcceptRecommendation = (treatmentId: string) => {
+  const handleAcceptRecommendation = async (treatmentId: string) => {
     const treatment = getCurrentTreatment(treatmentId);
-    console.log(`Recomendación aceptada: ${treatmentId} para paciente ${patient.id}`);
+    console.log(`Recomendación aceptada: ${treatmentId} para paciente ${patient?.id}`);
     
-    toast({
-      title: "Recomendación aceptada",
-      description: `El tratamiento "${treatment.name}" ha sido aceptado y se creará el plan terapéutico`,
-      duration: 5000,
-    });
-    
-    // Aquí iría la lógica para crear el plan de tratamiento
+    try {
+      // TODO: Implementar llamada al API cuando esté disponible
+      // await PatientsAPI.acceptTreatmentRecommendation(patient.document_id, treatmentId);
+      
+      toast({
+        title: "Recomendación aceptada",
+        description: `El tratamiento "${treatment.name}" ha sido aceptado y se creará el plan terapéutico`,
+        duration: 5000,
+      });
+    } catch (error) {
+      console.error('Error al aceptar recomendación:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo aceptar la recomendación. Intente nuevamente.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
-  const handleRejectRecommendation = (treatmentId: string) => {
+  const handleRejectRecommendation = async (treatmentId: string) => {
     const treatment = getCurrentTreatment(treatmentId);
     console.log(`Recomendación rechazada: ${treatmentId}`);
     
-    toast({
-      title: "Recomendación rechazada",
-      description: `El tratamiento "${treatment.name}" ha sido rechazado y se registrará en el historial`,
-      variant: "destructive",
-      duration: 5000,
-    });
-    
-    // Aquí iría la lógica para registrar el rechazo
+    try {
+      // TODO: Implementar llamada al API cuando esté disponible
+      // await PatientsAPI.rejectTreatmentRecommendation(patient.document_id, treatmentId);
+      
+      toast({
+        title: "Recomendación rechazada",
+        description: `El tratamiento "${treatment.name}" ha sido rechazado y se registrará en el historial`,
+        variant: "destructive",
+        duration: 5000,
+      });
+    } catch (error) {
+      console.error('Error al rechazar recomendación:', error);
+      toast({
+        title: "Error",
+        description: "No se pudo rechazar la recomendación. Intente nuevamente.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   if (!patient) return null;

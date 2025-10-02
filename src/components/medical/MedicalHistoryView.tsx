@@ -122,7 +122,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         colonoscopy_access: clinicalHistory.colonoscopy_access,
         screening_regularity: clinicalHistory.screening_regularity,
         diet_type: clinicalHistory.diet_type,
-        bmi: clinicalHistory.bmi,
+        bmi: clinicalHistory.bmi ? (typeof clinicalHistory.bmi === 'string' ? parseFloat(clinicalHistory.bmi) : clinicalHistory.bmi) : undefined,
         physical_activity_level: clinicalHistory.physical_activity_level,
         smoking_status: clinicalHistory.smoking_status,
         alcohol_consumption: clinicalHistory.alcohol_consumption,
@@ -181,9 +181,14 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         continue;
       }
       
-      // Convert numeric fields to integers to ensure proper JSON serialization
+      // Convert fields to proper types for API
       if (typeof value === 'number') {
-        if (key === 'bmi' || key === 'time_to_recurrence' || key === 'treatment_id') {
+        // BMI should be sent as string to avoid serialization issues
+        if (key === 'bmi') {
+          cleaned[key] = Math.round(value).toString();
+        } 
+        // Treatment_id and time_to_recurrence should be integers
+        else if (key === 'time_to_recurrence' || key === 'treatment_id') {
           cleaned[key] = Math.round(value);
         } else {
           cleaned[key] = value;
@@ -280,7 +285,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         colonoscopy_access: clinicalHistory.colonoscopy_access,
         screening_regularity: clinicalHistory.screening_regularity,
         diet_type: clinicalHistory.diet_type,
-        bmi: clinicalHistory.bmi,
+        bmi: clinicalHistory.bmi ? (typeof clinicalHistory.bmi === 'string' ? parseFloat(clinicalHistory.bmi) : clinicalHistory.bmi) : undefined,
         physical_activity_level: clinicalHistory.physical_activity_level,
         smoking_status: clinicalHistory.smoking_status,
         alcohol_consumption: clinicalHistory.alcohol_consumption,
