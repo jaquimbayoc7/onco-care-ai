@@ -1270,7 +1270,9 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                   <FormControl>
                                     <Textarea
                                       placeholder="Descripción detallada de la recomendación de tratamiento..."
-                                      className="resize-none"
+                                      className="resize-none bg-muted"
+                                      readOnly
+                                      disabled
                                       {...field}
                                     />
                                   </FormControl>
