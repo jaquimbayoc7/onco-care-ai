@@ -173,10 +173,6 @@ const Landing = () => {
             <div className="order-2 lg:order-2 flex flex-col justify-end">
               {/* Hero Content - Top Section */}
               <div className="text-center lg:text-left space-y-3 mb-8">
-                <div className="inline-flex items-center gap-2 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full text-accent text-sm font-medium">
-                  <Shield className="w-4 h-4" />
-                  Certificado para uso clínico
-                </div>
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight">
                   Inteligencia Artificial al Servicio de la{" "}
                   <span className="bg-gradient-to-r from-accent to-accent-soft bg-clip-text text-transparent">
@@ -461,23 +457,6 @@ const Landing = () => {
               </div>
             </Card>
 
-            {/* Feature 3 - Monitoreo */}
-            <Card className="card-clinical group overflow-hidden relative ai-enhanced hover:shadow-2xl transition-all duration-300 sm:col-span-2 lg:col-span-1">
-              <div className="absolute inset-0 opacity-10 bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
-                   style={{ backgroundImage: `url(${medicalDashboard})` }} />
-              <div className="relative z-10 p-4 sm:p-6 md:p-8 text-center">
-                <div className="w-16 h-16 gradient-accent rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <TrendingUp className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold text-primary mb-4">
-                  Monitoreo Proactivo
-                </h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Supervise la adherencia al tratamiento y los efectos 
-                  secundarios en tiempo real con alertas inteligentes.
-                </p>
-              </div>
-            </Card>
           </div>
           
           {/* Additional Info Section */}
