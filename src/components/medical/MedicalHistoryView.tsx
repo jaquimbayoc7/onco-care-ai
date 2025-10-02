@@ -181,12 +181,19 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         continue;
       }
       
-      // Convert fields to proper types for API
+      // Convert numeric fields to integers (avoid Decimal serialization issues)
       if (typeof value === 'number') {
-        // BMI, treatment_id and time_to_recurrence must be integers
-        if (key === 'bmi' || key === 'time_to_recurrence' || key === 'treatment_id') {
-          cleaned[key] = Math.round(value);
-        } else {
+        // These fields should be sent as integers
+        if (key === 'bmi' || key === 'time_to_recurrence' || key === 'treatment_id' || 
+            key === 'heart_rate' || key === 'blood_pressure_systolic' || 
+            key === 'blood_pressure_diastolic' || key === 'oxygen_saturation') {
+          cleaned[key] = parseInt(value.toString(), 10);
+        } 
+        // Temperature can have decimals
+        else if (key === 'temperature') {
+          cleaned[key] = parseFloat(value.toFixed(1));
+        }
+        else {
           cleaned[key] = value;
         }
       } else {
@@ -194,7 +201,9 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
       }
     }
     
+    console.log('Original data:', data);
     console.log('Cleaned data for API:', cleaned);
+    console.log('BMI type:', typeof cleaned.bmi, 'BMI value:', cleaned.bmi);
     return cleaned;
   };
 

@@ -173,13 +173,18 @@ export class PatientsAPI {
   // Create a clinical history entry
   static async createClinicalHistory(historyData: ClinicalHistoryCreate): Promise<APIResponse<ClinicalHistoryRead>> {
     try {
+      console.log('Sending clinical history data:', historyData);
+      const jsonString = JSON.stringify(historyData);
+      console.log('JSON string to send:', jsonString);
+      
       const response = await fetch(`${API_BASE_URL}/clinical_histories/`, {
         method: 'POST',
         headers: getHeaders(),
-        body: JSON.stringify(historyData),
+        body: jsonString,
       });
       return handleResponse<ClinicalHistoryRead>(response);
     } catch (error) {
+      console.error('Error creating clinical history:', error);
       return {
         error: 'Error de conexión al crear historial clínico'
       };
@@ -226,13 +231,18 @@ export class PatientsAPI {
       
       const historyId = historyResponse.data.id;
       
+      console.log('Updating clinical history data:', updateData);
+      const jsonString = JSON.stringify(updateData);
+      console.log('JSON string to send:', jsonString);
+      
       const response = await fetch(`${API_BASE_URL}/clinical_histories/${historyId}`, {
         method: 'PATCH',
         headers: getHeaders(),
-        body: JSON.stringify(updateData),
+        body: jsonString,
       });
       return handleResponse<ClinicalHistoryRead>(response);
     } catch (error) {
+      console.error('Error updating clinical history:', error);
       return {
         error: 'Error de conexión al actualizar historial clínico'
       };
