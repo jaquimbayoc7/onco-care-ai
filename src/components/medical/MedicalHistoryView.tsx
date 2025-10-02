@@ -84,7 +84,7 @@ const clinicalHistorySchema = z.object({
   chemotherapy_received: z.enum(["Yes", "No"]).optional(),
   radiotherapy_received: z.enum(["Yes", "No"]).optional(),
   surgery_received: z.enum(["Yes", "No"]).optional(),
-  treatment_recommendation: z.string().optional(),
+  treatment_recommendation: z.string().optional().or(z.literal('')),
   follow_up_adherence: z.enum(["Good", "Poor"]),
   recurrence: z.enum(["Yes", "No"]).optional(),
   time_to_recurrence: z.number().optional(),
@@ -1270,14 +1270,15 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                               name="treatment_recommendation"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Recomendación de Tratamiento</FormLabel>
+                                  <FormLabel>Recomendación de Tratamiento (Predicción IA)</FormLabel>
                                   <FormControl>
                                     <Textarea
-                                      placeholder="Descripción detallada de la recomendación de tratamiento..."
+                                      placeholder="Este campo se llenará automáticamente con una predicción de IA..."
                                       className="resize-none bg-muted"
                                       readOnly
                                       disabled
-                                      {...field}
+                                      value={field.value || ''}
+                                      onChange={field.onChange}
                                     />
                                   </FormControl>
                                   <FormMessage />
