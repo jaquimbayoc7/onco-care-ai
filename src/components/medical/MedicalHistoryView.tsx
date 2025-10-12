@@ -273,6 +273,7 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
       
       // Call prediction API if we have a saved history
       if (savedHistory && savedHistory.id) {
+        console.log('[MedicalHistory] Requesting prediction for history_id:', savedHistory.id);
         toast({
           title: "Generando predicción",
           description: "Obteniendo recomendación de tratamiento...",
@@ -281,26 +282,44 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         const predictionResponse = await PatientsAPI.getPrediction(savedHistory.id);
         
         if (predictionResponse.error) {
+          console.error('[MedicalHistory] Prediction failed:', predictionResponse.error);
           toast({
             title: "Advertencia",
             description: `Historial guardado, pero no se pudo obtener predicción: ${predictionResponse.error}`,
             variant: "destructive",
           });
-        } else if (predictionResponse.data) {
-          // Update local state with the prediction from the ML model
-          const updatedHistory = {
-            ...savedHistory,
-            treatment_recommendation: predictionResponse.data.treatment
-          };
-          setClinicalHistory(updatedHistory);
+          setClinicalHistory(savedHistory);
+        } else if (predictionResponse.data && predictionResponse.data.success) {
+          console.log('[MedicalHistory] Prediction successful:', predictionResponse.data);
           
-          // Update form field to show the new prediction
-          form.setValue('treatment_recommendation', predictionResponse.data.treatment);
+          // The API automatically updates the clinical history with the treatment
+          // Refresh from server to get the updated data
+          const refreshedHistoryResponse = await PatientsAPI.getClinicalHistory(patient.document_id);
           
-          toast({
-            title: "Predicción completada",
-            description: `Tratamiento recomendado: ${predictionResponse.data.treatment}`,
-          });
+          if (refreshedHistoryResponse.data) {
+            console.log('[MedicalHistory] History refreshed after prediction:', refreshedHistoryResponse.data);
+            setClinicalHistory(refreshedHistoryResponse.data);
+            form.reset(refreshedHistoryResponse.data);
+            
+            toast({
+              title: "Predicción completada",
+              description: `Tratamiento recomendado: ${predictionResponse.data.treatment}`,
+            });
+          } else {
+            console.warn('[MedicalHistory] Could not refresh history, using prediction data');
+            // Fallback: update local state with the prediction
+            const updatedHistory = {
+              ...savedHistory,
+              treatment_recommendation: predictionResponse.data.treatment
+            };
+            setClinicalHistory(updatedHistory);
+            form.setValue('treatment_recommendation', predictionResponse.data.treatment);
+            
+            toast({
+              title: "Predicción completada",
+              description: `Tratamiento recomendado: ${predictionResponse.data.treatment}`,
+            });
+          }
         }
       } else {
         setClinicalHistory(savedHistory);
