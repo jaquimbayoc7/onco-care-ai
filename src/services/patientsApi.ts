@@ -5,7 +5,6 @@ import type {
   PatientCreate, 
   PatientRead, 
   PatientUpdate,
-  PatIle,
   ClinicalHistoryCreate,
   ClinicalHistoryRead,
   ClinicalHistoryUpdate,
@@ -107,7 +106,7 @@ export class PatientsAPI {
   }
 
   // Update patient by ID (compatibility method)
-  static async updatePatientById(patientId: number, updateData: PatientUpdate): Promise<APIResponse<PatialRead>> {
+  static async updatePatientById(patientId: number, updateData: PatientUpdate): Promise<APIResponse<PatientRead>> {
     try {
       //First, get the patient to obtain the document_id
       const patients = await this.getPatients();
