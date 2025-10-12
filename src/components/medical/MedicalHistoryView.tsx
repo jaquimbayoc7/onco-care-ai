@@ -287,10 +287,11 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             variant: "destructive",
           });
         } else if (predictionResponse.data) {
-          // Update local state with the prediction
+          // Update local state with the prediction AND treatment_id if available
           const updatedHistory = {
             ...savedHistory,
-            treatment_recommendation: predictionResponse.data.treatment
+            treatment_recommendation: predictionResponse.data.treatment,
+            treatment_id: predictionResponse.data.treatment_id || savedHistory.treatment_id
           };
           setClinicalHistory(updatedHistory);
           
@@ -1214,17 +1215,16 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 <FormItem>
                                   <FormLabel className="flex items-center gap-2">
                                     <Stethoscope className="w-4 h-4" />
-                                    ID de Tratamiento
+                                    ID de Tratamiento (Auto-generado)
                                   </FormLabel>
                                   <FormControl>
                                     <Input
                                       type="number"
-                                      placeholder="Ej: 10"
+                                      placeholder="Se genera automáticamente por el modelo"
+                                      className="bg-muted"
                                       value={field.value ?? ''}
-                                      onChange={(e) => {
-                                        const value = e.target.value;
-                                        field.onChange(value === '' ? undefined : parseInt(value));
-                                      }}
+                                      readOnly
+                                      disabled
                                     />
                                   </FormControl>
                                   <FormMessage />

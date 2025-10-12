@@ -1,35 +1,32 @@
-// OncoSimil AI Service Worker - Offline Cache Strategy
-const CACHE_NAME = 'oncosimil-v1';
-const RUNTIME_CACHE = 'oncosimil-runtime-v1';
+// OncoSímil - Service Worker (v2 - Fixed POST Cache Issue)
+const CACHE_NAME = 'oncosimil-v2';
+const RUNTIME_CACHE = 'oncosimil-runtime-v2';
 
-// Critical assets to cache immediately (Static assets)
+// Essential assets to cache
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
   '/favicon.png',
-  '/manifest.json'
+  '/manifest.json',
 ];
 
-// Install event - precache critical assets
+// Install - Precache essential assets
 self.addEventListener('install', (event) => {
-  console.log('[SW] Installing service worker...');
+  console.log('[SW] Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then((cache) => {
-        console.log('[SW] Precaching critical assets');
-        return cache.addAll(PRECACHE_ASSETS);
-      })
+      .then((cache) => cache.addAll(PRECACHE_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
 
-// Activate event - clean up old caches
+// Activate - Clean old caches
 self.addEventListener('activate', (event) => {
-  console.log('[SW] Activating service worker...');
+  console.log('[SW] Activating...');
   event.waitUntil(
-    caches.keys().then((cacheNames) => {
+    caches.keys().then((names) => {
       return Promise.all(
-        cacheNames
+        names
           .filter((name) => name !== CACHE_NAME && name !== RUNTIME_CACHE)
           .map((name) => {
             console.log('[SW] Deleting old cache:', name);
@@ -40,60 +37,67 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch event - Network First for API, Cache First for assets
+// Fetch - Network-first for APIs, cache-first for assets
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Skip cross-origin requests
-  if (url.origin !== location.origin) {
+  // Skip cross-origin requests (except known API domains)
+  const isKnownAPI = url.hostname.includes('oncoapp') || 
+                     url.hostname.includes('render.com') || 
+                     url.pathname.startsWith('/api') || 
+                     url.pathname.startsWith('/patients-api');
+
+  if (url.origin !== location.origin && !isKnownAPI) {
     return;
   }
 
-  // API requests - Network First with fallback
-  if (url.pathname.startsWith('/api') || url.pathname.startsWith('/patients-api')) {
+  // API Requests - Network-Only (no caching for POST/PUT/DELETE)
+  if (url.pathname.startsWith('/api') || url.pathname.startsWith('/patients-api') || isKnownAPI) {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          // Clone and cache successful responses
-          if (response.ok) {
+          // Only cache GET requests with successful responses
+          if (response.ok && request.method === 'GET') {
             const responseClone = response.clone();
             caches.open(RUNTIME_CACHE).then((cache) => {
               cache.put(request, responseClone);
-            });
+            }).catch(err => console.log('[SW] Cache error:', err));
           }
           return response;
         })
-        .catch(() => {
-          // Fallback to cache if network fails
-          return caches.match(request).then((cached) => {
-            if (cached) {
-              console.log('[SW] Serving API from cache (offline):', url.pathname);
-              return cached;
-            }
-            // Return offline response if no cache
-            return new Response(
-              JSON.stringify({ 
-                error: 'Sin conexión', 
-                offline: true,
-                message: 'No hay conexión a internet. Mostrando datos en caché.' 
-              }),
-              { 
-                headers: { 'Content-Type': 'application/json' },
-                status: 503 
+        .catch((error) => {
+          console.log('[SW] Network error:', error);
+          // Only try cache for GET requests
+          if (request.method === 'GET') {
+            return caches.match(request).then((cached) => {
+              if (cached) {
+                console.log('[SW] Serving from cache (offline):', url.pathname);
+                return cached;
               }
-            );
-          });
+            });
+          }
+          // Return error response for failed requests
+          return new Response(
+            JSON.stringify({ 
+              error: 'Sin conexión', 
+              message: 'No se puede completar la operación sin conexión.' 
+            }),
+            { 
+              headers: { 'Content-Type': 'application/json' },
+              status: 503
+            }
+          );
         })
     );
     return;
   }
 
-  // Static assets - Cache First with network fallback
+  // Static Assets - Cache-first
   event.respondWith(
     caches.match(request).then((cached) => {
       if (cached) {
-        // Return cached version and update in background
+        // Return cache and update in background
         fetch(request).then((response) => {
           if (response.ok) {
             caches.open(CACHE_NAME).then((cache) => {
@@ -106,9 +110,8 @@ self.addEventListener('fetch', (event) => {
         return cached;
       }
 
-      // Not in cache, fetch from network
+      // Not in cache - fetch from network
       return fetch(request).then((response) => {
-        // Cache successful responses
         if (response.ok && request.method === 'GET') {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -128,32 +131,32 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Background sync for offline data (future enhancement)
+// Background Sync (for future offline support)
 self.addEventListener('sync', (event) => {
-  console.log('[SW] Background sync triggered:', event.tag);
+  console.log('[SW] Background sync:', event.tag);
   if (event.tag === 'sync-patient-data') {
     event.waitUntil(syncPatientData());
   }
 });
 
 async function syncPatientData() {
-  // Placeholder for future offline data sync
   console.log('[SW] Syncing patient data...');
+  // Future implementation for offline data sync
 }
 
-// Push notifications (future enhancement)
+// Push Notifications (for future use)
 self.addEventListener('push', (event) => {
-  console.log('[SW] Push notification received');
+  console.log('[SW] Push received');
   const options = {
     body: event.data ? event.data.text() : 'Nueva notificación',
     icon: '/favicon.png',
     badge: '/favicon.png',
     vibrate: [200, 100, 200],
     tag: 'oncosimil-notification',
-    requireInteraction: false
+    requireInteraction: false,
   };
-
+  
   event.waitUntil(
-    self.registration.showNotification('OncoSimil AI', options)
+    self.registration.showNotification('OncoSímil', options)
   );
 });
