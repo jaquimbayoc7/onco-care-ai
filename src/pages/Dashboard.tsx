@@ -488,14 +488,16 @@ const Dashboard = () => {
                       <p className="text-sm flex items-center gap-1">
                         <Calendar className="w-3 h-3" />
                         {patientClinicalHistories[selectedPatient.document_id]?.edited 
-                          ? new Date(patientClinicalHistories[selectedPatient.document_id].edited).toLocaleDateString('es-ES', {
+                          ? new Date(patientClinicalHistories[selectedPatient.document_id].edited).toLocaleString('es-CO', {
+                              timeZone: 'America/Bogota',
                               year: 'numeric',
                               month: 'long',
                               day: 'numeric',
                               hour: '2-digit',
                               minute: '2-digit'
                             })
-                          : new Date(selectedPatient.edited).toLocaleDateString('es-ES', {
+                          : new Date(selectedPatient.edited).toLocaleString('es-CO', {
+                              timeZone: 'America/Bogota',
                               year: 'numeric',
                               month: 'long',
                               day: 'numeric',
@@ -753,14 +755,16 @@ const Dashboard = () => {
                        <p className="flex items-center gap-2">
                          <Calendar className="w-4 h-4" />
                          {patientClinicalHistories[selectedPatient.document_id]?.edited 
-                           ? new Date(patientClinicalHistories[selectedPatient.document_id].edited).toLocaleDateString('es-ES', {
+                           ? new Date(patientClinicalHistories[selectedPatient.document_id].edited).toLocaleString('es-CO', {
+                               timeZone: 'America/Bogota',
                                year: 'numeric',
                                month: 'long',
                                day: 'numeric',
                                hour: '2-digit',
                                minute: '2-digit'
                              })
-                           : new Date(selectedPatient.edited).toLocaleDateString('es-ES', {
+                           : new Date(selectedPatient.edited).toLocaleString('es-CO', {
+                               timeZone: 'America/Bogota',
                                year: 'numeric',
                                month: 'long',
                                day: 'numeric',
