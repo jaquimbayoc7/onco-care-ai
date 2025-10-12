@@ -287,17 +287,19 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             variant: "destructive",
           });
         } else if (predictionResponse.data) {
-          // Update local state with the prediction AND treatment_id if available
+          // Update local state with the prediction from the ML model
           const updatedHistory = {
             ...savedHistory,
-            treatment_recommendation: predictionResponse.data.treatment,
-            treatment_id: predictionResponse.data.treatment_id || savedHistory.treatment_id
+            treatment_recommendation: predictionResponse.data.treatment
           };
           setClinicalHistory(updatedHistory);
           
+          // Update form field to show the new prediction
+          form.setValue('treatment_recommendation', predictionResponse.data.treatment);
+          
           toast({
             title: "Predicción completada",
-            description: `Recomendación de tratamiento: ${predictionResponse.data.treatment}`,
+            description: `Tratamiento recomendado: ${predictionResponse.data.treatment}`,
           });
         }
       } else {

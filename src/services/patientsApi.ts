@@ -271,16 +271,19 @@ export class PatientsAPI {
   }
 
   // Get treatment prediction from ML model
-  static async getPrediction(historyId: number): Promise<APIResponse<{ history_id: number; treatment: string; treatment_id?: number; success: boolean; message: string }>> {
+  // Sends: { "history_id": number }
+  // Returns: { "history_id": number, "treatment": string, "success": boolean, "message": string }
+  static async getPrediction(historyId: number): Promise<APIResponse<{ history_id: number; treatment: string; success: boolean; message: string }>> {
     try {
       const ML_API_BASE_URL = 'https://oncoapp-microservices.onrender.com';
       
-      console.log('[PatientsAPI] Requesting prediction for history_id:', historyId);
+      const payload = { history_id: historyId };
+      console.log('[PatientsAPI] Requesting prediction with:', payload);
       
       const response = await fetch(`${ML_API_BASE_URL}/api/v1/predict-and-update`, {
         method: 'POST',
         headers: getHeaders(),
-        body: JSON.stringify({ history_id: historyId }),
+        body: JSON.stringify(payload),
       });
       
       if (!response.ok) {
@@ -292,11 +295,17 @@ export class PatientsAPI {
       const data = await response.json();
       console.log('[PatientsAPI] Prediction response:', data);
       
+      // Validate response structure
+      if (!data.treatment || data.success === undefined) {
+        console.error('[PatientsAPI] Invalid prediction response format:', data);
+        return { error: 'Respuesta inválida del servicio de predicción' };
+      }
+      
       return { data };
     } catch (error) {
       console.error('[PatientsAPI] Prediction network error:', error);
       return {
-        error: 'Error de conexión al servicio de predicción. Verifica tu conexión a internet.'
+        error: 'Error de conexión al servicio de predicción. Verifica tu conexión.'
       };
     }
   }
