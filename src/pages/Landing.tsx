@@ -24,14 +24,12 @@ import medicalDecorative from "@/assets/medical-decorative.jpg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
-import ForgotPasswordForm from "@/components/forms/ForgotPasswordForm";
 import { authAPI } from "@/services/authApi";
 
 const Landing = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
   
   // Campos de registro
@@ -357,17 +355,7 @@ const Landing = () => {
                     </ClinicalButton>
                   </form>
                   
-                  <div className="text-center mt-4 space-y-2">
-                    {!isRegistering && (
-                      <button 
-                        type="button"
-                        onClick={() => setShowForgotPassword(true)}
-                        className="text-sm text-accent hover:underline transition-colors block w-full"
-                      >
-                        ¿Olvidó su contraseña?
-                      </button>
-                    )}
-                    
+                  <div className="text-center mt-4">
                     <button
                       type="button"
                       onClick={() => {
@@ -493,11 +481,6 @@ const Landing = () => {
           </p>
         </div>
       </footer>
-      
-      <ForgotPasswordForm
-        isOpen={showForgotPassword}
-        onClose={() => setShowForgotPassword(false)}
-      />
     </div>
   );
 };
