@@ -279,6 +279,7 @@ export class PatientsAPI {
       
       const payload = { history_id: historyId };
       console.log('[PatientsAPI] Requesting prediction with:', payload);
+      console.log('[PatientsAPI] Endpoint:', `${ML_API_BASE_URL}/api/v1/predict-and-update`);
       
       const response = await fetch(`${ML_API_BASE_URL}/api/v1/predict-and-update`, {
         method: 'POST',
@@ -286,10 +287,39 @@ export class PatientsAPI {
         body: JSON.stringify(payload),
       });
       
+      console.log('[PatientsAPI] Response status:', response.status);
+      console.log('[PatientsAPI] Response headers:', Object.fromEntries(response.headers.entries()));
+      
+      // Check if response is HTML (error page) instead of JSON
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('text/html')) {
+        console.error('[PatientsAPI] Server returned HTML instead of JSON');
+        
+        if (response.status === 502) {
+          return { 
+            error: 'El servicio de predicción ML no está disponible temporalmente (Error 502). Por favor, intenta nuevamente en unos minutos.' 
+          };
+        }
+        
+        return { 
+          error: `El servidor de predicción ML devolvió un error (${response.status}). Por favor, contacta al administrador.` 
+        };
+      }
+      
       if (!response.ok) {
-        const error = await response.json().catch(() => ({ detail: 'Error en la predicción' }));
-        console.error('[PatientsAPI] Prediction API error:', error);
-        return { error: error.detail || `Error del servidor: ${response.status}` };
+        let errorMessage = `Error del servidor ML: ${response.status}`;
+        
+        try {
+          const error = await response.json();
+          console.error('[PatientsAPI] Prediction API error:', error);
+          errorMessage = error.detail || error.message || errorMessage;
+        } catch (parseError) {
+          console.error('[PatientsAPI] Could not parse error response:', parseError);
+          const textError = await response.text();
+          console.error('[PatientsAPI] Error response text:', textError.substring(0, 200));
+        }
+        
+        return { error: errorMessage };
       }
       
       const data = await response.json();
@@ -304,8 +334,15 @@ export class PatientsAPI {
       return { data };
     } catch (error) {
       console.error('[PatientsAPI] Prediction network error:', error);
+      
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        return {
+          error: 'No se pudo conectar al servicio de predicción ML. Verifica tu conexión a internet.'
+        };
+      }
+      
       return {
-        error: 'Error de conexión al servicio de predicción. Verifica tu conexión.'
+        error: `Error inesperado: ${error instanceof Error ? error.message : 'Error desconocido'}`
       };
     }
   }
