@@ -117,9 +117,9 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
       let result;
       
       if (isEditMode && editPatient) {
-        const updateData: PatientUpdate = { ...data };
-        // Use patient ID for editing instead of document_id
-        result = await PatientsAPI.updatePatientById(editPatient.id, updateData);
+        // Exclude document_id from update data since it's the primary key
+        const { document_id, ...updateData } = data;
+        result = await PatientsAPI.updatePatientById(editPatient.id, updateData as PatientUpdate);
       } else {
         const createData: PatientCreate = data as PatientCreate;
         result = await PatientsAPI.createPatient(createData);
