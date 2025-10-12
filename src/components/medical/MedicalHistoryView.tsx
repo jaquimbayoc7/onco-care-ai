@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import faviconIcon from "/favicon.png";
 import { 
   Heart, 
   Activity, 
@@ -420,7 +421,8 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         <DialogHeader className="space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
-              <DialogTitle className="text-xl md:text-2xl font-bold truncate">
+              <DialogTitle className="text-xl md:text-2xl font-bold truncate flex items-center gap-2">
+                <img src={faviconIcon} alt="OncoSímil" className="w-6 h-6 md:w-7 md:h-7" />
                 Historial Clínico - {patient.name}
               </DialogTitle>
               <DialogDescription className="text-sm">

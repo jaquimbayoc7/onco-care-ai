@@ -31,6 +31,7 @@ import { UserPlus } from "lucide-react";
 import { PatientCreate, PatientUpdate } from "@/types/patient";
 import { PatientsAPI } from "@/services/patientsApi";
 import { useToast } from "@/hooks/use-toast";
+import faviconIcon from "/favicon.png";
 
 interface NewPatientFormProps {
   isOpen: boolean;
@@ -161,6 +162,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3 text-xl">
+            <img src={faviconIcon} alt="OncoSímil" className="w-6 h-6" />
             <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
               <UserPlus className="w-5 h-5 text-primary" />
             </div>

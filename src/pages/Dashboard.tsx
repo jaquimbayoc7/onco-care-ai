@@ -30,6 +30,7 @@ import patientMaria from "@/assets/patient-maria.jpg";
 import patientCarlos from "@/assets/patient-carlos.jpg";
 import patientAna from "@/assets/patient-ana.jpg";
 import medicalMonitoring from "@/assets/medical-monitoring.jpg";
+import faviconIcon from "/favicon.png";
 import { PatientRead, ClinicalHistoryRead } from "@/types/patient";
 import { PatientsAPI } from "@/services/patientsApi";
 import { useToast } from "@/hooks/use-toast";
@@ -487,8 +488,9 @@ const Dashboard = () => {
                 <Card className="card-clinical">
                   <CardHeader className="pb-3">
                     <CardTitle className="flex items-center gap-2 text-base">
+                      <img src={faviconIcon} alt="OncoSímil" className="w-4 h-4" />
                       <FileText className="w-4 h-4 text-primary" />
-                      Datos Clínicos Relevantes
+                      Historial Clínico
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -572,9 +574,12 @@ const Dashboard = () => {
          <div className="lg:col-span-1">
            <Card className="card-clinical h-fit">
              <CardHeader className="pb-4">
-               <div className="flex items-center justify-between mb-4">
-                 <CardTitle className="text-xl">Pacientes</CardTitle>
-                 <ClinicalButton 
+                <div className="flex items-center justify-between mb-4">
+                  <CardTitle className="text-xl flex items-center gap-2">
+                    <img src={faviconIcon} alt="OncoSímil" className="w-6 h-6" />
+                    Pacientes
+                  </CardTitle>
+                  <ClinicalButton
                    onClick={handleNewPatientClick}
                    variant="clinical" 
                    size="sm"
@@ -714,8 +719,9 @@ const Dashboard = () => {
                   <Card className="card-clinical">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2 text-xl">
+                        <img src={faviconIcon} alt="OncoSímil" className="w-6 h-6" />
                         <FileText className="w-5 h-5 text-primary" />
-                        Datos Clínicos Relevantes
+                        Historial Clínico
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
