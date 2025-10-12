@@ -43,20 +43,20 @@ interface NewPatientFormProps {
 
 // Validation schema based on API contract
 const patientSchema = z.object({
-  document_id: z.string().min(1, "Document ID is required"),
-  name: z.string().min(1, "Name is required"),
-  age: z.union([z.number().min(0, "Age must be positive"), z.nan()]).transform(val => isNaN(val) ? undefined : val).pipe(z.number().min(0, "Age must be positive")),
+  document_id: z.string().min(1, "El documento de identidad es requerido"),
+  name: z.string().min(1, "El nombre es requerido"),
+  age: z.union([z.number().min(0, "La edad debe ser positiva"), z.nan()]).transform(val => isNaN(val) ? undefined : val).pipe(z.number().min(0, "La edad debe ser positiva")),
   gender: z.enum(['Male', 'Female', 'Other'], {
-    required_error: "Gender is required",
+    required_error: "El género es requerido",
   }),
-  race: z.string().min(1, "Race is required"),
-  region: z.string().min(1, "Region is required"),
+  race: z.string().min(1, "La raza/etnia es requerida"),
+  region: z.string().min(1, "La región es requerida"),
   urban_or_rural: z.enum(['Urban', 'Rural'], {
-    required_error: "Area type is required",
+    required_error: "El tipo de zona es requerido",
   }),
-  email: z.string().email("Invalid email format"),
-  phone: z.string().min(1, "Phone is required"),
-  address: z.string().min(1, "Address is required"),
+  email: z.string().email("Formato de correo inválido"),
+  phone: z.string().min(1, "El teléfono es requerido"),
+  address: z.string().min(1, "La dirección es requerida"),
 });
 
 type PatientFormData = z.infer<typeof patientSchema>;

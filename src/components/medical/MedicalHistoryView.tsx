@@ -69,25 +69,33 @@ interface MedicalHistoryViewProps {
 const clinicalHistorySchema = z.object({
   family_history: z.enum(["Yes", "No"]).optional(),
   previous_cancer_history: z.enum(["Yes", "No"]).optional(),
-  stage_at_diagnosis: z.enum(["I", "II", "III", "IV"]),
-  tumor_aggressiveness: z.enum(["Low", "Medium", "High"]),
+  stage_at_diagnosis: z.enum(["I", "II", "III", "IV"], {
+    required_error: "El estadio al diagnóstico es requerido"
+  }),
+  tumor_aggressiveness: z.enum(["Low", "Medium", "High"], {
+    required_error: "La agresividad del tumor es requerida"
+  }),
   colonoscopy_access: z.enum(["Yes", "No"]).optional(),
   screening_regularity: z.enum(["Regular", "Irregular", "Never"]).optional(),
   diet_type: z.enum(["Vegetarian", "Vegan", "Omnivore", "Mediterranean", "Western"]).optional(),
-  bmi: z.number().min(10).max(60).optional(),
+  bmi: z.number().min(10, "El IMC debe ser al menos 10").max(60, "El IMC no puede exceder 60").optional(),
   physical_activity_level: z.enum(["Low", "Medium", "High"]).optional(),
   smoking_status: z.enum(["Never", "Current", "Former"]).optional(),
   alcohol_consumption: z.enum(["Low", "Medium", "High"]).optional(),
   fiber_consumption: z.enum(["Low", "Medium", "High"]).optional(),
   insurance_coverage: z.enum(["Yes", "No"]).optional(),
   time_to_diagnosis: z.enum(["Delayed", "Timely"]).optional(),
-  treatment_access: z.enum(["Adequate", "Limited"]),
+  treatment_access: z.enum(["Adequate", "Limited"], {
+    required_error: "El acceso al tratamiento es requerido"
+  }),
   treatment_id: z.number().nullish(),
   chemotherapy_received: z.enum(["Yes", "No"]).optional(),
   radiotherapy_received: z.enum(["Yes", "No"]).optional(),
   surgery_received: z.enum(["Yes", "No"]).optional(),
   treatment_recommendation: z.string().default("T2"),
-  follow_up_adherence: z.enum(["Good", "Poor"]),
+  follow_up_adherence: z.enum(["Good", "Poor"], {
+    required_error: "La adherencia al seguimiento es requerida"
+  }),
   recurrence: z.enum(["Yes", "No"]).optional(),
   time_to_recurrence: z.number().optional(),
 });
@@ -1233,12 +1241,12 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                                 <FormItem>
                                   <FormLabel className="flex items-center gap-2">
                                     <Stethoscope className="w-4 h-4" />
-                                    ID de Tratamiento (Auto-generado)
+                                    ID de Tratamiento (Gestionado por el modelo)
                                   </FormLabel>
                                   <FormControl>
                                     <Input
                                       type="number"
-                                      placeholder="Se genera automáticamente por el modelo"
+                                      placeholder="Se asignará automáticamente tras la predicción"
                                       className="bg-muted"
                                       value={field.value ?? ''}
                                       readOnly
@@ -1327,10 +1335,10 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                               name="treatment_recommendation"
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Recomendación de Tratamiento (Predicción IA)</FormLabel>
+                                  <FormLabel>Recomendación de Tratamiento (Gestionado por el modelo de IA)</FormLabel>
                                   <FormControl>
                                     <Textarea
-                                      placeholder="Este campo se llenará automáticamente con una predicción de IA..."
+                                      placeholder="Se asignará automáticamente tras la predicción del modelo..."
                                       className="resize-none bg-muted"
                                       readOnly
                                       disabled

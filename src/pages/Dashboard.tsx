@@ -538,6 +538,18 @@ const Dashboard = () => {
                           )}
                         </div>
                       </div>
+
+                      {patientClinicalHistories[selectedPatient.document_id].treatment_recommendation && (
+                        <div className="space-y-1 p-3 rounded-lg bg-primary/5 border border-primary/20">
+                          <div className="text-xs text-muted-foreground font-medium flex items-center gap-1">
+                            <Brain className="w-3 h-3" />
+                            Recomendación de Tratamiento (IA)
+                          </div>
+                          <div className="text-base font-semibold text-primary">
+                            {patientClinicalHistories[selectedPatient.document_id].treatment_recommendation}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -769,6 +781,18 @@ const Dashboard = () => {
                             )}
                           </div>
                         </div>
+
+                        {patientClinicalHistories[selectedPatient.document_id].treatment_recommendation && (
+                          <div className="space-y-2 p-4 rounded-lg bg-primary/5 border border-primary/20 md:col-span-2">
+                            <div className="text-sm text-muted-foreground font-medium flex items-center gap-2">
+                              <Brain className="w-4 h-4" />
+                              Recomendación de Tratamiento (IA)
+                            </div>
+                            <div className="text-lg font-semibold text-primary">
+                              {patientClinicalHistories[selectedPatient.document_id].treatment_recommendation}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
