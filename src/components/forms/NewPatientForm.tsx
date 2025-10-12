@@ -117,9 +117,8 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
       let result;
       
       if (isEditMode && editPatient) {
-        // Exclude document_id from update data since it's the primary key
-        const { document_id, ...updateData } = data;
-        result = await PatientsAPI.updatePatientById(editPatient.id, updateData as PatientUpdate);
+        const updateData: PatientUpdate = { ...data };
+        result = await PatientsAPI.updatePatientById(editPatient.id, updateData);
       } else {
         const createData: PatientCreate = data as PatientCreate;
         result = await PatientsAPI.createPatient(createData);
@@ -350,7 +349,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
             </Card>
 
             <div className="flex justify-end gap-4 pt-4">
-              <ClinicalButton variant="outline" onClick={onClose}>
+              <ClinicalButton variant="outline" type="button" onClick={onClose}>
                 Cancelar
               </ClinicalButton>
               <ClinicalButton type="submit" variant="clinical">
