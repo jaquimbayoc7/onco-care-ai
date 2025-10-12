@@ -590,9 +590,9 @@ const Dashboard = () => {
                  variant="clinical" 
                  size="lg"
                  onClick={() => setShowMedicalHistory(true)}
-                 className="h-14 w-full flex items-center justify-center gap-3 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                 className="h-14 w-full flex items-center justify-center gap-3 hover:shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary-glow/10 group"
                >
-                 <FileText className="w-5 h-5" />
+                 <FileText className="w-5 h-5 transition-transform duration-300 group-hover:scale-110" />
                  <span className="font-semibold">Historial Clínico</span>
                </ClinicalButton>
              </div>
@@ -846,9 +846,9 @@ const Dashboard = () => {
                    variant="clinical" 
                    size="lg"
                    onClick={() => setShowMedicalHistory(true)}
-                   className="h-16 w-full flex-col gap-2 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+                   className="h-16 w-full flex-col gap-2 hover:shadow-xl hover:shadow-primary/20 transform hover:-translate-y-1 hover:scale-[1.02] transition-all duration-300 hover:bg-gradient-to-r hover:from-primary/10 hover:to-primary-glow/10 group"
                  >
-                   <FileText className="w-6 h-6" />
+                   <FileText className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" />
                    <span className="font-semibold">Historial Clínico</span>
                  </ClinicalButton>
                </div>
