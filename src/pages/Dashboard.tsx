@@ -585,24 +585,15 @@ const Dashboard = () => {
               )}
 
               {/* Mobile Action Buttons */}
-             <div className="grid grid-cols-1 gap-3">
-               <ClinicalButton 
-                 variant="ai" 
-                 size="lg"
-                 onClick={() => setShowAIRecommendations(true)}
-                 className="h-14 flex items-center justify-center gap-3 bg-gradient-to-r from-accent to-accent-soft hover:shadow-lg"
-               >
-                 <Brain className="w-5 h-5" />
-                 <span className="font-semibold">Recomendaciones IA</span>
-               </ClinicalButton>
+             <div>
                <ClinicalButton 
                  variant="clinical" 
                  size="lg"
                  onClick={() => setShowMedicalHistory(true)}
-                 className="h-12 flex-col gap-1"
+                 className="h-14 w-full flex items-center justify-center gap-3 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
                >
                  <FileText className="w-5 h-5" />
-                 <span className="text-sm">Historial Clínico</span>
+                 <span className="font-semibold">Historial Clínico</span>
                </ClinicalButton>
              </div>
            </>
@@ -850,24 +841,15 @@ const Dashboard = () => {
                  )}
 
                 {/* Action Buttons */}
-               <div className="grid sm:grid-cols-2 gap-4">
-                 <ClinicalButton 
-                   variant="ai" 
-                   size="lg"
-                   onClick={() => setShowAIRecommendations(true)}
-                   className="h-16 flex-col gap-2 bg-gradient-to-br from-accent to-accent-soft hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
-                 >
-                   <Brain className="w-6 h-6" />
-                   <span className="font-semibold">Recomendaciones IA</span>
-                 </ClinicalButton>
+               <div>
                  <ClinicalButton 
                    variant="clinical" 
                    size="lg"
                    onClick={() => setShowMedicalHistory(true)}
-                   className="h-16 flex-col gap-2"
+                   className="h-16 w-full flex-col gap-2 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
                  >
                    <FileText className="w-6 h-6" />
-                   <span>Historial Clínico</span>
+                   <span className="font-semibold">Historial Clínico</span>
                  </ClinicalButton>
                </div>
              </>
