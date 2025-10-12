@@ -395,7 +395,7 @@ const Dashboard = () => {
               <div className="space-y-3">
                 {filteredPatients.map((patient) => (
                   <div
-                    key={patient.id}
+                    key={patient.document_id}
                     onClick={() => setSelectedPatient(patient as UIPatient)}
                     className={`p-3 rounded-lg border cursor-pointer transition-all ${
                       selectedPatient?.id === patient.id 
@@ -601,11 +601,11 @@ const Dashboard = () => {
                </div>
              </CardHeader>
              <CardContent className="p-0">
-               <div className="max-h-96 overflow-y-auto">
-                 {filteredPatients.map((patient) => (
-                   <div
-                     key={patient.id}
-                     onClick={() => setSelectedPatient(patient as UIPatient)}
+              <div className="max-h-96 overflow-y-auto">
+                  {filteredPatients.map((patient) => (
+                    <div
+                      key={patient.document_id}
+                      onClick={() => setSelectedPatient(patient as UIPatient)}
                      className={`p-4 border-b cursor-pointer transition-all hover:bg-muted/50 ${
                        selectedPatient?.id === patient.id ? "bg-primary/10 border-r-4 border-r-primary" : ""
                      }`}
