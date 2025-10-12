@@ -25,6 +25,7 @@ import {
   X
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { PatientsAPI } from "@/services/patientsApi";
 
 interface Patient {
   id: number;
@@ -135,12 +136,19 @@ const AIRecommendationsModal: React.FC<AIRecommendationsModalProps> = ({
     console.log(`Recomendación aceptada: ${treatmentId} para paciente ${patient?.id}`);
     
     try {
-      // TODO: Implementar llamada al API cuando esté disponible
-      // await PatientsAPI.acceptTreatmentRecommendation(patient.document_id, treatmentId);
-      
+      // Send treatment recommendation to external API
+      const response = await PatientsAPI.sendTreatmentRecommendation(
+        treatmentId,
+        treatment.name
+      );
+
+      if (response.error) {
+        throw new Error(response.error);
+      }
+
       toast({
         title: "Recomendación aceptada",
-        description: `El tratamiento "${treatment.name}" ha sido aceptado y se creará el plan terapéutico`,
+        description: `El tratamiento "${treatment.name}" ha sido enviado exitosamente`,
         duration: 5000,
       });
     } catch (error) {

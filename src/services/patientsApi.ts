@@ -5,6 +5,7 @@ import type {
   PatientCreate, 
   PatientRead, 
   PatientUpdate,
+  PatIle,
   ClinicalHistoryCreate,
   ClinicalHistoryRead,
   ClinicalHistoryUpdate,
@@ -106,9 +107,9 @@ export class PatientsAPI {
   }
 
   // Update patient by ID (compatibility method)
-  static async updatePatientById(patientId: number, updateData: PatientUpdate): Promise<APIResponse<PatientRead>> {
+  static async updatePatientById(patientId: number, updateData: PatientUpdate): Promise<APIResponse<PatialRead>> {
     try {
-      // First, get the patient by ID to obtain document_id
+      //First, get the patient to obtain the document_id
       const patients = await this.getPatients();
       if (patients.error || !patients.data) {
         return { error: 'No se pudo obtener el paciente' };
@@ -174,13 +175,13 @@ export class PatientsAPI {
   static async createClinicalHistory(historyData: ClinicalHistoryCreate): Promise<APIResponse<ClinicalHistoryRead>> {
     try {
       console.log('Sending clinical history data:', historyData);
-      const jsonString = JSON.stringify(historyData);
-      console.log('JSON string to send:', jsonString);
+      const jsonStr = JSON.stringify(historyData);
+      console.log('JSON string to send:', jsonStr);
       
       const response = await fetch(`${API_BASE_URL}/clinical_histories/`, {
         method: 'POST',
         headers: getHeaders(),
-        body: jsonString,
+        body: jsonStr,
       });
       return handleResponse<ClinicalHistoryRead>(response);
     } catch (error) {
@@ -223,7 +224,7 @@ export class PatientsAPI {
   // Update a clinical history entry
   static async updateClinicalHistory(documentId: string, updateData: ClinicalHistoryUpdate): Promise<APIResponse<ClinicalHistoryRead>> {
     try {
-      // First get the history to obtain the ID
+      // First, get the history to obtain the ID
       const historyResponse = await this.getClinicalHistory(documentId);
       if (historyResponse.error || !historyResponse.data) {
         return { error: 'No se pudo obtener el historial clínico' };
@@ -242,7 +243,7 @@ export class PatientsAPI {
       });
       return handleResponse<ClinicalHistoryRead>(response);
     } catch (error) {
-      console.error('Error updating clinical history:', error);
+      console.log('Error updating clinical history:', error);
       return {
         error: 'Error de conexión al actualizar historial clínico'
       };
@@ -270,12 +271,12 @@ export class PatientsAPI {
     }
   }
 
-  // Get treatment prediction from ML model
-  // Sends: { "history_id": number }
+  // Get treatment prediction from ML service
+  // Sends: { "history_id": number}
   // Returns: { "history_id": number, "treatment": string, "success": boolean, "message": string }
   static async getPrediction(historyId: number): Promise<APIResponse<{ history_id: number; treatment: string; success: boolean; message: string }>> {
     try {
-      const ML_API_BASE_URL = 'https://oncoapp-microservices.onrender.com';
+      const ML_API_BASE_URL = 'https://onlineapp-microservices.onrender.com';
       
       const payload = { history_id: historyId };
       console.log('[PatientsAPI] Requesting prediction with:', payload);
@@ -296,13 +297,13 @@ export class PatientsAPI {
         console.error('[PatientsAPI] Server returned HTML instead of JSON');
         
         if (response.status === 502) {
-          return { 
-            error: 'El servicio de predicción ML no está disponible temporalmente (Error 502). Por favor, intenta nuevamente en unos minutos.' 
+          return {
+            error: 'El servicio de predicción ML no está disponible temporalmente (Error 502). Por favor, intenta nuevamente en unos minutos.'
           };
         }
         
-        return { 
-          error: `El servidor de predicción ML devolvió un error (${response.status}). Por favor, contacta al administrador.` 
+        return {
+          error: `El servidor de predicción ML devolvió un error (${response.status}). Por favor, contacta al administrador.`
         };
       }
       
@@ -327,7 +328,7 @@ export class PatientsAPI {
       
       // Validate response structure
       if (!data.treatment || data.success === undefined) {
-        console.error('[PatientsAPI] Invalid prediction response format:', data);
+        console.error('[PatientsAPI] Invalid prediction response:', data);
         return { error: 'Respuesta inválida del servicio de predicción' };
       }
       
@@ -367,5 +368,34 @@ export class PatientsAPI {
       },
       message: 'Authentication successful'
     };
+  }
+
+  // Send treatment recommendation to external API
+  static async sendTreatmentRecommendation(treatmentId: string, treatmentData: string): Promise<APIResponse<any>> {
+    try {
+      const response = await fetch('https://oncoai-4-rec.onrender.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: treatmentId,
+          treatment: treatmentData
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ detail: 'Error en el servidor' }));
+        return { error: error.detail || `Error: ${response.status}` };
+      }
+
+      const data = await response.json();
+      return { data, message: 'Recomendación enviada exitosamente' };
+    } catch (error) {
+      console.error('[PatientsAPI] Error sending treatment recommendation:', error);
+      return {
+        error: 'Error de conexión al enviar recomendación'
+      };
+    }
   }
 }
