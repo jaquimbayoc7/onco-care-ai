@@ -476,10 +476,12 @@ const Dashboard = () => {
                       {patientClinicalHistories[selectedPatient.document_id] && (
                         <div className="space-y-1 mt-2">
                           <p className="text-xs text-muted-foreground">
-                            Estadio: {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
+                            {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
                           </p>
                           <p className="text-xs text-muted-foreground">
-                            Tiempo al Diagnóstico: {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
+                            {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Delayed' ? 'Retrasado' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Timely' ? 'Oportuno' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
                           </p>
                         </div>
                       )}
@@ -742,10 +744,12 @@ const Dashboard = () => {
                        {patientClinicalHistories[selectedPatient.document_id] && (
                         <div className="space-y-1">
                           <p className="text-sm text-muted-foreground">
-                            <span className="font-medium">Estadio al Diagnóstico:</span> {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
+                            {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
                           </p>
                           <p className="text-sm text-muted-foreground">
-                            <span className="font-medium">Tiempo al Diagnóstico:</span> {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
+                            {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Delayed' ? 'Retrasado' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Timely' ? 'Oportuno' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
                           </p>
                         </div>
                        )}
