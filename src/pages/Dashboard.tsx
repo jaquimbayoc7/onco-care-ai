@@ -473,21 +473,13 @@ const Dashboard = () => {
                     <div className="space-y-1 col-span-2">
                       <p className="text-xs text-muted-foreground font-semibold">DIAGNÓSTICO PRINCIPAL</p>
                       {patientClinicalHistories[selectedPatient.document_id] && (
-                        <div className="space-y-2 mt-2">
-                          <div>
-                            <p className="text-xs text-muted-foreground">Estadio al Diagnóstico:</p>
-                            <p className="text-sm font-semibold">
-                              {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-muted-foreground">Tiempo al Diagnóstico:</p>
-                            <p className="text-sm font-semibold">
-                              {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Delayed' ? 'Retrasado' :
-                               patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Timely' ? 'Oportuno' :
-                               patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
-                            </p>
-                          </div>
+                        <div className="mt-2">
+                          <p className="text-xs text-muted-foreground">Tiempo al Diagnóstico:</p>
+                          <p className="text-sm font-semibold">
+                            {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Delayed' ? 'Retrasado' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Timely' ? 'Oportuno' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
+                          </p>
                         </div>
                       )}
                     </div>
@@ -746,21 +738,13 @@ const Dashboard = () => {
                      <div>
                        <h4 className="font-semibold text-sm text-muted-foreground mb-2">DIAGNÓSTICO PRINCIPAL</h4>
                        {patientClinicalHistories[selectedPatient.document_id] && (
-                        <div className="space-y-3">
-                          <div>
-                            <p className="text-sm text-muted-foreground mb-1">Estadio al Diagnóstico:</p>
-                            <p className="font-bold text-lg">
-                              {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-sm text-muted-foreground mb-1">Tiempo al Diagnóstico:</p>
-                            <p className="font-bold text-lg">
-                              {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Delayed' ? 'Retrasado' :
-                               patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Timely' ? 'Oportuno' :
-                               patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
-                            </p>
-                          </div>
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Tiempo al Diagnóstico:</p>
+                          <p className="font-bold text-lg">
+                            {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Delayed' ? 'Retrasado' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis === 'Timely' ? 'Oportuno' :
+                             patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
+                          </p>
                         </div>
                        )}
                      </div>
