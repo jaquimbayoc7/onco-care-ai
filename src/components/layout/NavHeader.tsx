@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ClinicalButton } from '@/components/ui/clinical-button';
+import { ConnectionStatus } from '@/components/ui/connection-status';
 import { User, LogOut, Settings, Stethoscope } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -55,6 +56,9 @@ const NavHeader: React.FC = () => {
 
         {/* User Profile */}
         <div className="flex items-center gap-2 sm:gap-4">
+          {/* Connection Status */}
+          <ConnectionStatus />
+          
           {/* User Info */}
           <div className="text-right hidden lg:block">
             <p className="text-sm font-medium text-gray-900">{user.name}</p>
