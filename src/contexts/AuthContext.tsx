@@ -26,46 +26,77 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+    
     const initAuth = async () => {
       const storedUser = localStorage.getItem('oncosimil_user');
       const token = localStorage.getItem('auth_token');
       
       if (storedUser && token) {
-        setUser(JSON.parse(storedUser));
-        setIsLoading(false);
+        if (isMounted) {
+          setUser(JSON.parse(storedUser));
+          setIsLoading(false);
+        }
       } else if (token) {
         // Si hay token pero no usuario, intentar obtener datos del usuario
-        const { user: userData, error } = await authAPI.getCurrentUser();
-        if (userData && !error) {
-          const userObj: User = {
-            id: userData.usuario.id,
-            email: userData.usuario.email,
-            name: `${userData.medico.nombres} ${userData.medico.apellidos}`.trim() || userData.usuario.email,
-            specialty: userData.medico.especialidades || 'Médico',
-            hospital: 'Hospital General',
-            rol_id: userData.usuario.rol_id,
-          };
-          setUser(userObj);
-          localStorage.setItem('oncosimil_user', JSON.stringify(userObj));
-        } else {
-          // Token inválido, limpiar
-          authAPI.logout();
-          localStorage.removeItem('oncosimil_user');
+        try {
+          const { user: userData, error } = await authAPI.getCurrentUser();
+          
+          if (!isMounted) return;
+          
+          if (userData && !error) {
+            const userObj: User = {
+              id: userData.usuario.id,
+              email: userData.usuario.email,
+              name: `${userData.medico.nombres} ${userData.medico.apellidos}`.trim() || userData.usuario.email,
+              specialty: userData.medico.especialidades || 'Médico',
+              hospital: 'Hospital General',
+              rol_id: userData.usuario.rol_id,
+            };
+            setUser(userObj);
+            localStorage.setItem('oncosimil_user', JSON.stringify(userObj));
+          } else {
+            // Token inválido, limpiar
+            authAPI.logout();
+            localStorage.removeItem('oncosimil_user');
+          }
+        } catch (error) {
+          if (isMounted) {
+            authAPI.logout();
+            localStorage.removeItem('oncosimil_user');
+          }
         }
-        setIsLoading(false);
+        
+        if (isMounted) {
+          setIsLoading(false);
+        }
       } else {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
     initAuth();
+    
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    // Prevenir múltiples llamadas simultáneas
+    if (isLoading) {
+      return { success: false, error: 'Ya hay una operación en curso' };
+    }
+    
+    setIsLoading(true);
+    
     try {
       const { token, error } = await authAPI.login(email, password);
       
       if (error) {
+        setIsLoading(false);
         return { success: false, error };
       }
 
@@ -85,14 +116,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           
           setUser(userObj);
           localStorage.setItem('oncosimil_user', JSON.stringify(userObj));
+          setIsLoading(false);
           return { success: true };
         }
         
+        setIsLoading(false);
         return { success: false, error: userError || 'Error al obtener datos del usuario' };
       }
       
+      setIsLoading(false);
       return { success: false, error: 'Error desconocido' };
     } catch (error) {
+      setIsLoading(false);
       return { success: false, error: 'Error de conexión' };
     }
   };
