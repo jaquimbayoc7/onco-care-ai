@@ -1,0 +1,20 @@
+{
+  "name": "OncoSimil AI - Sistema de Gestión Oncológica",
+  "short_name": "OncoSimil AI",
+  "description": "Sistema avanzado de gestión oncológica con IA para decisiones clínicas informadas",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1e293b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["medical", "health", "productivity"],
+  "prefer_related_applications": false
+}
