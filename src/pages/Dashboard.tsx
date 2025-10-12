@@ -471,11 +471,39 @@ const Dashboard = () => {
                        <p className="font-semibold text-sm">{selectedPatient.gender === 'Female' ? 'Femenino' : selectedPatient.gender === 'Male' ? 'Masculino' : 'Otro'}</p>
                      </div>
                     <div className="space-y-1 col-span-2">
-                      <p className="text-xs text-muted-foreground">Diagnóstico</p>
+                      <p className="text-xs text-muted-foreground font-semibold">DIAGNÓSTICO PRINCIPAL</p>
                       <p className="font-semibold text-sm">{selectedPatient.diagnosis}</p>
-                      <Badge variant="outline" className="text-xs">
-                        Etapa {selectedPatient.stage}
-                      </Badge>
+                      {patientClinicalHistories[selectedPatient.document_id] && (
+                        <div className="space-y-1 mt-2">
+                          <p className="text-xs text-muted-foreground">
+                            Estadio: {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            Tiempo al Diagnóstico: {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="space-y-1 col-span-2">
+                      <p className="text-xs text-muted-foreground font-semibold">ÚLTIMA VISITA</p>
+                      <p className="text-sm flex items-center gap-1">
+                        <Calendar className="w-3 h-3" />
+                        {patientClinicalHistories[selectedPatient.document_id]?.edited 
+                          ? new Date(patientClinicalHistories[selectedPatient.document_id].edited).toLocaleDateString('es-ES', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })
+                          : new Date(selectedPatient.edited).toLocaleDateString('es-ES', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                      </p>
                     </div>
                   </div>
                 </CardHeader>
@@ -706,20 +734,41 @@ const Dashboard = () => {
                       </div>
                    </div>
                  </CardHeader>
-                 <CardContent className="relative z-10">
+                  <CardContent className="relative z-10">
                    <div className="grid grid-cols-2 gap-6">
                      <div>
                        <h4 className="font-semibold text-sm text-muted-foreground mb-2">DIAGNÓSTICO PRINCIPAL</h4>
-                       <p className="font-bold text-lg">{selectedPatient.diagnosis}</p>
-                       <Badge variant="outline" className="mt-2">
-                         Etapa {selectedPatient.stage}
-                       </Badge>
+                       <p className="font-bold text-lg mb-3">{selectedPatient.diagnosis}</p>
+                       {patientClinicalHistories[selectedPatient.document_id] && (
+                        <div className="space-y-1">
+                          <p className="text-sm text-muted-foreground">
+                            <span className="font-medium">Estadio al Diagnóstico:</span> {patientClinicalHistories[selectedPatient.document_id].stage_at_diagnosis || 'No especificado'}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            <span className="font-medium">Tiempo al Diagnóstico:</span> {patientClinicalHistories[selectedPatient.document_id].time_to_diagnosis || 'No registrado'}
+                          </p>
+                        </div>
+                       )}
                      </div>
                      <div>
                        <h4 className="font-semibold text-sm text-muted-foreground mb-2">ÚLTIMA VISITA</h4>
                        <p className="flex items-center gap-2">
                          <Calendar className="w-4 h-4" />
-                         {new Date(selectedPatient.lastVisit).toLocaleDateString('es-ES')}
+                         {patientClinicalHistories[selectedPatient.document_id]?.edited 
+                           ? new Date(patientClinicalHistories[selectedPatient.document_id].edited).toLocaleDateString('es-ES', {
+                               year: 'numeric',
+                               month: 'long',
+                               day: 'numeric',
+                               hour: '2-digit',
+                               minute: '2-digit'
+                             })
+                           : new Date(selectedPatient.edited).toLocaleDateString('es-ES', {
+                               year: 'numeric',
+                               month: 'long',
+                               day: 'numeric',
+                               hour: '2-digit',
+                               minute: '2-digit'
+                             })}
                        </p>
                      </div>
                    </div>
