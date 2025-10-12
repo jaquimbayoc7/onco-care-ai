@@ -82,7 +82,7 @@ const clinicalHistorySchema = z.object({
   insurance_coverage: z.enum(["Yes", "No"]).optional(),
   time_to_diagnosis: z.enum(["Delayed", "Timely"]).optional(),
   treatment_access: z.enum(["Adequate", "Limited"]),
-  treatment_id: z.number().optional(),
+  treatment_id: z.number().nullish(),
   chemotherapy_received: z.enum(["Yes", "No"]).optional(),
   radiotherapy_received: z.enum(["Yes", "No"]).optional(),
   surgery_received: z.enum(["Yes", "No"]).optional(),
