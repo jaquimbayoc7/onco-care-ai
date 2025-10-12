@@ -1,5 +1,5 @@
 // Authentication API Service
-const API_BASE_URL = import.meta.env.DEV ? '/api' : 'https://oncoapp-239j.onrender.com';
+const API_BASE_URL = '/api';
 
 export interface RegisterData {
   email: string;
