@@ -292,6 +292,17 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
         } else if (predictionResponse.data && predictionResponse.data.success) {
           console.log('[MedicalHistory] Prediction successful:', predictionResponse.data);
           
+          // Extract treatment ID from treatment string (e.g., "T1" -> 1, "T10" -> 10)
+          const treatmentString = predictionResponse.data.treatment;
+          const treatmentId = parseInt(treatmentString.replace('T', ''), 10);
+          
+          // Update the clinical history with treatment_id
+          if (!isNaN(treatmentId)) {
+            await PatientsAPI.updateClinicalHistory(patient.document_id, {
+              treatment_id: treatmentId
+            });
+          }
+          
           // The API automatically updates the clinical history with the treatment
           // Refresh from server to get the updated data
           const refreshedHistoryResponse = await PatientsAPI.getClinicalHistory(patient.document_id);
@@ -300,20 +311,6 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             console.log('[MedicalHistory] History refreshed after prediction:', refreshedHistoryResponse.data);
             setClinicalHistory(refreshedHistoryResponse.data);
             form.reset(refreshedHistoryResponse.data);
-            
-            toast({
-              title: "Predicción completada",
-              description: `Tratamiento recomendado: ${predictionResponse.data.treatment}`,
-            });
-          } else {
-            console.warn('[MedicalHistory] Could not refresh history, using prediction data');
-            // Fallback: update local state with the prediction
-            const updatedHistory = {
-              ...savedHistory,
-              treatment_recommendation: predictionResponse.data.treatment
-            };
-            setClinicalHistory(updatedHistory);
-            form.setValue('treatment_recommendation', predictionResponse.data.treatment);
             
             toast({
               title: "Predicción completada",
