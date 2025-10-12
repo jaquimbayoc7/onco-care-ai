@@ -270,6 +270,37 @@ export class PatientsAPI {
     }
   }
 
+  // Get treatment prediction from ML model
+  static async getPrediction(historyId: number): Promise<APIResponse<{ history_id: number; treatment: string; success: boolean; message: string }>> {
+    try {
+      const ML_API_BASE_URL = 'https://oncoapp-microservices.onrender.com';
+      
+      console.log('Requesting prediction for history_id:', historyId);
+      
+      const response = await fetch(`${ML_API_BASE_URL}/api/v1/predict-and-update`, {
+        method: 'POST',
+        headers: getHeaders(),
+        body: JSON.stringify({ history_id: historyId }),
+      });
+      
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ detail: 'Error en la predicción' }));
+        console.error('Prediction API error:', error);
+        return { error: error.detail || 'Error al obtener predicción' };
+      }
+      
+      const data = await response.json();
+      console.log('Prediction response:', data);
+      
+      return { data };
+    } catch (error) {
+      console.error('Error calling prediction API:', error);
+      return {
+        error: 'Error de conexión al servicio de predicción'
+      };
+    }
+  }
+
   // Auth simulation - kept for compatibility
   static async authenticate(email: string, password: string): Promise<APIResponse<{ token: string; user: any }>> {
     // This method is now deprecated, use authAPI instead

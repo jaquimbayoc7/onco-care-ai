@@ -37,7 +37,8 @@ import {
   Thermometer,
   Droplet,
   Wind,
-  FileText
+  FileText,
+  Brain
 } from "lucide-react";
 import { PatientsAPI } from "@/services/patientsApi";
 import { ClinicalHistoryCreate, ClinicalHistoryRead, ClinicalHistoryUpdate } from "@/types/patient";
@@ -221,6 +222,8 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
     
     setIsSaving(true);
     try {
+      let savedHistory: ClinicalHistoryRead | null = null;
+      
       if (clinicalHistory) {
         // Update existing clinical history
         const updateData = cleanDataForAPI(data) as ClinicalHistoryUpdate;
@@ -232,14 +235,14 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             description: response.error,
             variant: "destructive",
           });
-        } else {
-          setClinicalHistory(response.data || null);
-          setIsEditing(false);
-          toast({
-            title: "Éxito",
-            description: "Historial clínico actualizado correctamente",
-          });
+          return;
         }
+        
+        savedHistory = response.data || null;
+        toast({
+          title: "Éxito",
+          description: "Historial clínico actualizado correctamente",
+        });
       } else {
         // Create new clinical history
         const cleanedData = cleanDataForAPI({
@@ -258,15 +261,49 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
             description: response.error,
             variant: "destructive",
           });
-        } else {
-          setClinicalHistory(response.data || null);
-          setIsEditing(false);
+          return;
+        }
+        
+        savedHistory = response.data || null;
+        toast({
+          title: "Éxito",
+          description: "Historial clínico creado correctamente",
+        });
+      }
+      
+      // Call prediction API if we have a saved history
+      if (savedHistory && savedHistory.id) {
+        toast({
+          title: "Generando predicción",
+          description: "Obteniendo recomendación de tratamiento...",
+        });
+        
+        const predictionResponse = await PatientsAPI.getPrediction(savedHistory.id);
+        
+        if (predictionResponse.error) {
           toast({
-            title: "Éxito",
-            description: "Historial clínico creado correctamente",
+            title: "Advertencia",
+            description: `Historial guardado, pero no se pudo obtener predicción: ${predictionResponse.error}`,
+            variant: "destructive",
+          });
+        } else if (predictionResponse.data) {
+          // Update local state with the prediction
+          const updatedHistory = {
+            ...savedHistory,
+            treatment_recommendation: predictionResponse.data.treatment
+          };
+          setClinicalHistory(updatedHistory);
+          
+          toast({
+            title: "Predicción completada",
+            description: `Recomendación de tratamiento: ${predictionResponse.data.treatment}`,
           });
         }
+      } else {
+        setClinicalHistory(savedHistory);
       }
+      
+      setIsEditing(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -1291,17 +1328,22 @@ export default function MedicalHistoryView({ isOpen, onClose, patient }: Medical
                         )}
                         
                         {!isEditing && clinicalHistory?.treatment_recommendation && (
-                          <Card className="md:col-span-2">
+                          <Card className="md:col-span-2 border-primary/50 bg-primary/5">
                             <CardHeader className="pb-3">
                               <CardTitle className="flex items-center gap-2 text-base">
-                                <Stethoscope className="w-4 h-4" />
-                                Recomendación de Tratamiento
+                                <Brain className="w-5 h-5 text-primary" />
+                                Recomendación de Tratamiento (IA)
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
-                              <p className="text-sm text-muted-foreground">
-                                {clinicalHistory.treatment_recommendation}
-                              </p>
+                              <div className="flex items-center gap-3">
+                                <Badge variant="default" className="text-lg px-4 py-2">
+                                  {clinicalHistory.treatment_recommendation}
+                                </Badge>
+                                <p className="text-sm text-muted-foreground">
+                                  Predicción generada por modelo de Machine Learning
+                                </p>
+                              </div>
                             </CardContent>
                           </Card>
                         )}
