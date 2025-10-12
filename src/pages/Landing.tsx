@@ -53,12 +53,6 @@ const Landing = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Prevenir múltiples envíos simultáneos
-    if (isLoading) {
-      return;
-    }
-    
     setIsLoading(true);
     
     try {
@@ -90,12 +84,6 @@ const Landing = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Prevenir múltiples envíos simultáneos
-    if (isLoading) {
-      return;
-    }
-    
     setIsLoading(true);
     
     try {

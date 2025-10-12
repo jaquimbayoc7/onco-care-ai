@@ -65,9 +65,6 @@ class AuthAPI {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        if (response.status === 429) {
-          return { success: false, error: 'Demasiadas solicitudes. Por favor espere unos minutos e intente de nuevo.' };
-        }
         if (response.status === 422) {
           return { success: false, error: 'Datos de registro inválidos. Verifica todos los campos.' };
         }
@@ -92,9 +89,6 @@ class AuthAPI {
       });
 
       if (!response.ok) {
-        if (response.status === 429) {
-          return { error: 'Demasiadas solicitudes. Por favor espere unos minutos e intente de nuevo.' };
-        }
         if (response.status === 401) {
           return { error: 'Credenciales inválidas' };
         }
