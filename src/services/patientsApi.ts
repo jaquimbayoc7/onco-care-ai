@@ -275,7 +275,7 @@ export class PatientsAPI {
   // Returns: { "history_id": number, "treatment": string, "success": boolean, "message": string }
   static async getPrediction(historyId: number): Promise<APIResponse<{ history_id: number; treatment: string; success: boolean; message: string }>> {
     try {
-      const ML_API_BASE_URL = 'https://onlineapp-microservices.onrender.com';
+      const ML_API_BASE_URL = 'https://oncoapp-microservices.onrender.com';
       
       const payload = { history_id: historyId };
       console.log('[PatientsAPI] Requesting prediction with:', payload);
