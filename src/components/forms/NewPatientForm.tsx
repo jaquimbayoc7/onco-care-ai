@@ -31,7 +31,7 @@ import { UserPlus } from "lucide-react";
 import { PatientCreate, PatientUpdate } from "@/types/patient";
 import { PatientsAPI } from "@/services/patientsApi";
 import { useToast } from "@/hooks/use-toast";
-import faviconIcon from "/favicon.png";
+import faviconIcon from "@/assets/favicon.png";
 
 interface NewPatientFormProps {
   isOpen: boolean;

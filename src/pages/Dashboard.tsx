@@ -30,7 +30,7 @@ import patientMaria from "@/assets/patient-maria.jpg";
 import patientCarlos from "@/assets/patient-carlos.jpg";
 import patientAna from "@/assets/patient-ana.jpg";
 import medicalMonitoring from "@/assets/medical-monitoring.jpg";
-import faviconIcon from "/favicon.png";
+import faviconIcon from "@/assets/favicon.png";
 import { PatientRead, ClinicalHistoryRead } from "@/types/patient";
 import { PatientsAPI } from "@/services/patientsApi";
 import { useToast } from "@/hooks/use-toast";
