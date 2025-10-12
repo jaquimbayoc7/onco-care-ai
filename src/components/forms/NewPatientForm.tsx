@@ -142,6 +142,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
       form.reset();
       onClose();
     } catch (error) {
+      console.error('Form submission error:', error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
@@ -150,8 +151,13 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
     }
   };
 
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3 text-xl">
@@ -349,7 +355,7 @@ const NewPatientForm: React.FC<NewPatientFormProps> = ({
             </Card>
 
             <div className="flex justify-end gap-4 pt-4">
-              <ClinicalButton variant="outline" type="button" onClick={onClose}>
+              <ClinicalButton variant="outline" type="button" onClick={handleClose}>
                 Cancelar
               </ClinicalButton>
               <ClinicalButton type="submit" variant="clinical">
