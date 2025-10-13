@@ -372,7 +372,9 @@ export class PatientsAPI {
   // Send treatment recommendation to external API
   static async sendTreatmentRecommendation(treatmentId: string, treatmentData: string): Promise<APIResponse<any>> {
     try {
-      const response = await fetch('https://oncoai-4-rec.onrender.com', {
+      const MODEL_API_URL = import.meta.env.DEV ? '/model-api' : 'https://oncoai-4rec.onrender.com';
+      
+      const response = await fetch(MODEL_API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

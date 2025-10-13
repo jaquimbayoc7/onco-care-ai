@@ -19,6 +19,11 @@ export default defineConfig(({ mode }) => ({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/patients-api/, ''),
       },
+      '/model-api': {
+        target: 'https://oncoai-4rec.onrender.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/model-api/, ''),
+      },
     },
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
