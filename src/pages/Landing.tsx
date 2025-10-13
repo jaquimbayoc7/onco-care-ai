@@ -3,8 +3,7 @@ import { ClinicalButton } from "@/components/ui/clinical-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { ConnectionStatus } from "@/components/ui/connection-status";
-import { 
+import {
   Brain, 
   Activity, 
   Shield, 
@@ -140,11 +139,6 @@ const Landing = () => {
           style={{ backgroundImage: `url(${medicalDecorative})` }}
         />
         <div className="absolute inset-0 gradient-hero opacity-90" />
-        
-        {/* Connection Status - Top Right */}
-        <div className="absolute top-4 right-4 z-20">
-          <ConnectionStatus />
-        </div>
         
         {/* Decorative Medical Elements */}
         <div className="absolute top-20 right-20 w-16 h-16 bg-accent/20 rounded-full blur-xl animate-pulse hidden lg:block" />
