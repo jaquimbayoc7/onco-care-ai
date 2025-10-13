@@ -471,7 +471,7 @@ const Landing = () => {
       <footer className="bg-primary py-6 sm:py-8">
         <div className="container max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <p className="text-primary-foreground/80">
-            © 2024 OncoSimil AI. Desarrollado para mejorar el cuidado oncológico.
+            © 2025 OncoSimil AI. Desarrollado para mejorar el cuidado oncológico.
           </p>
         </div>
       </footer>
